@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "340200584041",
+    "project_id": "wemee7-bacd2",
+    "storage_bucket": "wemee7-bacd2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:340200584041:android:c6b905bd28ac23731a83f8",
+        "android_client_info": {
+          "package_name": "com.example.wemee7"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB8QhVzVvYgaiwnCBhS2PvB1kADedP__d4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
