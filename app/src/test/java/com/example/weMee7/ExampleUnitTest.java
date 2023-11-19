@@ -1,4 +1,4 @@
-package com.example.wemee7;
+package com.example.weMee7;
 
 import org.junit.Test;
 
