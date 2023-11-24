@@ -1,6 +1,6 @@
 package com.example.weMee7.model.entities;
 
-import com.example.weMee7.comun.TimeUtils;
+import com.google.firebase.Timestamp;
 import com.example.weMee7.comun.interfaces.Estado;
 
 /**
@@ -13,7 +13,14 @@ public class Invitacion extends _SuperEntity{
     private String idUsuario;
     private String idReunion;
     private EstadoInvitacion estado;
-    private String fecha_envio;//Invariable
+    private boolean yaCelebrada;
+
+    /* Variable para acotar las consultas de invitaciones,
+        del mismo modo que se pueden filtrar las reuniones por fecha.
+        Este dato se actualizará cuando el usuario consulte sus reuniones
+        y su fecha haya pasado.
+         */
+    private Timestamp fecha_envio;//Invariable
 
     //Constructor vacio
     public Invitacion() {}
@@ -22,6 +29,7 @@ public class Invitacion extends _SuperEntity{
      * Constructor.
      * La invitacion se crea vinculada a un usuario y a una reunion.
      * El estado inicial es siempre ENVIADA;
+     * yaCelebrada empieza siempre como FALSE;
      * la fecha_envio es el momento de creacion.
      * @param idUsuario
      * @param idReunion
@@ -30,7 +38,8 @@ public class Invitacion extends _SuperEntity{
         this.idUsuario = idUsuario;
         this.idReunion = idReunion;
         this.estado = EstadoInvitacion.ENVIADA;
-        fecha_envio = TimeUtils.ahora();
+        this.yaCelebrada = false;
+        this.fecha_envio = Timestamp.now();
     }
 
     public String getIdUsuario() {
@@ -49,7 +58,15 @@ public class Invitacion extends _SuperEntity{
         this.estado = estado;
     }
 
-    public String getFecha_envio() {
+    public boolean isYaCelebrada() {
+        return yaCelebrada;
+    }
+
+    public void setYaCelebrada(boolean yaCelebrada) {
+        this.yaCelebrada = yaCelebrada;
+    }
+
+    public Timestamp getFecha_envio() {
         return fecha_envio;
     }
 
@@ -57,19 +74,6 @@ public class Invitacion extends _SuperEntity{
      * Enumeracion que recoge valores constantes
      * con los diferentes estados de una invitacion
      */
-    public enum EstadoInvitacion implements Estado {
-        ENVIADA(0),
-        ACEPTADA(1),
-        RECHAZADA(2);
-
-        private int valor;
-        EstadoInvitacion(int valor){
-            this.valor = valor;
-        }
-        @Override
-        public int getValor() {
-            return 0;
-        }
-    }
+    public enum EstadoInvitacion {ENVIADA,ACEPTADA,RECHAZADA;}
 
 }

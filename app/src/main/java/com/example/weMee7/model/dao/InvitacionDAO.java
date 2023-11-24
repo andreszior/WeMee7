@@ -9,4 +9,11 @@ public class InvitacionDAO extends _SuperDAO{
     public InvitacionDAO() {
         super("invitaciones", Invitacion.class);
     }
+
+    /*Metodo de consulta de invitacion con 3 condiciones:
+    * (String field, String idUsuario/idReunion, boolean yaCelebrada, Estado estadoInvitacion)
+     */
+
+
+
 }

@@ -1,6 +1,6 @@
 package com.example.weMee7.model.entities;
 
-import com.example.weMee7.comun.TimeUtils;
+import com.google.firebase.Timestamp;
 import java.util.ArrayList;
 
 /**
@@ -14,8 +14,8 @@ public class Reunion extends _SuperEntity {
     private String nombre;
     private String descripcion;
     private String lugar;
-    private String fechaHora;
-    private String fecha_creacion; //Invariable
+    private Timestamp fechaHora;
+    private Timestamp fecha_creacion; //Invariable
 
     //Constructor vacio
     public Reunion() {}
@@ -32,14 +32,14 @@ public class Reunion extends _SuperEntity {
      * @param fechaHora
      */
     public Reunion(String idCreador, String nombre,
-                   String descripcion, String lugar, String fechaHora) {
+                   String descripcion, String lugar, Timestamp fechaHora) {
         this.idCreador = idCreador;
         this.invitadosList = new ArrayList();
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.lugar = lugar;
         this.fechaHora = fechaHora;
-        fecha_creacion = TimeUtils.ahora();
+        this.fecha_creacion = Timestamp.now();
     }
 
     public String getIdCreador() {
@@ -87,15 +87,15 @@ public class Reunion extends _SuperEntity {
         this.lugar = lugar;
     }
 
-    public String getFechaHora() {
+    public Timestamp getFechaHora() {
         return fechaHora;
     }
 
-    public void setFechaHora(String fechaHora) {
+    public void setFechaHora(Timestamp fechaHora) {
         this.fechaHora = fechaHora;
     }
 
-    public String getFecha_creacion() {
+    public Timestamp getFecha_creacion() {
         return fecha_creacion;
     }
 

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Opcion_encuesta {
     private int numOpcion; //Invariable
-    private String encuesta;//Invariable
+    private String idEncuesta;//Invariable
     private String descripcion;
     private ArrayList<String> usuariosAFavor;
     private ArrayList<String> usuariosEnContra;
@@ -12,9 +12,9 @@ public class Opcion_encuesta {
     //Constructor vacio
     public Opcion_encuesta() {}
 
-    public Opcion_encuesta(int numOpcion, String encuesta, String descripcion) {
+    public Opcion_encuesta(int numOpcion, String idEncuesta, String descripcion) {
         this.numOpcion = numOpcion;
-        this.encuesta = encuesta;
+        this.idEncuesta = idEncuesta;
         this.descripcion = descripcion;
         usuariosAFavor = new ArrayList();
         usuariosEnContra = new ArrayList();
@@ -24,8 +24,8 @@ public class Opcion_encuesta {
         return numOpcion;
     }
 
-    public String getEncuesta() {
-        return encuesta;
+    public String getIdEncuesta() {
+        return idEncuesta;
     }
 
     public String getDescripcion() {

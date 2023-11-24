@@ -2,10 +2,13 @@ package com.example.weMee7;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
 import com.example.weMee7.model.TESTpruebasDAO;
+import com.example.weMee7.view.usuario.UsuarioActivity;
+import com.example.weMee7.viewmodel.ValidarUsuario;
 import com.example.wemee7.R;
 
 public class TestActivity extends AppCompatActivity {
@@ -32,6 +35,7 @@ public class TestActivity extends AppCompatActivity {
     }
 
     public void testDaniel (View view){
-        new TESTpruebasDAO().borrarDatos();
+        Intent intent = new Intent(this, UsuarioActivity.class);
+        startActivity(intent);
     }
 }

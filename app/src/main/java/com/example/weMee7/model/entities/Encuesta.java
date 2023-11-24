@@ -1,5 +1,7 @@
 package com.example.weMee7.model.entities;
 
+import com.google.firebase.Timestamp;
+
 /**
  * Clase POJO que se relaciona
  * con los documentos
@@ -7,7 +9,7 @@ package com.example.weMee7.model.entities;
  */
 public class Encuesta extends Cuestion{
     private int resultado;
-    private String fecha_limite;
+    private Timestamp fecha_limite;
 
     //Constructor vacio
     public Encuesta() {}
@@ -20,7 +22,7 @@ public class Encuesta extends Cuestion{
      * @param fecha_limite
      */
     public Encuesta(String reunion, String titulo,
-                    String fecha_limite) {
+                    Timestamp fecha_limite) {
         super(reunion, titulo);
         this.resultado = -1; //Por defecto sin resultado
         this.fecha_limite = fecha_limite;
@@ -34,11 +36,11 @@ public class Encuesta extends Cuestion{
         this.resultado = resultado;
     }
 
-    public String getFecha_limite() {
+    public Timestamp getFecha_limite() {
         return fecha_limite;
     }
 
-    public void setFecha_limite(String fecha_limite) {
+    public void setFecha_limite(Timestamp fecha_limite) {
         this.fecha_limite = fecha_limite;
     }
 }

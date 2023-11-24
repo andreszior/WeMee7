@@ -2,6 +2,9 @@ package com.example.weMee7.model.entities;
 
 import com.example.weMee7.comun.TimeUtils;
 import com.example.weMee7.comun.interfaces.Estado;
+import com.google.firebase.Timestamp;
+
+import java.time.LocalDateTime;
 
 /**
  * Clase POJO que se relaciona
@@ -14,7 +17,7 @@ public class Tarea extends Cuestion {
     private EstadoTarea estado;
     private int gasto;//El gasto se almacena como entero
     //P.ej: 45,50 € = 4550.
-    private String fecha_update;//Se modifica automaticamente al cambiar de Estado
+    private Timestamp fecha_update;//Se modifica automaticamente al cambiar de Estado
 
 
     //Constructor vacio
@@ -38,7 +41,7 @@ public class Tarea extends Cuestion {
         this.gasto = gasto;
         this.idEncargado = idEncargado;
         this.estado = EstadoTarea.CREADA;
-        this.fecha_update = TimeUtils.ahora();
+        this.fecha_update = Timestamp.now();
     }
 
     public String getDescripcion() {
@@ -55,7 +58,7 @@ public class Tarea extends Cuestion {
 
     public void setEstado(EstadoTarea estado) {
         this.estado = estado;
-        this.fecha_update = TimeUtils.ahora();
+        this.fecha_update = Timestamp.now();
     }
 
     public int getGasto() {
@@ -66,11 +69,11 @@ public class Tarea extends Cuestion {
         this.gasto = gasto;
     }
 
-    public String getFecha_update() {
+    public Timestamp getFecha_update() {
         return fecha_update;
     }
 
-    public void setFecha_update(String fecha_update) {
+    public void setFecha_update(Timestamp fecha_update) {
         this.fecha_update = fecha_update;
     }
 
@@ -86,18 +89,5 @@ public class Tarea extends Cuestion {
      * Enumeracion que recoge valores constantes
      * con los diferentes estados de una invitacion
      */
-    public enum EstadoTarea implements Estado {
-        CREADA(0),
-        ASIGNADA(1),
-        COMPLETADA(2);
-
-        private int valor;
-        EstadoTarea(int valor){
-            this.valor = valor;
-        }
-        @Override
-        public int getValor() {
-            return 0;
-        }
-    }
+    public enum EstadoTarea {CREADA,ASIGNADA,COMPLETADA;}
 }
