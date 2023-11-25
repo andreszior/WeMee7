@@ -12,7 +12,20 @@
           "package_name": "com.example.wemee7"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "340200584041-4rnnmnphnrna7j063rkk1ge8u0kjl4vc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.wemee7",
+            "certificate_hash": "dbd6cbbf7e7bb14e2e217afe1d1a3077e1383227"
+          }
+        },
+        {
+          "client_id": "340200584041-bsn5i3d80fe3sb04bo3s6c8hferi6j3o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyB8QhVzVvYgaiwnCBhS2PvB1kADedP__d4"
@@ -20,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "340200584041-bsn5i3d80fe3sb04bo3s6c8hferi6j3o.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

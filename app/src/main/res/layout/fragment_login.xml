@@ -1,0 +1,83 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/cardview_light_background"
+    tools:context="com.example.weMee7.view.usuario.LoginFragment">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/glLoginLeft"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.1" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/glLoginRight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.9" />
+
+    <EditText
+        android:id="@+id/etLoginEmail"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:hint="@string/hint_email"
+        app:layout_constraintBottom_toTopOf="@+id/etLoginPass"
+        app:layout_constraintEnd_toStartOf="@id/glLoginRight"
+        app:layout_constraintHorizontal_bias="0.3"
+        app:layout_constraintStart_toStartOf="@id/glLoginLeft"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/etLoginPass"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:inputType="textPassword"
+        android:hint="@string/hint_pass"
+        android:autofillHints="password"
+        app:layout_constraintTop_toBottomOf="@id/etLoginEmail"
+        app:layout_constraintStart_toStartOf="@id/glLoginLeft"
+        app:layout_constraintEnd_toStartOf="@id/glLoginRight"
+        app:layout_constraintHorizontal_bias="0.3" />
+
+    <Button
+        android:id="@+id/btLoginRegistrar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="@string/bt_registrar"
+        app:layout_constraintTop_toBottomOf="@+id/etLoginPass"
+        app:layout_constraintStart_toStartOf="@id/glLoginLeft"
+        app:layout_constraintEnd_toStartOf="@id/btLoginAcceder"
+         />
+
+    <Button
+        android:id="@+id/btLoginAcceder"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="@string/bt_acceder"
+        app:layout_constraintTop_toBottomOf="@+id/etLoginPass"
+        app:layout_constraintStart_toEndOf="@id/btLoginRegistrar"
+        app:layout_constraintEnd_toStartOf="@id/glLoginRight" />
+
+    <Button
+        android:id="@+id/btLoginGoogle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/bt_google"
+        android:drawableStart="@mipmap/google"
+        app:layout_constraintTop_toBottomOf="@+id/btLoginRegistrar"
+        app:layout_constraintStart_toEndOf="@id/glLoginLeft"
+        app:layout_constraintEnd_toStartOf="@id/glLoginRight"
+        style="@style/botonGoogle"/>
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,5 +1,41 @@
 <resources>
+<!--    Datos de la app-->
     <string name="app_name">WeMee7</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="shared_key">com.example.weMee7.PREFERENCE_FILE_KEY</string>
+    <string name="default_web_client_id">340200584041-bsn5i3d80fe3sb04bo3s6c8hferi6j3o.apps.googleusercontent.com</string>
+
+<!--    Texto de mensajes Toast-->
+    <string name="msj_vincular_tlf">Teléfono vinculado con éxito</string>
+    <string name="msj_desvincular_tlf">Se ha desvinculado el teléfono</string>
+    <string name="msj_rellenar_campos">Rellene todos los campos</string>
+    <string name="msj_email_fail">Formato de email incorrecto</string>
+    <string name="msj_telefono_fail">Formato de teléfono incorrecto</string>
+    <string name="msj_fUser_fail">No se ha podido recuperar el usuario</string>
+
+
+
+<!--    Nombres de botones-->
+    <string name="bt_registrar">REGISTRAR</string>
+    <string name="bt_acceder">ACCEDER</string>
+    <string name="bt_google">INICIAR SESIÓN CON GOOGLE</string>
+    <string name="bt_solicitar_codigo">SOLICITAR CODIGO</string>
+    <string name="bt_verificar">VERIFICAR</string>
+    <string name="bt_cerrar_sesion">CERRAR SESION</string>
+    <string name="bt_eliminar_cuenta">ELIMINAR CUENTA</string>
+    <string name="bt_vincular_tlf">VINCULAR TELEFONO</string>
+    <string name="bt_desvincular_tlf">DESVINCULAR TELEFONO</string>
+
+
+<!--    Etiquetas de texto-->
+
+<!--    Varios-->
+    <string name="text_prefijo_sp">+34</string>
+
+<!--    Hints-->
+    <string name="hint_email">Email</string>
+    <string name="hint_pass">Contraseña</string>
+    <string name="hint_telefono">Telefono</string>
+    <string name="hint_codigo_verificacion">Código de verificación</string>
+
+
 </resources>

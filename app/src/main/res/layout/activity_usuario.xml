@@ -4,11 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorPrimaryDark"
     tools:context="com.example.weMee7.view.usuario.UsuarioActivity">
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fcvUsuario"
-        android:name="com.example.weMee7.view.usuario.AuthPhoneFragment"
+        android:layout_margin="30dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintTop_toTopOf="parent"
