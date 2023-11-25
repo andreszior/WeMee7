@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:apptint="http://schemas.android.com/tools"
+    android:id="@+id/elemet_menu"
+    android:layout_margin="6dp"
+    card_view:cardBackgroundColor="@color/medium"
+    card_view:cardCornerRadius="15dp"
+    card_view:cardElevation="6dp"
+    card_view:contentPadding="4dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:background="@color/medium">
+
+        <ImageView
+
+            android:id="@+id/imageLugar2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/imageLugar"
+            android:layout_marginLeft="83dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="-24dp"
+            android:layout_marginBottom="0dp"
+            android:layout_toStartOf="@+id/item_lugar"
+            card_view:srcCompat="@drawable/alarm_on_fill0_wght400_grad0_opsz24"
+            card_view:tint="@color/light" />
+
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:id="@+id/item_image"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            card_view:tint="@color/light"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Titulo"
+            android:textColor="@color/light"
+            android:id="@+id/item_title"
+            android:textStyle="bold"
+            android:layout_toEndOf="@+id/item_image"
+            android:layout_toRightOf="@+id/item_image"
+            android:layout_alignParentTop="true"
+            android:textSize="22sp"
+            android:textAllCaps="true" />
+
+        <TextView
+            android:id="@+id/item_lugar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/item_title"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="10dp"
+            android:layout_toEndOf="@+id/item_image"
+
+
+            android:text="Lugar"
+            android:textColor="@color/light"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/item_fecha"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/item_lugar"
+            android:layout_marginStart="30dp"
+            android:layout_marginLeft="57dp"
+            android:layout_marginTop="5dp"
+            android:layout_toEndOf="@+id/item_image"
+            android:layout_toRightOf="@+id/item_image"
+            android:text="Fecha"
+            android:textColor="@color/light"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <ImageView
+
+            android:id="@+id/imageLugar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/item_title"
+            android:layout_marginLeft="83dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="-24dp"
+            android:layout_marginBottom="0dp"
+            android:layout_toStartOf="@+id/item_lugar"
+            card_view:srcCompat="@drawable/location_on_fill0_wght400_grad0_opsz24"
+            card_view:tint="@color/light" />
+
+
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>
