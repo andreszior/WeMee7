@@ -98,13 +98,13 @@ public abstract class _SuperDAO {
      * Permite obtener una lista de entidades
      * a partir del id de un objeto
      * que es atributo en otra coleccion.
-     * @param field atributo que almacena el id del objeto
+     * @param f atributo que almacena el id del objeto
      *              P.ej.: "idCreador"
      * @param id id de la otra clase
      *           P.ej.: usuario.getId()
      */
-    public void obtenerListaPorIdForaneo(String field, String id, FirebaseCallback callback){
-        Query q = DB_COLECCION.whereEqualTo(field,id);
+    public void obtenerListaPorIdForaneo(Fields f, String id, FirebaseCallback callback){
+        Query q = DB_COLECCION.whereEqualTo(f.getField(),id);
 
         q.get().addOnCompleteListener(task -> {
             if(task.isSuccessful() && task.getResult() != null){
@@ -124,14 +124,14 @@ public abstract class _SuperDAO {
      * Permite obtener una lista de entidades
      * a partir del id de un objeto
      * que esta en un array de otra coleccion
-     * @param field atributo que almacena el array
+     * @param f atributo que almacena el array
      *              P. ej.: "invitados"
      * @param id id de la otra clase
      *           P.ej.: usuario.getId()
      * @param callback
      */
-    public void obtenerListaDesdeArray(String field, String id, FirebaseCallback callback){
-        DB_COLECCION.whereArrayContains(field, id)
+    public void obtenerListaDesdeArray(Fields f, String id, FirebaseCallback callback){
+        DB_COLECCION.whereArrayContains(f.getField(), id)
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
@@ -170,5 +170,28 @@ public abstract class _SuperDAO {
             .addOnSuccessListener(unused -> {
                 System.out.println("elemento eliminado");
             });
+    }
+
+    /**
+     * Enumeracion que contiene
+     * las claves foraneas que se pueden utilizar
+     * para filtrar consultas
+     */
+    public enum Fields{
+        ID_USUARIO("idUsuario"),
+        ID_REUNION("idReunion"),
+        ID_ENCUESTA("idEncuesta"),
+        REUNIONES_POR_CREADOR("idCreador"),
+        REUNIONES_POR_INVITADO("invitadosList"),
+        INVITADOS_POR_REUNION("reunionesInvitado");
+
+        private final String field;
+
+        Fields(String field) {
+            this.field = field;
+        }
+        public String getField() {
+            return field;
+        }
     }
 }
