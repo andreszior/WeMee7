@@ -42,7 +42,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
         //holder.bindData(rdata.get(position));
         holder.item_lugar.setText(rdata.get(position).getLugar());
         holder.item_title.setText(rdata.get(position).getNombre());
-        holder.item_fecha.setText(rdata.get(position).getFechaHora());
+        //holder.item_fecha.setText(rdata.get(position).getFechaHora());
     }
 
     @Override
@@ -66,7 +66,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
         void bindData(final Reunion item){
             item_title.setText(item.getNombre());
             item_lugar.setText(item.getLugar());
-            item_fecha.setText(item.getFechaHora());
+            //item_fecha.setText(item.getFechaHora());
         }
 
     }

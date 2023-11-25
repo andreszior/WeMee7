@@ -21,6 +21,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name="com.example.weMee7.activities.MenuActivity"
+            android:exported="false"/>
+        <activity
+            android:name="com.example.weMee7.view.usuario.UsuarioActivity"
+            android:exported="false"/>
+
+
     </application>
 
 </manifest>
