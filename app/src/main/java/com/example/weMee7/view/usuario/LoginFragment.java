@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 import com.example.weMee7.comun.InputControl;
+import com.example.weMee7.view._SuperActivity;
 import com.example.weMee7.viewmodel.ValidarUsuario;
 import com.example.wemee7.R;
 
@@ -52,38 +53,63 @@ public class LoginFragment extends Fragment {
         return view;
     }
 
-
+    /**
+     * Registro de nuevo usuario con email y contraseña
+     */
     private void pulsarRegistrar() {
-        //Comprobar correo y contraseña no vacios
-        //Comprobar formato email
         String email = etEmail.getText().toString();
         String pass = etPass.getText().toString();
 
-        validador.registrarConEmail(email,pass);
+        if(checkCredenciales(email,pass))
+            validador.registrarConEmail(email,pass);
 
     }
 
+    /**
+     * Inicio de sesion con email y contraseña
+     * de usuario ya registrado
+     */
     private void pulsarAcceder() {
-        //Control de formato de email
         String email = etEmail.getText().toString();
+        String pass = etPass.getText().toString();
+
+        if(checkCredenciales(email,pass))
+            validador.validarConEmail(email,pass);
+    }
+
+    /**
+     * Comprueba que ambos campos esten completos
+     * y el formato del email
+     * @param email
+     * @param pass
+     * @return
+     */
+    private boolean checkCredenciales(String email, String pass){
+        //Control de formato de email
         if(!InputControl.emailOk(email)) {
-            ((UsuarioActivity) getActivity()).lanzarMensaje(R.string.msj_email_fail);
-            return;
+            ((_SuperActivity) getActivity()).lanzarMensaje(R.string.msj_email_fail);
+            return false;
         }
         //Control de campos vacios
-        String pass = etPass.getText().toString();
         if(!InputControl.todoCumplimentado(new String[]{email,pass})) {
-            ((UsuarioActivity) getActivity()).lanzarMensaje(R.string.msj_rellenar_campos);
-            return;
+            ((_SuperActivity) getActivity()).lanzarMensaje(R.string.msj_rellenar_campos);
+            return false;
         }
-
-        validador.validarConEmail(email,pass);
+        return true;
     }
 
+    /**
+     * Inicia el registro/inicio de sesion con google
+     */
     private void pulsarGoogle() {
         validador.validarConGoogle();
     }
 
+    /**
+     * Se invoca cuando se selecciona una cuenta de google;
+     * el evento lo recibe UsuarioActivity (onActivityResult)
+     * @param data
+     */
     void capturarToken(Intent data){
         validador.obtenerGoogleToken(data);
     }

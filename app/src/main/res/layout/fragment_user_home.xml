@@ -6,69 +6,57 @@
     tools:context="com.example.weMee7.view.usuario.UserHomeFragment">
 
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/contentLayout"
+    android:id="@+id/contentLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintStart_toStartOf="parent">
+    <TextView
+        android:id="@+id/tvIdUsuario"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-        <TextView
-            android:id="@+id/tvIdUsuario"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/common_google_signin_btn_text_dark_default"
-            android:text="Id"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintVertical_bias="0.3"/>
-
-        <TextView
-            android:id="@+id/tvNombreUsuario"
-            android:background="@color/common_google_signin_btn_text_dark_default"
-            android:text="nombre"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/tvIdUsuario"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <Button
-            android:id="@+id/btCerrarSesion"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/bt_cerrar_sesion"
-            app:layout_constraintTop_toBottomOf="@id/tvNombreUsuario"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-             />
-        <Button
-            android:id="@+id/btEliminarCuenta"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/bt_eliminar_cuenta"
-            app:layout_constraintTop_toBottomOf="@id/btCerrarSesion"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            />
-        <Button
-            android:id="@+id/btVincularTelefono"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/btEliminarCuenta"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <ProgressBar
-        android:id="@+id/pbUsuarioCargando"
-        style="?android:attr/progressBarStyle"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@color/common_google_signin_btn_text_dark_default"
+        android:text="Id"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintVertical_bias="0.3"/>
+
+    <TextView
+        android:id="@+id/tvNombreUsuario"
+        android:background="@color/common_google_signin_btn_text_dark_default"
+        android:text="nombre"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/tvIdUsuario"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/btCerrarSesion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/bt_cerrar_sesion"
+        app:layout_constraintTop_toBottomOf="@id/tvNombreUsuario"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+         />
+    <Button
+        android:id="@+id/btEliminarCuenta"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/bt_eliminar_cuenta"
+        app:layout_constraintTop_toBottomOf="@id/btCerrarSesion"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
+    <Button
+        android:id="@+id/btVincularTelefono"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/btEliminarCuenta"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

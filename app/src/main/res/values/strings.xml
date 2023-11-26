@@ -5,12 +5,19 @@
     <string name="default_web_client_id">340200584041-bsn5i3d80fe3sb04bo3s6c8hferi6j3o.apps.googleusercontent.com</string>
 
 <!--    Texto de mensajes Toast-->
+    <string name="msj_offline">No hay conexión a Internet</string>
     <string name="msj_vincular_tlf">Teléfono vinculado con éxito</string>
     <string name="msj_desvincular_tlf">Se ha desvinculado el teléfono</string>
+    <string name="msj_vincular_fail">No se ha podido vincular el teléfono</string>
+    <string name="msj_desvincular_fail">Error al desvincular el teléfono</string>
     <string name="msj_rellenar_campos">Rellene todos los campos</string>
     <string name="msj_email_fail">Formato de email incorrecto</string>
     <string name="msj_telefono_fail">Formato de teléfono incorrecto</string>
     <string name="msj_fUser_fail">No se ha podido recuperar el usuario</string>
+    <string name="msj_googleToken_fail">No se ha podido validar la cuenta seleccionada</string>
+    <string name="msj_googleSignIn_fail">No se ha podido iniciar sesión con Google</string>
+    <string name="msj_emailYaRegistrado">Este email ya está registrado</string>
+    <string name="msj_credenciales_fail">Credenciales incorrectas</string>
 
 
 

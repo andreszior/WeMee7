@@ -51,5 +51,6 @@ dependencies {
     implementation("androidx.cardview:cardview:1.0.0")
     implementation("com.google.android.gms:play-services-auth:20.7.0")
     implementation("androidx.security:security-crypto:1.1.0-alpha06")
+    implementation("androidx.browser:browser:1.3.0")
 
 }
