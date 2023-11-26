@@ -1,6 +1,5 @@
 package com.example.weMee7.model;
 
-import java.time.ZoneId;
 import com.example.weMee7.comun.TimeUtils;
 import com.example.weMee7.model.dao.InvitacionDAO;
 import com.example.weMee7.model.dao.ReunionDAO;
@@ -9,7 +8,6 @@ import com.example.weMee7.model.entities.Reunion;
 import com.example.weMee7.model.entities.Usuario;
 import com.example.weMee7.model.dao._SuperDAO.FirebaseCallback;
 
-import java.time.ZonedDateTime;
 import java.util.List;
 
 public class TESTpruebasDAO {

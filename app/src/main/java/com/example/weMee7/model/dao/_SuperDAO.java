@@ -10,8 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 import android.util.Log;
 
-import androidx.annotation.NonNull;
-
 /**
  * Superclase abstracta
  * con los métodos CRUD basicos
