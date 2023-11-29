@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:apptint="http://schemas.android.com/tools"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/elemet_menu"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    xmlns:apptint="http://schemas.android.com/tools"
-    android:id="@+id/elemet_menu"
     android:layout_margin="6dp"
-    card_view:cardBackgroundColor="@color/medium"
+    card_view:cardBackgroundColor="@color/light"
     card_view:cardCornerRadius="15dp"
     card_view:cardElevation="6dp"
     card_view:contentPadding="4dp">
@@ -14,8 +14,8 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:background="@color/medium">
+        android:background="@color/light"
+        android:padding="10dp">
 
         <ImageView
 
@@ -29,31 +29,31 @@
             android:layout_marginBottom="0dp"
             android:layout_toStartOf="@+id/item_lugar"
             card_view:srcCompat="@drawable/alarm_on_fill0_wght400_grad0_opsz24"
-            card_view:tint="@color/light" />
+            card_view:tint="@color/dark" />
 
         <ImageView
+            android:id="@+id/item_image"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:id="@+id/item_image"
             android:layout_alignParentStart="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp"
-            card_view:tint="@color/light"/>
+            card_view:tint="@color/dark" />
 
         <TextView
+            android:id="@+id/item_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Titulo"
-            android:textColor="@color/light"
-            android:id="@+id/item_title"
-            android:textStyle="bold"
-            android:layout_toEndOf="@+id/item_image"
-            android:layout_toRightOf="@+id/item_image"
             android:layout_alignParentTop="true"
-            android:textSize="22sp"
-            android:textAllCaps="true" />
+            android:layout_toEndOf="@+id/item_image"
+
+            android:layout_toRightOf="@+id/item_image"
+            android:text="Titulo"
+            android:textAllCaps="true"
+            android:textColor="@color/dark"
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/item_lugar"
@@ -66,9 +66,8 @@
 
 
             android:text="Lugar"
-            android:textColor="@color/light"
-            android:textSize="18sp"
-            android:textStyle="bold" />
+            android:textColor="@color/dark"
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/item_fecha"
@@ -81,9 +80,8 @@
             android:layout_toEndOf="@+id/item_image"
             android:layout_toRightOf="@+id/item_image"
             android:text="Fecha"
-            android:textColor="@color/light"
-            android:textSize="18sp"
-            android:textStyle="bold" />
+            android:textColor="@color/dark"
+            android:textSize="18sp" />
 
         <ImageView
 
@@ -97,8 +95,7 @@
             android:layout_marginBottom="0dp"
             android:layout_toStartOf="@+id/item_lugar"
             card_view:srcCompat="@drawable/location_on_fill0_wght400_grad0_opsz24"
-            card_view:tint="@color/light" />
-
+            card_view:tint="@color/dark" />
 
 
     </RelativeLayout>

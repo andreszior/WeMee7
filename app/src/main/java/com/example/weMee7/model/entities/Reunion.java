@@ -1,6 +1,8 @@
 package com.example.weMee7.model.entities;
 
 import com.google.firebase.Timestamp;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -8,7 +10,7 @@ import java.util.ArrayList;
  * con los documentos
  * de la colección reuniones de la BD.
  */
-public class Reunion extends _SuperEntity {
+public class Reunion extends _SuperEntity implements Serializable {
     private String idCreador; //Invariable
     private ArrayList<String> invitadosList;
     private String nombre;

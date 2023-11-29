@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.weMee7.model.entities.Reunion;
 import com.example.wemee7.R;
 
+import java.security.Timestamp;
 import java.util.List;
 
 import android.view.LayoutInflater;
@@ -21,11 +22,17 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
     private List<Reunion> rdata;
     private LayoutInflater mInflater;
     private Context context;
+    final ListAdapter.OnItemClickListener listener;
 
-    public ListAdapter(List<Reunion> itemlist, Context context){
+    public interface OnItemClickListener {
+        void onItemClick(Reunion item);
+    }
+
+    public ListAdapter(List<Reunion> itemlist, Context context, ListAdapter.OnItemClickListener listener){
     this.mInflater=LayoutInflater.from(context);
     this.context= context;
     this.rdata= itemlist;
+    this.listener = listener;
     }
 
 
@@ -39,10 +46,13 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull ListAdapter.ViewHolder holder, int position) {
         holder.item_image.setImageResource(R.drawable.groups_fill0_wght400_grad0_opsz24);
-        //holder.bindData(rdata.get(position));
+        holder.bindData(rdata.get(position));
         holder.item_lugar.setText(rdata.get(position).getLugar());
         holder.item_title.setText(rdata.get(position).getNombre());
-        //holder.item_fecha.setText(rdata.get(position).getFechaHora());
+
+        // Convertir Timestamp a String
+        String fechaHora = TimeUtils.timestampToFechaHora(rdata.get(position).getFechaHora(), true);
+        holder.item_fecha.setText(fechaHora);
     }
 
     @Override
@@ -66,8 +76,18 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
         void bindData(final Reunion item){
             item_title.setText(item.getNombre());
             item_lugar.setText(item.getLugar());
-            //item_fecha.setText(item.getFechaHora());
+
+            // Asegúrate de tener un objeto Timestamp válido para pasar al método.
+            String ts = TimeUtils.timestampToFechaHora(item.getFechaHora(), false);
+            item_fecha.setText(ts);
+            itemView.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v){
+                    listener.onItemClick(item);
+                }
+            });
         }
+
 
     }
 }

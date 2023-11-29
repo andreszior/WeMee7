@@ -10,8 +10,11 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.WeMee7"
+        android:theme="@style/Theme.NavigationDrawer"
         tools:targetApi="31">
+        <activity
+            android:name="com.example.weMee7.activities.ReunionDetalleActivity"
+            android:exported="false" />
         <activity
             android:name="com.example.weMee7.TestActivity"
             android:exported="true">
@@ -21,15 +24,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name="com.example.weMee7.activities.MenuActivity"
-            android:exported="false"/>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            android:exported="false" />
         <activity
             android:name="com.example.weMee7.view.usuario.UsuarioActivity"
-            android:exported="false"/>
-
-
+            android:exported="false" />
     </application>
 
 </manifest>
