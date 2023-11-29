@@ -1,7 +1,6 @@
 package com.example.weMee7.model.entities;
 
 import com.google.firebase.Timestamp;
-import com.example.weMee7.comun.interfaces.Estado;
 
 /**
  * Clase POJO que se relaciona

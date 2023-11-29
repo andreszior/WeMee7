@@ -5,28 +5,46 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.example.weMee7.view.usuario.AuthPhoneFragment">
 
-
-    <TextView
-        android:id="@+id/tvAuthPhoneTag"
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/glLoginLeft"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Introduce tu numero de telefono"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.3"
-        app:layout_constraintVertical_bias="0.3"/>
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.1" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/glLoginRight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.9" />
+
+    <EditText
+        android:id="@+id/etAuthPrefijo"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:text="@string/text_prefijo_sp"
+        android:inputType="phone"
+        android:maxLength="4"
+        app:layout_constraintBaseline_toBaselineOf="@id/etAuthTelefono"
+        app:layout_constraintStart_toStartOf="@id/glLoginLeft"
+        app:layout_constraintEnd_toStartOf="@id/etAuthTelefono"
+        />
 
     <EditText
         android:id="@+id/etAuthTelefono"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="30dp"
-        app:layout_constraintTop_toTopOf="@+id/tvAuthPhoneTag"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.3" />
+        android:maxLength="10"
+        android:inputType="number"
+        android:hint="@string/hint_telefono"
+        android:autofillHints="phone"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/etAuthPrefijo"
+        app:layout_constraintEnd_toEndOf="@id/glLoginRight"
+        app:layout_constraintHorizontal_bias="0.3"
+        app:layout_constraintVertical_bias="0.3" />
 
     <Button
         android:id="@+id/btAuthSolicitarCodigo"

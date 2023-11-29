@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
+import com.example.weMee7.view._SuperActivity;
 import com.example.weMee7.viewmodel.ValidarUsuario;
 import com.example.wemee7.R;
 
@@ -51,15 +52,22 @@ public class PhoneCodeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_phone_code, container, false);
+        ((_SuperActivity)getActivity()).ocultarCargando();
         etCodigo = view.findViewById(R.id.etPhoneCodigo);
         view.findViewById(R.id.btAuthEnviarCodigo).setOnClickListener(v -> pulsarVerificarCodigo());
 
         return view;
     }
 
+    /**
+     * Envio el codigo de verificacion
+     * para la validacion del numero de telefono en Firebase
+     */
     private void pulsarVerificarCodigo() {
         String codigo = etCodigo.getText().toString();
-        if(!codigo.isEmpty())
+        if(!codigo.isEmpty()){
             validador.validarCodigo(mVerificationId,codigo);
+        }
+
     }
 }

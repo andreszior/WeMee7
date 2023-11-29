@@ -31,6 +31,7 @@
         <activity
             android:name="com.example.weMee7.view.usuario.UsuarioActivity"
             android:exported="false" />
+
     </application>
 
 </manifest>

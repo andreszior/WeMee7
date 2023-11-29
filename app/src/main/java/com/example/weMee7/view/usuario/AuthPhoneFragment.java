@@ -7,9 +7,10 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 
+import com.example.weMee7.comun.InputControl;
+import com.example.weMee7.view._SuperActivity;
 import com.example.weMee7.viewmodel.ValidarUsuario;
 import com.example.wemee7.R;
 
@@ -20,6 +21,7 @@ import com.example.wemee7.R;
  */
 public class AuthPhoneFragment extends Fragment {
 
+    EditText etPrefijo;
     EditText etTelefono;
     ValidarUsuario validador;
 
@@ -38,16 +40,31 @@ public class AuthPhoneFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_auth_phone, container, false);
+        etPrefijo = view.findViewById(R.id.etAuthPrefijo);
+
+
         etTelefono = view.findViewById(R.id.etAuthTelefono);
+
+        //TODO listener en EditView para que siempre ponga "+" y un numero
         view.findViewById(R.id.btAuthSolicitarCodigo).setOnClickListener(v -> pulsarSolicitarCodigo());
 
         return view;
     }
 
-    public void pulsarSolicitarCodigo(){
-        String telefono = etTelefono.getText().toString();
-        if(!telefono.isEmpty())
-            validador.registrarConTelefono(telefono);
+    /**
+     * Lanza la funcion que valida el numero de telefono
+     * y envia el codigo de verificacion
+     */
+    public void pulsarSolicitarCodigo() {
+        String telefono = InputControl.phoneOk(
+                etPrefijo.getText().toString(),
+                etTelefono.getText().toString());
+
+        if (telefono != null)
+            validador.validarTelefono(telefono);
+        else
+            ((_SuperActivity)getActivity()).lanzarMensaje(
+                    R.string.msj_telefono_fail);
     }
 
 }

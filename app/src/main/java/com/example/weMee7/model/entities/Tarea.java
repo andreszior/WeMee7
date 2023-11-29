@@ -1,10 +1,6 @@
 package com.example.weMee7.model.entities;
 
-import com.example.weMee7.comun.TimeUtils;
-import com.example.weMee7.comun.interfaces.Estado;
 import com.google.firebase.Timestamp;
-
-import java.time.LocalDateTime;
 
 /**
  * Clase POJO que se relaciona

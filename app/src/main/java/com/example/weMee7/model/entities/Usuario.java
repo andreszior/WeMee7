@@ -54,16 +54,18 @@ public class Usuario extends _SuperEntity {
         return credenciales;
     }
 
-    //Si el metodo no esta registrado, devuelve null
+    //Si el metodo no esta registrado, devuelve false
     public boolean getSingleCredencial(SignInMethod method){
-        return credenciales.get(method.toString());
+        if(credenciales.get(method.toString()) != null)
+            return true;
+        return false;
     }
 
     public void setCredencial(SignInMethod method, boolean activa){
         if(activa)
             credenciales.put(method.toString(),true);
         else
-            credenciales.remove(method);
+            credenciales.remove(method.toString());
     }
 
     /**
