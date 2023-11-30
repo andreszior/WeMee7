@@ -52,6 +52,8 @@ public class MenuActivity extends AppCompatActivity implements NavigationView.On
             selectedFragment = new AddFragment();
         } else if (item.getItemId() == R.id.nav_About) {
             selectedFragment = new AboutFragment();
+        } else if (item.getItemId() == R.id.nav_perfil) {
+            selectedFragment = new PerfilFragment();
         } else if (item.getItemId() == R.id.nav_Logout) {
             Toast.makeText(this, "Logout!", Toast.LENGTH_SHORT).show();
         }

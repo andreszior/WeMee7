@@ -1,7 +1,6 @@
 package com.example.weMee7.activities;
 
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -18,12 +17,12 @@ import android.view.Window;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
-
+import androidx.fragment.app.Fragment;
 import com.example.weMee7.comun.ListAdapter;
 import com.example.weMee7.comun.TimeUtils;
 import com.example.weMee7.model.entities.Reunion;
 import com.example.wemee7.R;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -78,7 +77,7 @@ public class HomeFragment extends Fragment {
 
 
     public void verREunion(Reunion item){
-        Intent intent = new Intent(getActivity(), ReunionDetalleActivity.class);
+        Intent intent = new Intent(getActivity(), ReunionActivity.class);
         intent.putExtra("idCreador", item.getIdCreador());
         intent.putExtra("nombre", item.getNombre());
         intent.putExtra("descripcion", item.getDescripcion());
@@ -88,26 +87,30 @@ public class HomeFragment extends Fragment {
     }
 
     private void showBottomDialog() {
-
+        Fragment selectedFragment = null;
         final Dialog dialog = new Dialog(getContext());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.boton_add);
 
-        LinearLayout videoLayout = dialog.findViewById(R.id.layoutVideo);
-        LinearLayout shortsLayout = dialog.findViewById(R.id.layoutShorts);
+        LinearLayout AddLayout = dialog.findViewById(R.id.layoutAdd);
+        LinearLayout UnirseLayout = dialog.findViewById(R.id.layoutUnirse);
         ImageView cancelButton = dialog.findViewById(R.id.cancelButton);
 
-        videoLayout.setOnClickListener(new View.OnClickListener() {
+        AddLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Fragment selectedFragment = new AddFragment();
+                if (getActivity() != null) {
+                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
+                }
                 dialog.dismiss();
+
 
 
             }
         });
 
-        shortsLayout.setOnClickListener(new View.OnClickListener() {
+        UnirseLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 

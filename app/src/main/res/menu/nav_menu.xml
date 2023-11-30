@@ -12,9 +12,13 @@
             android:title="Home"/>
 
         <item
+            android:id="@+id/nav_perfil"
+            android:icon="@drawable/person_fill0_wght400_grad0_opsz24"
+            android:title="Perfil"/>
+        <item
             android:id="@+id/nav_Add"
             android:icon="@drawable/nav_add"
-            android:title="Nuevo Grupo"/>
+            android:title="Nuevo evento"/>
 
         <item
             android:id="@+id/nav_About"

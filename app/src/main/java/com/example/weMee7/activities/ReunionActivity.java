@@ -8,7 +8,7 @@ import android.widget.TextView;
 import com.example.weMee7.model.entities.Reunion;
 import com.example.wemee7.R;
 
-public class ReunionDetalleActivity extends AppCompatActivity {
+public class ReunionActivity extends AppCompatActivity {
 
     TextView detalles;
     @Override
