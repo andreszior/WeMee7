@@ -27,6 +27,7 @@ public class TestActivity extends _SuperActivity {
 
     }
 
+    //
     public void testAndres (View view){
         if(noHayConexion())
             return;

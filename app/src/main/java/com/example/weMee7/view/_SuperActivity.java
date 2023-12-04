@@ -31,6 +31,7 @@ import com.google.android.material.navigation.NavigationView;
  * metodos comunes a todas las Activities de la app.
  * Debe ser heredada por todas las Activities.
  */
+//
 public abstract class _SuperActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{
 
