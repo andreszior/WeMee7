@@ -8,6 +8,7 @@ import android.view.View;
 import androidx.annotation.NonNull;
 
 import com.example.weMee7.activities.MenuActivity;
+import com.example.weMee7.activities.ReunionActivity;
 import com.example.weMee7.view._SuperActivity;
 import com.example.weMee7.view.usuario.UsuarioActivity;
 import com.example.wemee7.R;
@@ -27,7 +28,11 @@ public class TestActivity extends _SuperActivity {
     }
 
     public void testAndres (View view){
+        if(noHayConexion())
+            return;
 
+        Intent intent = new Intent(this, ReunionActivity.class);
+        startActivity(intent);
 
     }
 

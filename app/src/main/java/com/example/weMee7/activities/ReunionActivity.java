@@ -6,9 +6,10 @@ import android.os.Bundle;
 import android.widget.TextView;
 
 import com.example.weMee7.model.entities.Reunion;
+import com.example.weMee7.view._SuperActivity;
 import com.example.wemee7.R;
 
-public class ReunionActivity extends AppCompatActivity {
+public class ReunionActivity extends _SuperActivity {
 
     TextView detalles;
     @Override
