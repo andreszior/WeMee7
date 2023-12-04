@@ -1,13 +1,174 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.weMee7.activities.PerfilFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.example.weMee7.view.usuario.PerfilFragment">
 
-    <!-- TODO: Update blank fragment layout -->
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/glPerfilCuenta"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintGuide_percent="0.15"
+        android:orientation="horizontal"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/glPerfilImagen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintGuide_percent="0.25"
+        android:orientation="horizontal"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/glPerfilBotones"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintGuide_percent="0.7"
+        android:orientation="horizontal"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/glPerfilLeft"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintGuide_percent="0.1"
+        android:orientation="vertical"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/glPerfilRight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintGuide_percent="0.9"
+        android:orientation="vertical"/>
+
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="perfil usuario" />
+        android:id="@+id/tvPerfilNombre"
+        android:text="@string/tag_nombre"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/etPerfilNombre"
+        app:layout_constraintStart_toStartOf="@id/glPerfilLeft"
+        app:layout_constraintEnd_toEndOf="@id/glPerfilRight"
+        />
+    <EditText
+        android:id="@+id/etPerfilNombre"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Nombre_prueba"
+        android:maxLength="20"
+        app:layout_constraintTop_toBottomOf="@id/tvPerfilNombre"
+        app:layout_constraintBottom_toTopOf="@id/glPerfilCuenta"
+        app:layout_constraintStart_toStartOf="@id/glPerfilLeft"
+        app:layout_constraintEnd_toStartOf="@id/btPerfilEditarNombre"
+        />
+    <ImageButton
+        android:id="@+id/btPerfilEditarNombre"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:src="@android:drawable/ic_menu_edit"
+        app:layout_constraintTop_toTopOf="@id/etPerfilNombre"
+        app:layout_constraintBottom_toBottomOf="@id/etPerfilNombre"
+        app:layout_constraintStart_toEndOf="@id/etPerfilNombre"
+        app:layout_constraintEnd_toStartOf="@id/glPerfilRight"
+        />
 
-</FrameLayout>
+    <TextView
+        android:id="@+id/tvPerfilCuenta"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:text="cuentadeprueba@gmail.com"
+        app:layout_constraintTop_toTopOf="@id/glPerfilCuenta"
+        app:layout_constraintBottom_toTopOf="@id/glPerfilImagen"
+        app:layout_constraintStart_toStartOf="@id/glPerfilLeft"
+        app:layout_constraintEnd_toEndOf="@id/glPerfilRight"/>
+
+    <ImageButton
+        android:id="@+id/btPerfilUpColor"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:src="@android:drawable/arrow_up_float"
+        app:layout_constraintTop_toTopOf="@id/glPerfilImagen"
+        app:layout_constraintStart_toStartOf="@id/glPerfilLeft"
+        app:layout_constraintEnd_toEndOf="@id/glPerfilRight"
+        app:layout_constraintBottom_toTopOf="@id/ivPerfilImagen"
+        />
+
+    <ImageView
+        android:id="@+id/ivPerfilImagen"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:src="@android:drawable/ic_menu_info_details"
+        android:background="@drawable/avatar_form"
+        app:layout_constraintTop_toBottomOf="@id/btPerfilUpColor"
+        app:layout_constraintBottom_toTopOf="@id/btPerfilDownColor"
+        app:layout_constraintStart_toEndOf="@id/btPerfilLeftImage"
+        app:layout_constraintEnd_toStartOf="@id/btPerfilRightImage"
+        />
+
+    <ImageButton
+        android:id="@+id/btPerfilDownColor"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:src="@android:drawable/arrow_down_float"
+        app:layout_constraintTop_toBottomOf="@id/ivPerfilImagen"
+        app:layout_constraintBottom_toTopOf="@id/glPerfilBotones"
+        app:layout_constraintStart_toStartOf="@id/glPerfilLeft"
+        app:layout_constraintEnd_toEndOf="@id/glPerfilRight"
+        />
+
+    <ImageButton
+        android:id="@+id/btPerfilLeftImage"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:src="@android:drawable/ic_media_previous"
+        app:layout_constraintTop_toBottomOf="@id/btPerfilUpColor"
+        app:layout_constraintBottom_toTopOf="@id/btPerfilDownColor"
+        app:layout_constraintStart_toStartOf="@id/glPerfilLeft"
+        app:layout_constraintEnd_toStartOf="@id/ivPerfilImagen"
+        />
+
+    <ImageButton
+        android:id="@+id/btPerfilRightImage"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:src="@android:drawable/ic_media_next"
+        app:layout_constraintTop_toBottomOf="@id/btPerfilUpColor"
+        app:layout_constraintBottom_toTopOf="@id/btPerfilDownColor"
+        app:layout_constraintStart_toEndOf="@id/ivPerfilImagen"
+        app:layout_constraintEnd_toStartOf="@id/glPerfilRight"
+        />
+
+
+    <Button
+        android:id="@+id/btCerrarSesion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/bt_cerrar_sesion"
+        app:layout_constraintTop_toBottomOf="@id/glPerfilBotones"
+        app:layout_constraintBottom_toTopOf="@id/btEliminarCuenta"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+         />
+    <Button
+        android:id="@+id/btEliminarCuenta"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/bt_eliminar_cuenta"
+        app:layout_constraintTop_toBottomOf="@id/btCerrarSesion"
+        app:layout_constraintBottom_toTopOf="@id/btVincularTelefono"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
+    <Button
+        android:id="@+id/btVincularTelefono"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/btEliminarCuenta"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

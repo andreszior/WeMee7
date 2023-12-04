@@ -9,26 +9,26 @@
         <item
             android:id="@+id/nav_Home"
             android:icon="@drawable/nav_home"
-            android:title="Home"/>
+            android:title="@string/drawer_home"/>
 
         <item
             android:id="@+id/nav_perfil"
             android:icon="@drawable/person_fill0_wght400_grad0_opsz24"
-            android:title="Perfil"/>
+            android:title="@string/drawer_perfil"/>
         <item
             android:id="@+id/nav_Add"
             android:icon="@drawable/nav_add"
-            android:title="Nuevo evento"/>
+            android:title="@string/drawer_add"/>
 
         <item
             android:id="@+id/nav_About"
             android:icon="@drawable/nav_about"
-            android:title="Acerca de la aplicación"/>
+            android:title="@string/drawer_about"/>
 
         <item
             android:id="@+id/nav_Logout"
             android:icon="@drawable/nav_logout"
-            android:title="Salir"/>
+            android:title="@string/drawer_logout"/>
 
 
     </group>

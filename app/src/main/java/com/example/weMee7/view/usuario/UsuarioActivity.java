@@ -23,30 +23,27 @@ public class UsuarioActivity extends _SuperActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_usuario);
 
-        Class primerFragment;
+        Fragment primerFragment;
         //Comprobar si hay sesion iniciada
         if(new SharedPref(this).get(LOGIN_KEY))
-            primerFragment = UserHomeFragment.class;
+            primerFragment = new HomeFragment();
         else
-            primerFragment = LoginFragment.class;
+            primerFragment = new LoginFragment();
 
-        //Llamar al primer fragment
-        getSupportFragmentManager()
-                .beginTransaction()
-                .add(R.id.fragmentContainer, primerFragment, null)
-                .commit();
+        if(savedInstanceState == null)
+            colocarFragment(primerFragment);
     }
 
     /**
-     * En el caso de que el fragment cargado sea el Login o el Home de usuario,
+     * En el caso de que el fragment cargado sea
+     * el Login o el Home de usuario,
      * cierra la aplicacion
      */
     @Override
     public void onBackPressed() {
-        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fragmentContainer);
-        if(fragment instanceof LoginFragment || fragment instanceof UserHomeFragment)
+        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+        if(fragment instanceof LoginFragment || fragment instanceof HomeFragment)
             this.finishAffinity();
         else
             super.onBackPressed();
@@ -68,7 +65,7 @@ public class UsuarioActivity extends _SuperActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fragmentContainer);
+        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
 
         //Si el fragment activo es de Login y el intent que devuelve el resultado es de Google
         if (requestCode == GOOGLE_SIGN_IN && fragment != null && fragment instanceof LoginFragment)

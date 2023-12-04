@@ -9,13 +9,14 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
 
-import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.Window;
 import android.widget.Toast;
 
+import com.example.weMee7.view.usuario.HomeFragment;
+import com.example.weMee7.view.usuario.PerfilFragment;
 import com.example.wemee7.R;
 import com.google.android.material.navigation.NavigationView;
 public class MenuActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {

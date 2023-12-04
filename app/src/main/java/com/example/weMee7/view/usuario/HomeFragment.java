@@ -1,4 +1,4 @@
-package com.example.weMee7.activities;
+package com.example.weMee7.view.usuario;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -17,10 +17,13 @@ import android.view.Window;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import androidx.fragment.app.Fragment;
+
+import com.example.weMee7.activities.AddFragment;
+import com.example.weMee7.activities.ReunionActivity;
 import com.example.weMee7.comun.ListAdapter;
 import com.example.weMee7.comun.TimeUtils;
 import com.example.weMee7.model.entities.Reunion;
+import com.example.weMee7.view._SuperActivity;
 import com.example.wemee7.R;
 
 
@@ -38,6 +41,9 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
+
+        //Habilitar menu hamburguesa
+        ((_SuperActivity)getActivity()).setDrawerMenu(true);
 
         init(view);
         final Dialog dialog = new Dialog(getContext());
@@ -66,7 +72,7 @@ public class HomeFragment extends Fragment {
         ListAdapter listAdapter = new ListAdapter(reuniones, getActivity(), new ListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(Reunion item) {
-                verREunion(item);
+                verReunion(item);
             }
         });
         RecyclerView recyclerView = view.findViewById(R.id.listRecyclerView);
@@ -76,7 +82,7 @@ public class HomeFragment extends Fragment {
     }
 
 
-    public void verREunion(Reunion item){
+    public void verReunion(Reunion item){
         Intent intent = new Intent(getActivity(), ReunionActivity.class);
         intent.putExtra("idCreador", item.getIdCreador());
         intent.putExtra("nombre", item.getNombre());

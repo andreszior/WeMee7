@@ -6,4 +6,15 @@
     <color name="dark">#807A7A</color>
     <color name="light">#E2E1E6</color>
     <color name="medium">#2286A9</color>
+
+<!--    fondo avatares-->
+    <color name="avatar_rojo">#FFFF5400</color>
+    <color name="avatar_azul">#FF0094FF</color>
+    <color name="avatar_verde">#FF00FF92</color>
+    <color name="avatar_naranja">#FFED7500</color>
+    <color name="avatar_morado">#FFA223FF</color>
+    <color name="avatar_rosa">#FFFF45DC</color>
+    <color name="avatar_amarillo">#FFFFD272</color>
+    <color name="avatar_gris">#FFABABAB</color>
+
 </resources>

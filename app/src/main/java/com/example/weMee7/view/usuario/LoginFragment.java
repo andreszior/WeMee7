@@ -41,6 +41,9 @@ public class LoginFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_login, container, false);
 
+        //Deshabilitar menu hamburguesa
+        ((_SuperActivity)getActivity()).setDrawerMenu(false);
+
         //Vincular componentes
         etEmail = view.findViewById(R.id.etLoginEmail);
         etPass = view.findViewById(R.id.etLoginPass);

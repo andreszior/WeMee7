@@ -11,13 +11,15 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import com.example.weMee7.comun.Avatar;
 import com.example.weMee7.comun.seguridad.SharedPref;
 import com.example.weMee7.model.dao.UsuarioDAO;
 import com.example.weMee7.model.entities.Usuario;
 import com.example.weMee7.view._SuperActivity;
+import com.example.weMee7.view.usuario.HomeFragment;
 import com.example.weMee7.view.usuario.LoginFragment;
 import com.example.weMee7.view.usuario.PhoneCodeFragment;
-import com.example.weMee7.view.usuario.UserHomeFragment;
+import com.example.weMee7.view.usuario.PerfilFragment;
 import com.example.wemee7.R;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -419,12 +421,10 @@ public class ValidarUsuario {
      */
     private void registrarUsuarioBD(String userId, String userNombre, Usuario.SignInMethod method){
 
-        // !!! TODO - IMPLEMENTAR FUNCION PARA GENERAR IMAGEN DE PERFIL
-
         new UsuarioDAO().insertarRegistro(new Usuario(
                 userId,
                 userNombre,
-                null,
+                new Avatar().toString(),
                 method));
         Log.d("validar","Usuario creado");
     }
@@ -441,23 +441,10 @@ public class ValidarUsuario {
             sharedPref.put(LOGIN_KEY,true);
 
         //Lanzar fragment de home de usuario
-        reemplazarFragmentUsuario(new UserHomeFragment());
+        reemplazarFragmentUsuario(new HomeFragment());
 
         //Ocultar capa cargando
         ocultarCargando();
-    }
-
-    /**
-     * Reemplaza el fragment cargado en UsuarioActivity
-     * por el fragment pasado por parametro
-     * @param fragment
-     */
-    private void reemplazarFragmentUsuario(Fragment fragment){
-        ((AppCompatActivity)context).getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fragmentContainer, fragment)
-                .addToBackStack(null)
-                .commit();
     }
 
     /**
@@ -473,6 +460,14 @@ public class ValidarUsuario {
     }
 
     //REDIRECCION A FUNCIONES DE LA ACTIVITY
+    /**
+     * Reemplaza el fragment cargado en UsuarioActivity
+     * por el fragment pasado por parametro
+     * @param fragment
+     */
+    private void reemplazarFragmentUsuario(Fragment fragment){
+        ((_SuperActivity)context).colocarFragment(fragment);
+    }
 
     /**
      * Reenvia el mensaje a la activity
@@ -488,7 +483,7 @@ public class ValidarUsuario {
      * y oscurece el fondo
      */
     private void mostrarCargando(){
-        ((_SuperActivity)context).mostrarCargando(false);
+        ((_SuperActivity)context).setCargando(false);
     }
 
     /**
