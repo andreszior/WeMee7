@@ -1,14 +1,130 @@
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.example.weMee7.activities.AboutFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Fragmen about" />
+        android:id="@+id/about_equipo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="50dp"
+        android:text="@string/about_equipo"
+        android:textSize="27sp" />
+
+    <TextView
+        android:id="@+id/about_creador1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="110dp"
+        android:text="@string/about_creador1"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/about_creador2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="165dp"
+        android:text="@string/about_creador2"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/about_creador3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="220dp"
+        android:text="@string/about_creador3"
+        android:textSize="20sp" />
+
+    <ImageButton
+        android:id="@+id/btCreador1"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="310dp"
+        android:layout_marginTop="105dp"
+        android:onClick="btcreditos1"
+        android:scaleType="centerInside"
+        app:srcCompat="@drawable/linkedin"
+        android:background="@color/white"/>
+
+    <ImageButton
+        android:id="@+id/btCreador2"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="310dp"
+        android:layout_marginTop="162dp"
+        android:onClick="btcreditos2"
+        android:scaleType="centerInside"
+        app:srcCompat="@drawable/linkedin"
+        android:background="@color/white"/>
+
+    <ImageButton
+        android:id="@+id/btCreador3"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="310dp"
+        android:layout_marginTop="219dp"
+        android:onClick="btcreditos3"
+        android:scaleType="centerInside"
+        app:srcCompat="@drawable/linkedin"
+        android:background="@color/white"/>
+
+    <TextView
+        android:id="@+id/about_tecnologias"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="300dp"
+        android:text="@string/about_tecnologias"
+        android:textSize="27sp" />
+
+    <ImageView
+        android:id="@+id/imagejava"
+        android:layout_width="120dp"
+        android:layout_height="70dp"
+        android:src="@drawable/java"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="350dp"/>
+
+    <ImageView
+        android:id="@+id/imagefirebase"
+        android:layout_width="120dp"
+        android:layout_height="70dp"
+        android:src="@drawable/firebase"
+        android:layout_marginStart="150dp"
+        android:layout_marginTop="350dp"/>
+
+    <ImageView
+        android:id="@+id/imageandroid"
+        android:layout_width="120dp"
+        android:layout_height="70dp"
+        android:src="@drawable/android"
+        android:layout_marginStart="280dp"
+        android:layout_marginTop="350dp"/>
+
+    <TextView
+        android:id="@+id/about_codigo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="450dp"
+        android:text="@string/about_codigo"
+        android:textSize="27sp" />
+
+    <ImageButton
+        android:id="@+id/btgithub"
+        android:layout_width="200dp"
+        android:layout_height="120dp"
+        android:src="@drawable/githublogo"
+        android:layout_marginStart="110dp"
+        android:layout_marginTop="520dp"
+        android:scaleType="centerInside"
+        android:background="@color/white"/>
+
 
 </FrameLayout>

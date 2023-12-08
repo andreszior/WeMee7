@@ -8,12 +8,13 @@
     android:padding="16dp"
     android:background="@color/medium"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
+
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/person_fill0_wght400_grad0_opsz24"
-        app:tint="@color/white"
-        />
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/logo_transparent_1" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

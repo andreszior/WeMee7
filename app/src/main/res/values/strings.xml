@@ -54,5 +54,12 @@
     <string name="hint_telefono">Telefono</string>
     <string name="hint_codigo_verificacion">Código de verificación</string>
 
+    <!--    About-->
+    <string name="about_equipo">Equipo de desarrollo</string>
+    <string name="about_creador1">Andrés Montaño Villafañe</string>
+    <string name="about_creador2">Carlos Blanco Fermin</string>
+    <string name="about_creador3">Daniel Liñeira Santos</string>
+    <string name="about_tecnologias">Tecnologias empleadas</string>
+    <string name="about_codigo">Codigo del proyecto</string>
 
 </resources>
