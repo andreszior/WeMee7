@@ -35,19 +35,6 @@ public class UsuarioActivity extends _SuperActivity {
             colocarFragment(primerFragment);
     }
 
-    /**
-     * En el caso de que el fragment cargado sea
-     * el Login o el Home de usuario,
-     * cierra la aplicacion
-     */
-    @Override
-    public void onBackPressed() {
-        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
-        if(fragment instanceof LoginFragment || fragment instanceof HomeFragment)
-            this.finishAffinity();
-        else
-            super.onBackPressed();
-    }
 
     /**
      * Caso previsto 1: Resultado devuelto por el Intent de Google para seleccionar cuenta.

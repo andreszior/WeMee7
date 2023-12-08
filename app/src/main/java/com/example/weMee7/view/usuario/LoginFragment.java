@@ -88,14 +88,14 @@ public class LoginFragment extends Fragment {
      * @return
      */
     private boolean checkCredenciales(String email, String pass){
-        //Control de formato de email
-        if(!InputControl.emailOk(email)) {
-            ((_SuperActivity) getActivity()).lanzarMensaje(R.string.msj_email_fail);
-            return false;
-        }
         //Control de campos vacios
         if(!InputControl.todoCumplimentado(new String[]{email,pass})) {
             ((_SuperActivity) getActivity()).lanzarMensaje(R.string.msj_rellenar_campos);
+            return false;
+        }
+        //Control de formato de email
+        if(!InputControl.emailOk(email)) {
+            ((_SuperActivity) getActivity()).lanzarMensaje(R.string.msj_email_fail);
             return false;
         }
         return true;

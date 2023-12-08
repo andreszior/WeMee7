@@ -95,6 +95,10 @@ public class Avatar {
         return coloresList[color];
     }
 
+    public int getNextColor(boolean next){
+        return coloresList[modificarValor(color,coloresList.length,next)];
+    }
+
     /**
      * Cambia la imagen a la anterior o siguiente
      * segun el parametro pasado

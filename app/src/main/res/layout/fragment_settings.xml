@@ -1,0 +1,63 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_margin="20dp"
+    tools:context="com.example.weMee7.view.usuario.SettingsFragment">
+
+    <TextView
+        android:text="@string/tag_cuenta"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:background="@color/light" />
+    <TextView
+        android:id="@+id/tvSettingsCuenta"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center" />
+
+    <include layout="@layout/separador" />
+
+    <LinearLayout
+        android:id="@+id/btCerrarSesion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        style="@style/bordered_layout">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tag_cerrar_sesion"
+            style="@style/titulo_boton"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tag_subtitulo_cerrar"
+            style="@style/subtitulo_boton"/>
+        <include layout="@layout/separador" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/btEliminarCuenta"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        style="@style/bordered_layout">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tag_eliminar_cuenta"
+            style="@style/titulo_boton"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tag_subtitulo_eliminar"
+            style="@style/subtitulo_boton"/>
+        <include layout="@layout/separador" />
+    </LinearLayout>
+
+
+
+</LinearLayout>

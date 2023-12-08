@@ -9,7 +9,7 @@
     <string name="drawer_perfil">Perfil</string>
     <string name="drawer_add">Nueva reunión</string>
     <string name="drawer_about">Acerca de la aplicación</string>
-    <string name="drawer_logout">Cerrar sesión</string>
+    <string name="drawer_settings">Ajustes de la cuenta</string>
     <string name="open_nav">Open Navigation Drawer</string>
     <string name="close_nav">Close Navigation Drawer</string>
 
@@ -34,16 +34,25 @@
     <string name="bt_acceder">ACCEDER</string>
     <string name="bt_google">INICIAR SESIÓN CON GOOGLE</string>
     <string name="bt_solicitar_codigo">SOLICITAR CODIGO</string>
+    <string name="bt_guardar">GUARDAR</string>
     <string name="bt_verificar">VERIFICAR</string>
-    <string name="bt_cerrar_sesion">CERRAR SESION</string>
-    <string name="bt_eliminar_cuenta">ELIMINAR CUENTA</string>
-    <string name="bt_vincular_tlf">VINCULAR TELEFONO</string>
-    <string name="bt_desvincular_tlf">DESVINCULAR TELEFONO</string>
 
 
     <!--    Etiquetas de texto-->
     <string name="tag_nombre">Nombre de usuario </string>
     <string name="tag_imagen">Imagen de perfil </string>
+    <string name="tag_cuenta">Cuenta de usuario </string>
+    <string name="tag_vincular_tlf">Vincular teléfono</string>
+    <string name="tag_desvincular_tlf">Desvincular teléfono</string>
+    <string name="tag_subtitulo_vincular">Vincular el teléfono permite enviar
+        y recibir invitaciones más fácilmente entre contactos </string>
+    <string name="tag_cerrar_sesion">Cerrar sesión</string>
+    <string name="tag_subtitulo_cerrar">Si cierras sesión, tendrás que
+        validar tus credenciales al volver a iniciar la app.</string>
+    <string name="tag_eliminar_cuenta">Eliminar cuenta</string>
+    <string name="tag_subtitulo_eliminar">Borrarás tu usuario y todas tus reuniones.
+        ¡Esta operación es irreversible!</string>
+
 
     <!--    Varios-->
     <string name="text_prefijo_sp">+34</string>

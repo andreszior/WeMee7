@@ -139,7 +139,7 @@ public class ValidarUsuario {
                         } else //Si ya existe, no hace nada
                             Log.d("validar", "Existing User");
 
-                        mostrarHome();//Se muestra home de usuario
+                        mostrarHome(isNewUser);//Se muestra home de usuario
 
                     } else // Inicio de sesion fail
                         lanzarMensaje(R.string.msj_googleSignIn_fail);
@@ -167,7 +167,7 @@ public class ValidarUsuario {
                         registrarUsuarioBD(userId,userNombre, Usuario.SignInMethod.EMAIL);
 
                         //Mostrar home usuario
-                        mostrarHome();
+                        mostrarHome(true);
 
                     } else {//Validacion FAIL
                         int mensajeError = 0;
@@ -199,7 +199,7 @@ public class ValidarUsuario {
                         Log.d("validar","Usuario validado");
 
                         //Mostrar home usuario
-                        mostrarHome();
+                        mostrarHome(false);
                     } else //Validacion FAIL
                         lanzarMensaje(R.string.msj_credenciales_fail);
                     /* Este mensaje tambien se lanzara
@@ -251,7 +251,7 @@ public class ValidarUsuario {
                             // reCAPTCHA verification attempted with null Activity
                         }
                         lanzarMensaje(R.string.msj_vincular_fail);
-                        mostrarHome();
+                        mostrarHome(false);
                     }
                     @Override
                     public void onCodeSent(@NonNull String verificationId,
@@ -314,7 +314,7 @@ public class ValidarUsuario {
                         //Si el codigo no es correcto
                         if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
                             lanzarMensaje(R.string.msj_vincular_fail);
-                            mostrarHome();
+                            mostrarHome(false);
                         }
                     }
                 });
@@ -357,7 +357,7 @@ public class ValidarUsuario {
             int mensaje = vincular ? R.string.msj_vincular_tlf :
                     R.string.msj_desvincular_tlf;
             lanzarMensaje(mensaje);
-            mostrarHome();
+            mostrarHome(false);
         });
     }
 
@@ -432,16 +432,23 @@ public class ValidarUsuario {
     /**
      * Actualiza las preferencias compartidas
      * para persistir el inicio de sesion,
-     * y lanza el Fragment de inicio de Usuario.
+     * y lanza el Fragment de inicio de Usuario;
+     * si se acaba de registrar,
+     * lanza el Fragment de perfil.
      */
-    private void mostrarHome() {
+    private void mostrarHome(boolean primeraVez) {
         //Actualizar las preferencias compartidas
         SharedPref sharedPref = new SharedPref(context);
         if(!sharedPref.get(LOGIN_KEY))
             sharedPref.put(LOGIN_KEY,true);
 
-        //Lanzar fragment de home de usuario
-        reemplazarFragmentUsuario(new HomeFragment());
+        //Segun sea primer registro o acceso
+        Fragment fragment = primeraVez ?
+                PerfilFragment.newInstance(primeraVez)
+                : new HomeFragment();
+
+        //Lanzar fragment
+        reemplazarFragmentUsuario(fragment);
 
         //Ocultar capa cargando
         ocultarCargando();

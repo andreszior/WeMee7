@@ -6,4 +6,16 @@
         <item name="android:textAlignment">textStart</item>
         <item name="android:paddingLeft">10dp</item>
     </style>
+    <style name="bordered_layout">
+        <item name="android:padding">3dp</item>
+    </style>
+    <style name="titulo_boton">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+    <style name="subtitulo_boton">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/avatar_gris</item>
+        <item name="android:textAlignment">gravity</item>
+    </style>
 </resources>

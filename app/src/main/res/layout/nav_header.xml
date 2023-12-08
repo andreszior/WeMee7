@@ -9,19 +9,22 @@
     android:background="@color/medium"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/ivHeaderFoto"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@drawable/avatar_form"
         android:src="@drawable/person_fill0_wght400_grad0_opsz24"
-        app:tint="@color/white"
         />
     <TextView
+        android:id="@+id/tvHeaderNombre"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="CarlosBlanco"
+        android:text="Carlos Blanco"
         android:textColor="@color/white"
         android:textStyle="bold"
         />
     <TextView
+        android:id="@+id/tvHeaderCuenta"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Carlostrubia@gmail.com"
