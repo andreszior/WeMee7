@@ -10,12 +10,15 @@
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
     <ImageView
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:scaleType="fitXY"
-        android:src="@drawable/logo_transparent_1" />
+        android:id="@+id/ivHeaderFoto"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@drawable/avatar_form"
+        android:src="@drawable/person_fill0_wght400_grad0_opsz24"
+        />
 
     <TextView
+        android:id="@+id/tvHeaderNombre"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="CarlosBlanco"
@@ -23,6 +26,7 @@
         android:textStyle="bold"
         />
     <TextView
+        android:id="@+id/tvHeaderCuenta"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Carlostrubia@gmail.com"

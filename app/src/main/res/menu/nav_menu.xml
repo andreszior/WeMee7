@@ -21,16 +21,14 @@
             android:title="@string/drawer_add"/>
 
         <item
+            android:id="@+id/nav_Settings"
+            android:icon="@drawable/nav_settings"
+            android:title="@string/drawer_settings"/>
+
+        <item
             android:id="@+id/nav_About"
             android:icon="@drawable/nav_about"
             android:title="@string/drawer_about"/>
-
-        <item
-            android:id="@+id/nav_Logout"
-            android:icon="@drawable/nav_logout"
-            android:title="@string/drawer_logout"/>
-
-
     </group>
 
 

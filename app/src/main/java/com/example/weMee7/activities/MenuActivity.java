@@ -2,7 +2,6 @@ package com.example.weMee7.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -57,7 +56,7 @@ public class MenuActivity extends _SuperActivity implements NavigationView.OnNav
             selectedFragment = new AboutFragment();
         } else if (item.getItemId() == R.id.nav_perfil) {
             selectedFragment = new PerfilFragment();
-        } else if (item.getItemId() == R.id.nav_Logout) {
+        } else if (item.getItemId() == R.id.nav_Settings) {
             Toast.makeText(this, "Logout!", Toast.LENGTH_SHORT).show();
         }
 

@@ -8,23 +8,34 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.weMee7.activities.AboutFragment;
 import com.example.weMee7.activities.AddFragment;
+import com.example.weMee7.comun.Avatar;
+import com.example.weMee7.model.dao.UsuarioDAO;
+import com.example.weMee7.model.dao._SuperDAO;
+import com.example.weMee7.model.entities.Usuario;
+import com.example.weMee7.view.usuario.LoginFragment;
+import com.example.weMee7.view.usuario.SettingsFragment;
 import com.example.weMee7.view.usuario.HomeFragment;
 import com.example.weMee7.view.usuario.PerfilFragment;
-import com.example.weMee7.viewmodel.ValidarUsuario;
 import com.example.wemee7.R;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 /**
  * Clase abstracta que implementa
@@ -58,6 +69,15 @@ public abstract class _SuperActivity extends AppCompatActivity
                 R.string.close_nav);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
+
+        //Listener de navegacion hacia atras
+        getSupportFragmentManager().addOnBackStackChangedListener(
+                () -> {
+                    Fragment fragmentActual = getSupportFragmentManager()
+                            .findFragmentById(R.id.fragment_container);
+                    if(fragmentActual != null)
+                        seleccionarNavItem(fragmentActual.getClass().getSimpleName());
+                });
     }
 
     /**
@@ -70,21 +90,67 @@ public abstract class _SuperActivity extends AppCompatActivity
         drawerLayout.setDrawerLockMode(activar ?
                 DrawerLayout.LOCK_MODE_UNLOCKED :
                 DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        FirebaseUser fUser = FirebaseAuth.getInstance().getCurrentUser();
+        if(activar && fUser != null)
+            setDrawerData(fUser);
     }
 
+    /**
+     * Carga datos del usuario
+     * en el encabezado del menu hamburguesa
+     * @param fUser
+     */
+    private void setDrawerData(FirebaseUser fUser){
+        View header = ((NavigationView)findViewById(R.id.nav_view)).getHeaderView(0);
+        ImageView foto = header.findViewById(R.id.ivHeaderFoto);
+        TextView nombre = header.findViewById(R.id.tvHeaderNombre);
+        TextView cuenta = header.findViewById(R.id.tvHeaderCuenta);
+        new UsuarioDAO().obtenerRegistroPorId(fUser.getUid(), resultado -> {
+            Usuario usuario = (Usuario)resultado;
+            Avatar avatar = new Avatar(this,usuario.getFoto());
+            foto.setImageBitmap(avatar.toBitmap());
+            foto.setBackgroundTintList(ColorStateList.valueOf(
+                    getResources().getColor(avatar.getColor())));
+            nombre.setText(usuario.getNombre());
+            cuenta.setText(fUser.getEmail());
+        });
+
+    }
+
+    /**
+     * Coloca un nuevo Fragment en el container del layout;
+     * si es el HomeFragment, se vacía la pila (no se puede volver atrás) ???
+     * @param fragment
+     */
     public void colocarFragment(Fragment fragment){
+        FragmentManager fragmentManager = getSupportFragmentManager();
+
+        //Si se llama al fragment Home, se vacia la pila
+        if(fragmentManager.getBackStackEntryCount() > 0 && fragment instanceof HomeFragment)
+            fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+
+        //Reemplazar fragment
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fragment_container, fragment)
+                .addToBackStack(null)
                 .commit();
-
         drawerLayout.closeDrawer(GravityCompat.START);
+        seleccionarNavItem(fragment.getClass().getSimpleName());
+    }
 
+    /**
+     * Si el fragment pasado por parametro
+     * es una de las opciones del menu hamburguesa,
+     * esta aparece seleccionada
+     * @param nombreFragment
+     */
+    public void seleccionarNavItem(String nombreFragment){
         int op;
-        switch(fragment.getClass().getSimpleName()){
+        switch(nombreFragment){
             case "HomeFragment":
-               op = R.id.nav_Home;
-               break;
+                op = R.id.nav_Home;
+                break;
             case "PerfilFragment":
                 op = R.id.nav_perfil;
                 break;
@@ -94,6 +160,9 @@ public abstract class _SuperActivity extends AppCompatActivity
             case "AboutFragment":
                 op = R.id.nav_About;
                 break;
+            case "SettingsFragment":
+                op = R.id.nav_Settings;
+                break;
             default:
                 op = -1;
         }
@@ -101,6 +170,11 @@ public abstract class _SuperActivity extends AppCompatActivity
             navigationView.setCheckedItem(op);
     }
 
+    /**
+     * Selector de opciones del menu hamburguesa
+     * @param item The selected item
+     * @return
+     */
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         Fragment selectedFragment = null;
@@ -111,10 +185,11 @@ public abstract class _SuperActivity extends AppCompatActivity
             selectedFragment = new AddFragment();
         else if (item.getItemId() == R.id.nav_About)
             selectedFragment = new AboutFragment();
+        else if (item.getItemId() == R.id.nav_Settings)
+            selectedFragment = new SettingsFragment();
         else if (item.getItemId() == R.id.nav_perfil)
             selectedFragment = new PerfilFragment();
-        else if (item.getItemId() == R.id.nav_Logout)
-            new ValidarUsuario(this).cerrarSesion();
+
 
         if(selectedFragment != null)
             colocarFragment(selectedFragment);
@@ -122,16 +197,27 @@ public abstract class _SuperActivity extends AppCompatActivity
         return true;
     }
 
+    /**
+     * Navegacion mediante el boton atras:
+     * 1. Si el menu hamburguesa esta abierto, lo cierra.
+     * 2. Si esta el fragment Login o Home, se cierra la aplicacion.
+     * 3. Si esta otro fragment, vuelve al fragment anterior.
+     */
     @Override
     public void onBackPressed() {
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+            if(fragment instanceof LoginFragment || fragment instanceof HomeFragment)
+                this.finishAffinity();
+            else
+                if(getSupportFragmentManager().getBackStackEntryCount() == 0)
+                    super.onBackPressed();
+                else
+                    getSupportFragmentManager().popBackStack();
         }
     }
-
-
 
     /**
      * Función para mandar mensajes Toast
@@ -171,7 +257,7 @@ public abstract class _SuperActivity extends AppCompatActivity
     CON @ID capaCargando; Y UN FRAGMENT CONTAINER VIEW
     LLAMADO fragmentContainer.
 
-    *** VER activity_usuario.xml y usages de estas funciones */
+    *** VER activity_base.xml y usages de estas funciones */
 
     /**
      * Muestra la animación de carga

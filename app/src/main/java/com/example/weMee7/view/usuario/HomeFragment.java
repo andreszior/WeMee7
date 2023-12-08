@@ -75,7 +75,7 @@ public class HomeFragment extends Fragment {
                 verReunion(item);
             }
         });
-        RecyclerView recyclerView = view.findViewById(R.id.listRecyclerView);
+        RecyclerView recyclerView = view.findViewById(R.id.rvHomeLista);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(listAdapter);
