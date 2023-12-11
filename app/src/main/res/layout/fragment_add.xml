@@ -1,13 +1,108 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.weMee7.activities.AddFragment">
 
     <!-- TODO: Update blank fragment layout -->
+
+    <EditText
+        android:id="@+id/Nombre"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="55dp"
+        android:layout_marginTop="50dp"
+        android:ems="15"
+        android:hint="@string/add_hint_nombre"
+        android:inputType="text" />
+
+    <ImageView
+        android:id="@+id/imagenombre"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="55dp"
+        android:src="@drawable/groups_fill0_wght400_grad0_opsz24"
+        app:tint="@color/medium"/>
+
+    <EditText
+        android:id="@+id/Lugar"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="55dp"
+        android:layout_marginTop="140dp"
+        android:ems="15"
+        android:hint="@string/add_hint_lugar"
+        android:inputType="text" />
+
+    <ImageView
+        android:id="@+id/imagedonde"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="145dp"
+        android:src="@drawable/location_on_fill0_wght400_grad0_opsz24"
+        app:tint="@color/medium"/>
+
+    <EditText
+        android:id="@+id/fecha"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="55dp"
+        android:layout_marginTop="230dp"
+        android:ems="15"
+        android:hint="@string/add_hint_fecha"
+        android:inputType="text" />
+
+    <ImageView
+        android:id="@+id/imagefecha"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="235dp"
+        android:src="@drawable/baseline_calendar_month_24"
+        app:tint="@color/medium"/>
+
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Fragment Add" />
+        android:id="@+id/descripcionTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="145dp"
+        android:layout_marginTop="340dp"
+        android:textSize="20dp"
+        android:text="@string/add_descripciontitle" />
+
+    <EditText
+        android:id="@+id/descripcion"
+        android:layout_width="300dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="55dp"
+        android:layout_marginTop="380dp"
+        android:ems="15"
+        android:hint="@string/add_descripcion"
+        android:inputType="text" />
+
+    <Button
+        android:id="@+id/buttoninvi"
+
+        android:layout_width="160dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="630dp"
+        android:text="@string/add_invitaciones"
+        android:background="@color/medium"
+        android:textColor="@color/white"/>
+
+    <Button
+        android:id="@+id/buttoncrear"
+
+        android:layout_width="160dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="230dp"
+        android:layout_marginTop="630dp"
+        android:text="@string/add_crear"
+        android:background="@color/medium"
+        android:textColor="@color/white"/>
 
 </FrameLayout>

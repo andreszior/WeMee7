@@ -71,4 +71,12 @@
     <string name="about_tecnologias">Tecnologias empleadas</string>
     <string name="about_codigo">Codigo del proyecto</string>
 
+    <!--    Add-->
+    <string name="add_hint_nombre">Nombre del evento</string>
+    <string name="add_hint_lugar">Donde se hace</string>
+    <string name="add_hint_fecha">Seleccione fecha y hora</string>
+    <string name="add_descripciontitle">DESCRIPCIÓN</string>
+    <string name="add_descripcion">Resumen del evento:</string>
+    <string name="add_invitaciones">Generar invitacion</string>
+    <string name="add_crear">Crear evento</string>
 </resources>
