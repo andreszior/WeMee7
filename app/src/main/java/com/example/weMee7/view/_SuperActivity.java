@@ -26,7 +26,6 @@ import com.example.weMee7.activities.AboutFragment;
 import com.example.weMee7.activities.AddFragment;
 import com.example.weMee7.comun.Avatar;
 import com.example.weMee7.model.dao.UsuarioDAO;
-import com.example.weMee7.model.dao._SuperDAO;
 import com.example.weMee7.model.entities.Usuario;
 import com.example.weMee7.view.usuario.LoginFragment;
 import com.example.weMee7.view.usuario.SettingsFragment;
@@ -36,6 +35,8 @@ import com.example.wemee7.R;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import java.util.Objects;
 
 /**
  * Clase abstracta que implementa
@@ -76,7 +77,7 @@ public abstract class _SuperActivity extends AppCompatActivity
                     Fragment fragmentActual = getSupportFragmentManager()
                             .findFragmentById(R.id.fragment_container);
                     if(fragmentActual != null)
-                        seleccionarNavItem(fragmentActual.getClass().getSimpleName());
+                        personalizarMenu(fragmentActual.getClass().getSimpleName());
                 });
     }
 
@@ -136,38 +137,50 @@ public abstract class _SuperActivity extends AppCompatActivity
                 .addToBackStack(null)
                 .commit();
         drawerLayout.closeDrawer(GravityCompat.START);
-        seleccionarNavItem(fragment.getClass().getSimpleName());
+        personalizarMenu(fragment.getClass().getSimpleName());
     }
 
     /**
-     * Si el fragment pasado por parametro
-     * es una de las opciones del menu hamburguesa,
+     * Se personaliza el titulo de la Toolbar
+     * segun el fragmento cargado;
+     * si ademas es una de las opciones del menu hamburguesa,
      * esta aparece seleccionada
      * @param nombreFragment
      */
-    public void seleccionarNavItem(String nombreFragment){
-        int op;
+    public void personalizarMenu(String nombreFragment){
+        int op = -1;
+        int tituloToolbar = R.string.app_name;
         switch(nombreFragment){
             case "HomeFragment":
                 op = R.id.nav_Home;
                 break;
             case "PerfilFragment":
                 op = R.id.nav_perfil;
+                tituloToolbar = R.string.menu_perfil;
                 break;
             case "AddFragment":
                 op = R.id.nav_Add;
+                tituloToolbar = R.string.menu_nueva_reunion;
                 break;
             case "AboutFragment":
                 op = R.id.nav_About;
+                tituloToolbar = R.string.menu_about;
                 break;
             case "SettingsFragment":
                 op = R.id.nav_Settings;
+                tituloToolbar = R.string.menu_settings;
                 break;
-            default:
-                op = -1;
+            case "AuthPhoneFragment":
+                tituloToolbar = R.string.tag_vincular_tlf;
+                break;
+            case "PhoneCodeFragment":
+                tituloToolbar = R.string.hint_codigo_verificacion;
+                break;
+            //Para los demás fragments, incluir titulo de barra a partir de aqui !!!
         }
         if(op != -1)
             navigationView.setCheckedItem(op);
+        toolbar.setTitle(tituloToolbar);
     }
 
     /**
@@ -190,9 +203,12 @@ public abstract class _SuperActivity extends AppCompatActivity
         else if (item.getItemId() == R.id.nav_perfil)
             selectedFragment = new PerfilFragment();
 
-
         if(selectedFragment != null)
-            colocarFragment(selectedFragment);
+            if(selectedFragment.getClass() == Objects.requireNonNull(getSupportFragmentManager()
+                .findFragmentById(R.id.fragment_container)).getClass())
+                drawerLayout.closeDrawer(GravityCompat.START);
+            else
+                colocarFragment(selectedFragment);
 
         return true;
     }

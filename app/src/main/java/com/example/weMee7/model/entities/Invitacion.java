@@ -27,7 +27,7 @@ public class Invitacion extends _SuperEntity{
     /**
      * Constructor.
      * La invitacion se crea vinculada a un usuario y a una reunion.
-     * El estado inicial es siempre ENVIADA;
+     * El estado inicial es siempre PENDIENTE;
      * yaCelebrada empieza siempre como FALSE;
      * la fecha_envio es el momento de creacion.
      * @param idUsuario

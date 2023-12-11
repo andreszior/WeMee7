@@ -17,6 +17,14 @@ public class Usuario extends _SuperEntity {
     //Constructor vacio
     public Usuario() {}
 
+    public ArrayList<String> getReunionesInvitado() {
+        return reunionesInvitado;
+    }
+
+    public void setReunionesInvitado(ArrayList<String> reunionesInvitado) {
+        this.reunionesInvitado = reunionesInvitado;
+    }
+
     /**
      * Constructor habitual.
      * Atributos recibidos por formulario.
@@ -31,6 +39,7 @@ public class Usuario extends _SuperEntity {
         this.foto = foto;
         credenciales = new HashMap<>();
         credenciales.put(method.toString(),true);
+        reunionesInvitado = new ArrayList<>();
     }
 
     //Getters y setters

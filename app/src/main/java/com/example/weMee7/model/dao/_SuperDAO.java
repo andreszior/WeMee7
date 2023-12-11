@@ -2,7 +2,6 @@ package com.example.weMee7.model.dao;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import com.example.weMee7.model.entities._SuperEntity;
@@ -102,9 +101,7 @@ public abstract class _SuperDAO {
      *           P.ej.: usuario.getId()
      */
     public void obtenerListaPorIdForaneo(Fields f, String id, FirebaseCallback callback){
-        Query q = DB_COLECCION.whereEqualTo(f.getField(),id);
-
-        q.get().addOnCompleteListener(task -> {
+        DB_COLECCION.whereEqualTo(f.getField(),id).get().addOnCompleteListener(task -> {
             if(task.isSuccessful() && task.getResult() != null){
                 List<_SuperEntity> entities = new ArrayList<>();
                 for (QueryDocumentSnapshot doc : task.getResult()){
@@ -181,7 +178,8 @@ public abstract class _SuperDAO {
         ID_ENCUESTA("idEncuesta"),
         REUNIONES_POR_CREADOR("idCreador"),
         REUNIONES_POR_INVITADO("invitadosList"),
-        INVITADOS_POR_REUNION("reunionesInvitado");
+        INVITADOS_POR_REUNION("reunionesInvitado"),
+        FECHA_REUNION("fecha");
 
         private final String field;
 

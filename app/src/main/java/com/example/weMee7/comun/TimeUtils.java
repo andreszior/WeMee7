@@ -7,41 +7,46 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ * Si no se utilizan en otro sitio,
+ * estas funciones podrian integrarse en la clase Reunion
+ */
 public class TimeUtils {
     public static final String FORMATO_FECHA = "dd/MM/yyyy";
-    public static final String FORMATO_HORA = "HH:mm";
+    public static final String FECHA_INDETERMINADA = "31/12/9999";
 
     /**
      * Recibe una fecha en formato dd/MM/yyyy
-     * y una hora en formato HH:mm
      * y devuelve un Timestamp
      * @param fecha
-     * @param hora
      * @return
      */
-    public static Timestamp fechaHoraToTimestamp(String fecha, String hora) {
-        Timestamp resultado;
-        SimpleDateFormat dateFormat = new SimpleDateFormat(FORMATO_FECHA + FORMATO_HORA);
-        Date date = null;
+    public static Timestamp fechaToTimestamp(String fecha) {
+        if(fecha == null)
+            fecha = FECHA_INDETERMINADA;
+        SimpleDateFormat dateFormat =
+                new SimpleDateFormat(FORMATO_FECHA);
         try {
-            date = dateFormat.parse(fecha + hora);
+            Date date = dateFormat.parse(fecha);
+            return new Timestamp(date);
         } catch (ParseException e) {
-            return null;// !!! fecha que devolver cuando no este determinada !!!
+            return Timestamp.now();
         }
-        return new Timestamp(date);
     }
 
     /**
      * Devuelve la fecha en formato "dd/MM/yyyy"
-     * o la hora en formato "HH:mm",
      * del Timestamp pasado por parametro
      * @param ts marca de tiempo
-     * @param fecha true : fecha / false : hora
      * @return
      */
-    public static String timestampToFechaHora(Timestamp ts, boolean fecha){
+    public static String timestampToFecha(Timestamp ts){
         SimpleDateFormat dateFormat =
-                new SimpleDateFormat(fecha ? FORMATO_FECHA : FORMATO_HORA);
-        return dateFormat.format(ts.toDate());
+                new SimpleDateFormat(FORMATO_FECHA);
+        String fecha = dateFormat.format(ts.toDate());
+        if(fecha.equals(FECHA_INDETERMINADA))
+            return "Por determinar";
+        else
+            return fecha;
     }
 }

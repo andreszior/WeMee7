@@ -1,0 +1,23 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.weMee7.view.usuario.ReunionesListFragment">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvHomeLista"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/tvHomeSinReuniones"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="@string/tag_no_reuniones"
+        android:visibility="gone"
+        android:textAlignment="center"
+        android:layout_marginTop="10dp"/>
+
+</LinearLayout>

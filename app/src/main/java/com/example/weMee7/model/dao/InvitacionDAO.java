@@ -1,6 +1,11 @@
 package com.example.weMee7.model.dao;
 
+import android.util.Log;
+
 import com.example.weMee7.model.entities.Invitacion;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Acceso a datos de la coleccion 'invitaciones'
@@ -10,10 +15,28 @@ public class InvitacionDAO extends _SuperDAO{
         super("invitaciones", Invitacion.class);
     }
 
-    /*Metodo de consulta de invitacion con 3 condiciones:
-    * (String field, String idUsuario/idReunion, boolean yaCelebrada, Estado estadoInvitacion)
+    /**
+     * Permite obtener todas las invitaciones del usuario
+     * de reuniones activas o pasadas.
+     * Devuelve un Map para buscar por idReunion
+     * @param idUsuario usuario objetivo
+     * @param activas reuniones activas / pasadas
+     * @param callback
      */
-
-
-
+    public void obtenerInvitacionesActivas(String idUsuario, boolean activas, FirebaseCallback callback){
+        DB_COLECCION.whereEqualTo(Fields.ID_USUARIO.getField(),idUsuario)
+                .whereNotEqualTo("yaCelebrada",activas)
+                .get().addOnCompleteListener(task -> {
+            if(task.isSuccessful() && task.getResult() != null){
+                Map<String,Invitacion> invitaciones = new HashMap<>();
+                for (QueryDocumentSnapshot doc : task.getResult()){
+                    Invitacion i = doc.toObject(Invitacion.class);
+                    invitaciones.put(i.getIdReunion(),i);
+                }
+                callback.onCallback(invitaciones);
+            } else {
+                Log.d("MiTag", "Error getting documents: ", task.getException());
+            }
+        });
+    }
 }

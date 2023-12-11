@@ -1,22 +1,28 @@
 package com.example.weMee7.model.entities;
 
+import com.example.weMee7.comun.TimeUtils;
 import com.google.firebase.Timestamp;
-
-import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Clase POJO que se relaciona
  * con los documentos
  * de la colección reuniones de la BD.
+ *
+ * !!! La fecha y hora se han dividido en 2 atributos separados.
+ * Para acceder y cambiar se han creado getters y setters especiales
+ * que funcionan directamente con Strings:
+ *** obtenerFechaString / cambiarFechaString
+ *** obtenerHoraString / cambiarHoraString
  */
-public class Reunion extends _SuperEntity implements Serializable {
+public class Reunion extends _SuperEntity implements Comparable<Reunion>{
     private String idCreador; //Invariable
     private ArrayList<String> invitadosList;
     private String nombre;
     private String descripcion;
     private String lugar;
-    private Timestamp fechaHora;
+    private Timestamp fecha;
+    private String hora;
     private Timestamp fecha_creacion; //Invariable
 
     //Constructor vacio
@@ -31,16 +37,19 @@ public class Reunion extends _SuperEntity implements Serializable {
      * @param nombre
      * @param descripcion
      * @param lugar
-     * @param fechaHora
+     * @param fecha
+     * @param hora
      */
     public Reunion(String idCreador, String nombre,
-                   String descripcion, String lugar, Timestamp fechaHora) {
+                   String descripcion, String lugar,
+                   String fecha, String hora) {
         this.idCreador = idCreador;
         this.invitadosList = new ArrayList();
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.lugar = lugar;
-        this.fechaHora = fechaHora;
+        cambiarFechaString(fecha);
+        cambiarHoraString(hora);
         this.fecha_creacion = Timestamp.now();
     }
 
@@ -89,16 +98,57 @@ public class Reunion extends _SuperEntity implements Serializable {
         this.lugar = lugar;
     }
 
-    public Timestamp getFechaHora() {
-        return fechaHora;
+    public Timestamp getFecha() {
+        return fecha;
     }
 
-    public void setFechaHora(Timestamp fechaHora) {
-        this.fechaHora = fechaHora;
+    public void setFecha(Timestamp fecha) {
+        this.fecha = fecha;
     }
+
+    public String getHora() {
+        return hora;
+    }
+
+    public void setHora(String hora) {
+        this.hora = hora;
+    }
+
+    //Getters y setters de fecha y hora en formato String
+    public String obtenerFechaString(){
+        return TimeUtils.timestampToFecha(this.fecha);
+    }
+    public void cambiarFechaString(String fecha){
+        this.fecha = TimeUtils.fechaToTimestamp(fecha);
+    }
+    public String obtenerHoraString(){
+        return hora == "24:00" ? "Por determinar" : hora;
+    }
+
+    public void cambiarHoraString(String hora){
+        this.hora = hora == null ? "24:00" : hora;
+    }
+
 
     public Timestamp getFecha_creacion() {
         return fecha_creacion;
     }
 
+    public ArrayList<String> getInvitadosList() {
+        return invitadosList;
+    }
+
+    public void setInvitadosList(ArrayList<String> invitadosList) {
+        this.invitadosList = invitadosList;
+    }
+
+    /**
+     * Metodo para ordenar reuniones por fecha
+     * @param r the object to be compared.
+     * @return
+     */
+    @Override
+    public int compareTo(Reunion r) {
+        return this.fecha.compareTo(r.fecha);
+    }
 }

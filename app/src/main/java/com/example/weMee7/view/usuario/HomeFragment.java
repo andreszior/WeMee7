@@ -1,11 +1,12 @@
 package com.example.weMee7.view.usuario;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.fragment.app.FragmentActivity;
+import androidx.viewpager2.adapter.FragmentStateAdapter;
+import androidx.viewpager2.widget.ViewPager2;
 
 import android.app.Dialog;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -17,24 +18,28 @@ import android.view.Window;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.example.weMee7.activities.AddFragment;
-import com.example.weMee7.activities.ReunionActivity;
-import com.example.weMee7.comun.ListAdapter;
-import com.example.weMee7.comun.TimeUtils;
+import com.example.weMee7.model.dao.InvitacionDAO;
+import com.example.weMee7.model.dao.ReunionDAO;
+import com.example.weMee7.model.entities.Invitacion;
 import com.example.weMee7.model.entities.Reunion;
 import com.example.weMee7.view._SuperActivity;
 import com.example.wemee7.R;
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
+import com.google.firebase.auth.FirebaseAuth;
 
-
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class HomeFragment extends Fragment {
+    ViewPager2 viewPager;
+    TabLayout tabs;
 
-    List<Reunion> reuniones;
-    final Dialog dialog = null;
-    ImageButton boton_add;
+    private List<Reunion> reunionesList;
+    private Map<String,Invitacion> invitacionesMap;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -43,53 +48,101 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
         //Habilitar menu hamburguesa
-        ((_SuperActivity)getActivity()).setDrawerMenu(true);
+        ((_SuperActivity)requireActivity()).setDrawerMenu(true);
 
-        init(view);
+        //Consulta de reuniones e invitaciones
+        viewPager = view.findViewById(R.id.vpHomeViewPager);
+        tabs = view.findViewById(R.id.tlHomeTabLayout);
+        dataBinding();
+
+        //Boton inferior
         final Dialog dialog = new Dialog(getContext());
         ImageButton boton_add = view.findViewById(R.id.boton_add);
         boton_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 showBottomDialog();
-
             }
         });
-
-
         return view;
     }
 
-    public void init(View view){
-        reuniones = new ArrayList<>();
-        reuniones.add(new Reunion("1","Cumpleaños Carlos","lorem ipsum", "Bar Santianes,17", TimeUtils.fechaHoraToTimestamp("04/02/2024","18:00")));
-        reuniones.add(new Reunion("1","Cumpleaños Carlos","lorem ipsum", "Bar Santianes,17", TimeUtils.fechaHoraToTimestamp("04/02/2024","18:00")));
-        reuniones.add(new Reunion("1","Cumpleaños Carlos","lorem ipsum", "Bar Santianes,17", TimeUtils.fechaHoraToTimestamp("04/02/2024","18:00")));
-        reuniones.add(new Reunion("1","Cumpleaños Carlos","lorem ipsum", "Bar Santianes,17", TimeUtils.fechaHoraToTimestamp("04/02/2024","18:00")));
-        reuniones.add(new Reunion("1","Cumpleaños Carlos","lorem ipsum", "Bar Santianes,17", TimeUtils.fechaHoraToTimestamp("04/02/2024","18:00")));
-        reuniones.add(new Reunion("1","Cumpleaños Carlos","lorem ipsum", "Bar Santianes,17", TimeUtils.fechaHoraToTimestamp("04/02/2024","18:00")));
-
-        ListAdapter listAdapter = new ListAdapter(reuniones, getActivity(), new ListAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(Reunion item) {
-                verReunion(item);
-            }
+    private void dataBinding() {
+        String idUsuario = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        new ReunionDAO().obtenerReunionesUsuario(idUsuario, true, rList -> {
+            reunionesList = (List)rList;
+            new InvitacionDAO().obtenerInvitacionesActivas(idUsuario,true, iMap -> {
+                invitacionesMap = (Map)iMap;
+                setupViewPager();
+            });
         });
-        RecyclerView recyclerView = view.findViewById(R.id.rvHomeLista);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recyclerView.setAdapter(listAdapter);
+    }
+
+    private void setupViewPager(){
+        //Configuracion ViewPager
+        viewPager.setAdapter(new PagerAdapter(requireActivity()));
+
+        //Configuracion de pestañas
+        new TabLayoutMediator(tabs, viewPager, (tab, position) -> {
+            switch(position){
+                case 0:
+                    tab.setCustomView(R.layout.tab_header);
+                    break;
+                case 1:
+                    tab.setText("Activas");
+                    break;
+                case 2:
+                    tab.setText("Pasadas");
+                    break;
+                default:
+            }
+        }).attach();
+
+        viewPager.setCurrentItem(1);
+        tabs.getTabAt(1).select();
     }
 
 
-    public void verReunion(Reunion item){
-        Intent intent = new Intent(getActivity(), ReunionActivity.class);
-        intent.putExtra("idCreador", item.getIdCreador());
-        intent.putExtra("nombre", item.getNombre());
-        intent.putExtra("descripcion", item.getDescripcion());
-        intent.putExtra("lugar", item.getLugar());
-        //intent.putExtra("fechaHora", TimeUtils.timestampToFechaHora(item.getFechaHora(), false));
-        startActivity(intent);
+    /**
+     * Si hay invitaciones pendientes,
+     * muestra un numero rojo en la primera tab
+     * (este metodo es llamado por el fragment de la tab de invitaciones)
+     * @param invitaciones
+     */
+    public void popUpInvitaciones (int invitaciones){
+        View header = LayoutInflater.from(requireActivity()).inflate(R.layout.tab_header,null);
+        TextView contador = header.findViewById(R.id.tab_contador);
+        contador.setText(String.valueOf(invitaciones));
+        contador.setVisibility(View.VISIBLE);
+        tabs.getTabAt(0).setCustomView(header);
+    }
+
+    public List<Reunion> getReunionesList() {
+        return reunionesList;
+    }
+
+    public Map<String,Invitacion> getInvitacionesMap() {
+        return invitacionesMap;
+    }
+
+    /**
+     * Adapter personalizado del ViewPager.
+     * Muestra tres paginas de ReunionesListFragment,
+     * cuyo contenido viene determinado por la posicion
+     */
+    class PagerAdapter extends FragmentStateAdapter{
+        public PagerAdapter(@NonNull FragmentActivity fa) {
+            super(fa);
+        }
+        @NonNull
+        @Override
+        public Fragment createFragment(int position) {
+            return ReunionesListFragment.newInstance(position);
+        }
+        @Override
+        public int getItemCount() {
+            return 3;
+        }
     }
 
     private void showBottomDialog() {
@@ -140,4 +193,6 @@ public class HomeFragment extends Fragment {
         dialog.getWindow().setGravity(Gravity.BOTTOM);
 
     }
+
+
 }
