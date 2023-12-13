@@ -278,12 +278,14 @@ public abstract class _SuperActivity extends AppCompatActivity
     /**
      * Muestra la animación de carga
      * y puede ocultar el contenido el fragment
-     * @param mostrar true / false
+     * @param ocultar true / false
      */
-    public void setCargando(boolean mostrar){
-        findViewById(R.id.capaCargando).setVisibility(View.VISIBLE);
-        if(mostrar)
-            findViewById(R.id.fragment_container).setVisibility(View.GONE);
+    public void setCargando(boolean ocultar){
+        runOnUiThread(() -> {
+            findViewById(R.id.capaCargando).setVisibility(View.VISIBLE);
+            if(ocultar)
+                findViewById(R.id.fragment_container).setVisibility(View.GONE);
+        });
     }
 
     /**
@@ -291,7 +293,9 @@ public abstract class _SuperActivity extends AppCompatActivity
      * y vuelve a mostrar el contenido del fragment
      */
     public void ocultarCargando(){
-        findViewById(R.id.fragment_container).setVisibility(View.VISIBLE);
-        findViewById(R.id.capaCargando).setVisibility(View.GONE);
+        runOnUiThread(() -> {
+            findViewById(R.id.fragment_container).setVisibility(View.VISIBLE);
+            findViewById(R.id.capaCargando).setVisibility(View.GONE);
+        });
     }
 }

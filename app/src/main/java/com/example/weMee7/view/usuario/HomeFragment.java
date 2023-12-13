@@ -1,6 +1,7 @@
 package com.example.weMee7.view.usuario;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
@@ -41,6 +42,12 @@ public class HomeFragment extends Fragment {
     private List<Reunion> reunionesList;
     private Map<String,Invitacion> invitacionesMap;
 
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -49,6 +56,9 @@ public class HomeFragment extends Fragment {
 
         //Habilitar menu hamburguesa
         ((_SuperActivity)requireActivity()).setDrawerMenu(true);
+
+        //Mostrar pantalla carga
+        ((_SuperActivity)requireActivity()).setCargando(false);
 
         //Consulta de reuniones e invitaciones
         viewPager = view.findViewById(R.id.vpHomeViewPager);

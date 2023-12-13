@@ -1,103 +1,201 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:apptint="http://schemas.android.com/tools"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:id="@+id/elemet_menu"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="6dp"
+    android:layout_margin="3dp"
     card_view:cardBackgroundColor="@color/light"
     card_view:cardCornerRadius="15dp"
     card_view:cardElevation="6dp"
     card_view:contentPadding="4dp">
 
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/light"
         android:padding="10dp">
 
-        <ImageView
-
-            android:id="@+id/imageLugar2"
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/glCardItem"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/imageLugar"
-            android:layout_marginLeft="83dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="-24dp"
-            android:layout_marginBottom="0dp"
-            android:layout_toStartOf="@+id/item_lugar"
-            card_view:srcCompat="@drawable/alarm_on_fill0_wght400_grad0_opsz24"
-            card_view:tint="@color/dark" />
+            android:orientation="vertical"
+            card_view:layout_constraintGuide_percent="0.25" />
 
         <ImageView
             android:id="@+id/item_image"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            card_view:layout_constraintDimensionRatio="1:1"
+            card_view:layout_constraintTop_toTopOf="parent"
+            card_view:layout_constraintBottom_toBottomOf="parent"
+            card_view:layout_constraintStart_toStartOf="parent"
+            card_view:layout_constraintEnd_toStartOf="@id/glCardItem"
+
             card_view:tint="@color/dark" />
 
         <TextView
             android:id="@+id/item_title"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_toEndOf="@+id/item_image"
-
-            android:layout_toRightOf="@+id/item_image"
+            card_view:layout_constraintTop_toTopOf="parent"
+            card_view:layout_constraintBottom_toTopOf="@id/llCardLugar"
+            card_view:layout_constraintStart_toEndOf="@id/glCardItem"
+            card_view:layout_constraintEnd_toEndOf="parent"
             android:text="Titulo"
             android:textAllCaps="true"
             android:textColor="@color/dark"
             android:textSize="18sp" />
 
-        <TextView
-            android:id="@+id/item_lugar"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/llCardLugar"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/item_title"
-            android:layout_marginStart="30dp"
-            android:layout_marginTop="10dp"
-            android:layout_toEndOf="@+id/item_image"
+            android:orientation="horizontal"
+            card_view:layout_constraintTop_toBottomOf="@id/item_title"
+            card_view:layout_constraintBottom_toTopOf="@id/llCardFecha"
+            card_view:layout_constraintStart_toEndOf="@id/glCardItem"
+            card_view:layout_constraintEnd_toEndOf="parent">
+            <ImageView
+                android:id="@+id/iconLugar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:layout_gravity="center"
+                card_view:srcCompat="@drawable/location_on_fill0_wght400_grad0_opsz24"
+                card_view:tint="@color/dark" />
+            <TextView
+                android:id="@+id/item_lugar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Lugar"
+                android:layout_gravity="center"
+                android:textColor="@color/dark" />
 
+        </LinearLayout>
 
-            android:text="Lugar"
-            android:textColor="@color/dark"
-            android:textSize="18sp" />
-
-        <TextView
-            android:id="@+id/item_fecha"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/llCardFecha"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/item_lugar"
-            android:layout_marginStart="30dp"
-            android:layout_marginLeft="57dp"
-            android:layout_marginTop="5dp"
-            android:layout_toEndOf="@+id/item_image"
-            android:layout_toRightOf="@+id/item_image"
-            android:text="Fecha"
-            android:textColor="@color/dark"
-            android:textSize="18sp" />
+            android:orientation="horizontal"
+            card_view:layout_constraintTop_toBottomOf="@id/llCardLugar"
+            card_view:layout_constraintBottom_toBottomOf="parent"
+            card_view:layout_constraintStart_toEndOf="@id/glCardItem"
+            card_view:layout_constraintEnd_toEndOf="parent">
 
-        <ImageView
+            <ImageView
+                android:id="@+id/iconFecha"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                card_view:srcCompat="@drawable/alarm_on_fill0_wght400_grad0_opsz24"
+                android:layout_margin="5dp"
+                android:layout_gravity="top"
+                card_view:tint="@color/dark" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_gravity="center">
+                <TextView
+                    android:id="@+id/item_fecha"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Fecha"
+                    android:textColor="@color/dark" />
+                <TextView
+                    android:id="@+id/item_hora"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Hora"
+                    android:textColor="@color/dark" />
+            </LinearLayout>
+        </LinearLayout>
 
-            android:id="@+id/imageLugar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/item_title"
-            android:layout_marginLeft="83dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="-24dp"
-            android:layout_marginBottom="0dp"
-            android:layout_toStartOf="@+id/item_lugar"
-            card_view:srcCompat="@drawable/location_on_fill0_wght400_grad0_opsz24"
-            card_view:tint="@color/dark" />
 
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </RelativeLayout>
+<!--    <RelativeLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:background="@color/light"-->
+<!--        android:padding="10dp">-->
+
+<!--        <ImageView-->
+<!--            android:id="@+id/item_image"-->
+<!--            android:layout_width="100dp"-->
+<!--            android:layout_height="100dp"-->
+<!--            android:layout_alignParentStart="true"-->
+<!--            android:layout_alignParentLeft="true"-->
+<!--            android:layout_alignParentTop="true"-->
+<!--            android:layout_marginEnd="16dp"-->
+<!--            android:layout_marginRight="16dp"-->
+<!--            card_view:tint="@color/dark" />-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/item_title"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_alignParentTop="true"-->
+<!--            android:layout_toEndOf="@+id/item_image"-->
+<!--            android:layout_toRightOf="@+id/item_image"-->
+<!--            android:text="Titulo"-->
+<!--            android:textAllCaps="true"-->
+<!--            android:textColor="@color/dark"-->
+<!--            android:textSize="18sp" />-->
+
+<!--        <ImageView-->
+<!--            android:id="@+id/imageLugar"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_below="@+id/item_title"-->
+<!--            android:layout_marginLeft="83dp"-->
+<!--            android:layout_marginTop="10dp"-->
+<!--            android:layout_marginEnd="-24dp"-->
+<!--            android:layout_marginBottom="0dp"-->
+<!--            android:layout_toStartOf="@+id/item_lugar"-->
+<!--            card_view:srcCompat="@drawable/location_on_fill0_wght400_grad0_opsz24"-->
+<!--            card_view:tint="@color/dark" />-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/item_lugar"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_below="@+id/item_title"-->
+<!--            android:layout_marginStart="30dp"-->
+<!--            android:layout_marginTop="10dp"-->
+<!--            android:layout_toEndOf="@+id/item_image"-->
+<!--            android:text="Lugar"-->
+<!--            android:textColor="@color/dark"-->
+<!--            android:textSize="18sp" />-->
+
+<!--        <ImageView-->
+<!--            android:id="@+id/imageLugar2"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_below="@+id/imageLugar"-->
+<!--            android:layout_marginLeft="83dp"-->
+<!--            android:layout_marginTop="5dp"-->
+<!--            android:layout_marginEnd="-24dp"-->
+<!--            android:layout_marginBottom="0dp"-->
+<!--            android:layout_toStartOf="@+id/item_lugar"-->
+<!--            card_view:srcCompat="@drawable/alarm_on_fill0_wght400_grad0_opsz24"-->
+<!--            card_view:tint="@color/dark" />-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/item_fecha"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_below="@+id/item_lugar"-->
+<!--            android:layout_marginStart="30dp"-->
+<!--            android:layout_marginLeft="57dp"-->
+<!--            android:layout_marginTop="5dp"-->
+<!--            android:layout_toEndOf="@+id/item_image"-->
+<!--            android:layout_toRightOf="@+id/item_image"-->
+<!--            android:text="Fecha"-->
+<!--            android:textColor="@color/dark"-->
+<!--            android:textSize="18sp" />-->
+<!--    </RelativeLayout>-->
 
 </androidx.cardview.widget.CardView>

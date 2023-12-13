@@ -61,7 +61,7 @@ public class ReunionesListAdapter extends RecyclerView.Adapter<ReunionesListAdap
 
     public class ViewHolder extends RecyclerView.ViewHolder{
         ImageView item_image;
-        TextView item_title, item_lugar, item_fecha;
+        TextView item_title, item_lugar, item_fecha, item_hora;
 
         ViewHolder(View itemView){
             super(itemView);
@@ -69,6 +69,7 @@ public class ReunionesListAdapter extends RecyclerView.Adapter<ReunionesListAdap
             item_title = itemView.findViewById(R.id.item_title);
             item_lugar = itemView.findViewById(R.id.item_lugar);
             item_fecha = itemView.findViewById(R.id.item_fecha);
+            item_hora = itemView.findViewById(R.id.item_hora);
         }
         void bindData(final Reunion item){
             int imagen;
@@ -84,6 +85,7 @@ public class ReunionesListAdapter extends RecyclerView.Adapter<ReunionesListAdap
             item_title.setText(item.getNombre());
             item_lugar.setText(item.getLugar());
             item_fecha.setText(item.obtenerFechaString());
+            item_hora.setText(item.obtenerHoraString());
 
             itemView.setOnClickListener(v -> listener.onItemClick(item));
         }

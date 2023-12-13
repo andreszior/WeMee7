@@ -7,6 +7,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +31,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -91,6 +94,17 @@ public class ReunionesListFragment extends Fragment {
                 if(tab == REUNIONES_ACTIVAS)
                     llenarRecyclerView();
             });
+        });
+
+        //Ocultar capa de carga cuando se complete
+        new Handler(Looper.getMainLooper()).post(() -> {
+            try{
+                task.get();
+                ((_SuperActivity)requireActivity()).ocultarCargando();
+            }catch(InterruptedException | ExecutionException e){
+                e.printStackTrace();
+                //Controlar esta excepcion !!!
+            }
         });
 
         return view;

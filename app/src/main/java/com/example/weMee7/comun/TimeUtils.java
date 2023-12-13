@@ -45,7 +45,7 @@ public class TimeUtils {
                 new SimpleDateFormat(FORMATO_FECHA);
         String fecha = dateFormat.format(ts.toDate());
         if(fecha.equals(FECHA_INDETERMINADA))
-            return "Por determinar";
+            return "Fecha por determinar";
         else
             return fecha;
     }

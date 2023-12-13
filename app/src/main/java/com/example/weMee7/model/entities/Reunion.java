@@ -122,7 +122,7 @@ public class Reunion extends _SuperEntity implements Comparable<Reunion>{
         this.fecha = TimeUtils.fechaToTimestamp(fecha);
     }
     public String obtenerHoraString(){
-        return hora == "24:00" ? "Por determinar" : hora;
+        return hora.equals("24:00") ? "Hora por determinar" : hora;
     }
 
     public void cambiarHoraString(String hora){
