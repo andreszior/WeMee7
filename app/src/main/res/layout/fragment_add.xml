@@ -11,7 +11,7 @@
         android:id="@+id/Nombre"
         android:layout_width="300dp"
         android:layout_height="50dp"
-        android:layout_marginStart="55dp"
+        android:layout_marginStart="65dp"
         android:layout_marginTop="50dp"
         android:ems="15"
         android:hint="@string/add_hint_nombre"
@@ -21,7 +21,7 @@
         android:id="@+id/imagenombre"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:layout_marginStart="5dp"
+        android:layout_marginStart="15dp"
         android:layout_marginTop="55dp"
         android:src="@drawable/groups_fill0_wght400_grad0_opsz24"
         app:tint="@color/medium"/>
@@ -30,7 +30,7 @@
         android:id="@+id/Lugar"
         android:layout_width="300dp"
         android:layout_height="50dp"
-        android:layout_marginStart="55dp"
+        android:layout_marginStart="65dp"
         android:layout_marginTop="140dp"
         android:ems="15"
         android:hint="@string/add_hint_lugar"
@@ -40,7 +40,7 @@
         android:id="@+id/imagedonde"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:layout_marginStart="5dp"
+        android:layout_marginStart="15dp"
         android:layout_marginTop="145dp"
         android:src="@drawable/location_on_fill0_wght400_grad0_opsz24"
         app:tint="@color/medium"/>
@@ -49,7 +49,7 @@
         android:id="@+id/fecha"
         android:layout_width="300dp"
         android:layout_height="50dp"
-        android:layout_marginStart="55dp"
+        android:layout_marginStart="65dp"
         android:layout_marginTop="230dp"
         android:ems="15"
         android:hint="@string/add_hint_fecha"
@@ -59,7 +59,7 @@
         android:id="@+id/imagefecha"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:layout_marginStart="5dp"
+        android:layout_marginStart="15dp"
         android:layout_marginTop="235dp"
         android:src="@drawable/baseline_calendar_month_24"
         app:tint="@color/medium"/>
@@ -68,17 +68,17 @@
         android:id="@+id/descripcionTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="145dp"
+        android:layout_marginStart="138dp"
         android:layout_marginTop="340dp"
         android:textSize="20dp"
         android:text="@string/add_descripciontitle" />
 
     <EditText
-        android:id="@+id/descripcion"
+        android:id="@+id/Descripcion"
         android:layout_width="300dp"
         android:layout_height="100dp"
         android:layout_marginStart="55dp"
-        android:layout_marginTop="380dp"
+        android:layout_marginTop="390dp"
         android:ems="15"
         android:hint="@string/add_descripcion"
         android:inputType="text" />
@@ -89,9 +89,10 @@
         android:layout_width="160dp"
         android:layout_height="60dp"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="630dp"
+        android:layout_marginTop="640dp"
         android:text="@string/add_invitaciones"
-        android:background="@color/medium"
+        android:background="@drawable/default_round_button"
+        android:backgroundTint="@color/medium"
         android:textColor="@color/white"/>
 
     <Button
@@ -100,9 +101,10 @@
         android:layout_width="160dp"
         android:layout_height="60dp"
         android:layout_marginStart="230dp"
-        android:layout_marginTop="630dp"
+        android:layout_marginTop="640dp"
         android:text="@string/add_crear"
-        android:background="@color/medium"
-        android:textColor="@color/white"/>
+        android:backgroundTint="@color/medium"
+        android:textColor="@color/white"
+        android:background="@drawable/default_round_button"/>
 
 </FrameLayout>

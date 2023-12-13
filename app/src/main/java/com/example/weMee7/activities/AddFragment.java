@@ -7,10 +7,13 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
+import com.example.weMee7.model.entities.Reunion;
 import com.example.wemee7.R;
 
 import java.text.SimpleDateFormat;
@@ -18,6 +21,9 @@ import java.util.Calendar;
 
 public class AddFragment extends Fragment {
 
+    EditText nombre;
+    EditText lugar;
+    EditText descrip;
     EditText fecha;
 
     @Override
@@ -29,6 +35,11 @@ public class AddFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         fecha = view.findViewById(R.id.fecha);
+        fecha.setFocusable(false);
+        fecha.setClickable(true);
+        nombre = view.findViewById(R.id.Nombre);
+        lugar = view.findViewById(R.id.Lugar);
+        descrip = view.findViewById(R.id.Descripcion);
         fecha.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -61,5 +72,34 @@ public class AddFragment extends Fragment {
             }
 
         });
+        Button botonCrear =view.findViewById(R.id.buttoncrear);
+        botonCrear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                crearReunion();
+            }
+        });
     }
+    public void crearReunion() {
+        String idCreador = "id_del_creador"; // Aquí debes obtener el id del creador
+        String nombreReunion = nombre.getText().toString();
+        String descripcionReunion = descrip.getText().toString();
+        String lugarReunion = lugar.getText().toString();
+        String fechaReunion = fecha.getText().toString();
+
+        // Comprobar que todos los campos están rellenos
+        if (nombreReunion.isEmpty() || descripcionReunion.isEmpty() || lugarReunion.isEmpty() || fechaReunion.isEmpty()) {
+            Toast.makeText(getActivity(), "Por favor, rellena todos los campos", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        String[] fechaHora = fechaReunion.split(" ");
+        String fecha = fechaHora[0]; // Fecha de la reunión
+        String hora = fechaHora[1]; // Hora de la reunión
+
+        Reunion reunion = new Reunion(idCreador, nombreReunion, descripcionReunion, lugarReunion, fecha, hora);
+
+
+    }
+
 }
