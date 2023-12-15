@@ -11,6 +11,12 @@ import com.example.wemee7.R;
 //
 public class ReunionActivity extends _SuperActivity {
 
+
+    //El layout y el codigo de enlace de botones está en el sobremesa
+    //Debe enlazar las reuniones de daniel con este activity
+    //debe dirigir en caso de aprete en una tarea, dirigir a Tarea Fragment
+    //Debe recuperar los datos de la reunion de firebase y en caso de edicion, guardarla again
+
     TextView detalles;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
