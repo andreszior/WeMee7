@@ -65,6 +65,8 @@
             android:layout_marginLeft="30dp"
             android:textSize="16sp"/>
 
+
+
     </LinearLayout>
 
     <LinearLayout
@@ -85,6 +87,30 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Unirse a un evento"
+            android:textColor="@color/dark"
+            android:layout_marginLeft="30dp"
+            android:textSize="16sp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layoutaddTarea"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp">
+
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/groups_fill0_wght400_grad0_opsz24"
+            app:tint="@color/medium"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Crear una tarea"
             android:textColor="@color/dark"
             android:layout_marginLeft="30dp"
             android:textSize="16sp"/>

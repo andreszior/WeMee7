@@ -19,6 +19,10 @@ import com.example.wemee7.R;
  * Use the {@link TareaFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
+
+
+//HomeFragment.java linea195 lleva aqui cuando se le da click a crear tarea
+
 public class TareaFragment extends Fragment {
 
     //Al dar click en la tarea de dentro de la reunion debe iniciarse este fragment

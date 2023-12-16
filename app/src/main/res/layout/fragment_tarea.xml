@@ -75,7 +75,6 @@
         android:layout_width="183dp"
         android:layout_height="48dp"
         android:layout_marginTop="40dp"
-        android:prompt="Selecciona un asignado"
         app:layout_constraintEnd_toStartOf="@+id/guidelineTareaDerecha"
         app:layout_constraintHorizontal_bias="0.568"
         app:layout_constraintStart_toStartOf="@+id/guidelineTareaLeft"

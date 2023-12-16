@@ -1,18 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.example.weMee7.activities.ReunionActivity">
+<androidx.constraintlayout.widget.ConstraintLayout
+xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:background="@color/white"
+tools:context="com.example.weMee7.activities.ReunionActivity">
+
+<ImageView
+    android:id="@+id/ivHomeFoto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="20dp"
+    app:layout_constraintTop_toTopOf="@id/tvReunion"
+    app:layout_constraintBottom_toBottomOf="@id/tvReunion"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toStartOf="@id/tvReunion"
+    app:srcCompat="@drawable/person_fill0_wght400_grad0_opsz24"
+    app:tint="@color/medium"/>
+
+<TextView
+    android:id="@+id/tvReunion"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_margin="20dp"
+    android:layout_marginTop="16dp"
+    android:text="Evento"
+    android:textColor="@color/dark"
+    android:textSize="25sp"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toEndOf="@id/ivHomeFoto"
+    app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/detalles"
+        android:id="@+id/tvLugarReunion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="144dp"
-        android:layout_marginEnd="276dp"
-        android:text="TextView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_marginStart="72dp"
+        android:layout_marginTop="28dp"
+        android:text="Lugar Evento"
+        android:textColor="@color/dark"
+        android:textSize="22sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvReunion" />
+
+    <TextView
+        android:id="@+id/tvFechaEventos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="72dp"
+        android:layout_marginTop="28dp"
+        android:text="Fecha Evento"
+        android:textColor="@color/dark"
+        android:textSize="22sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvLugarReunion" />
+
+    <androidx.recyclerview.widget.RecyclerView
+    android:id="@+id/rvReunionTareas"
+    android:layout_width="409dp"
+    android:layout_height="258dp"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/tvFechaEventos"
+    app:layout_constraintVertical_bias="0.085" />
+
+<ImageButton
+    android:id="@+id/boton_add"
+    android:layout_width="60dp"
+    android:layout_height="60dp"
+    android:layout_marginEnd="24dp"
+    android:layout_marginBottom="16dp"
+    android:background="@drawable/round_button"
+    android:backgroundTint="@color/medium"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:srcCompat="@drawable/add_fill0_wght400_grad0_opsz24"
+    app:tint="@color/white"/>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

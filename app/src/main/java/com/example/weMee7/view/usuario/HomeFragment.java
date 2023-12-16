@@ -22,6 +22,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.weMee7.activities.AddFragment;
+import com.example.weMee7.activities.TareaFragment;
 import com.example.weMee7.model.dao.InvitacionDAO;
 import com.example.weMee7.model.dao.ReunionDAO;
 import com.example.weMee7.model.entities.Invitacion;
@@ -163,6 +164,7 @@ public class HomeFragment extends Fragment {
 
         LinearLayout AddLayout = dialog.findViewById(R.id.layoutAdd);
         LinearLayout UnirseLayout = dialog.findViewById(R.id.layoutUnirse);
+        LinearLayout AddTareaLayout = dialog.findViewById(R.id.layoutaddTarea);
         ImageView cancelButton = dialog.findViewById(R.id.cancelButton);
 
         AddLayout.setOnClickListener(new View.OnClickListener() {
@@ -186,6 +188,18 @@ public class HomeFragment extends Fragment {
                 dialog.dismiss();
 
 
+            }
+        });
+
+        //Teniendo en cuenta que enlaza, ahora necesito que esta opciion solo se muestre en la activity de reunion
+        AddTareaLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Fragment selectedFragment = new TareaFragment();
+                if (getActivity() != null) {
+                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
+                }
+                dialog.dismiss();
             }
         });
 
