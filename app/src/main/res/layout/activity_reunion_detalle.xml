@@ -6,7 +6,13 @@ xmlns:tools="http://schemas.android.com/tools"
 android:layout_width="match_parent"
 android:layout_height="match_parent"
 android:background="@color/white"
+android:id="@+id/contraintlayout_detalles_evento"
 tools:context="com.example.weMee7.activities.ReunionActivity">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/fragment_container_tarea"/>
 
 <ImageView
     android:id="@+id/ivHomeFoto"

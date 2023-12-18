@@ -167,6 +167,8 @@ public class HomeFragment extends Fragment {
         LinearLayout AddTareaLayout = dialog.findViewById(R.id.layoutaddTarea);
         ImageView cancelButton = dialog.findViewById(R.id.cancelButton);
 
+        AddTareaLayout.setVisibility(View.GONE);
+
         AddLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -188,18 +190,6 @@ public class HomeFragment extends Fragment {
                 dialog.dismiss();
 
 
-            }
-        });
-
-        //Teniendo en cuenta que enlaza, ahora necesito que esta opciion solo se muestre en la activity de reunion
-        AddTareaLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Fragment selectedFragment = new TareaFragment();
-                if (getActivity() != null) {
-                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
-                }
-                dialog.dismiss();
             }
         });
 
