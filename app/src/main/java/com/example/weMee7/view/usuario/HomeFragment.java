@@ -20,33 +20,53 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.weMee7.activities.AddFragment;
 import com.example.weMee7.activities.TareaFragment;
 import com.example.weMee7.model.dao.InvitacionDAO;
 import com.example.weMee7.model.dao.ReunionDAO;
+import com.example.weMee7.model.dao._SuperDAO;
 import com.example.weMee7.model.entities.Invitacion;
 import com.example.weMee7.model.entities.Reunion;
+import com.example.weMee7.model.entities.Usuario;
 import com.example.weMee7.view._SuperActivity;
+import com.example.weMee7.viewmodel.InvitarUsuario;
 import com.example.wemee7.R;
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.TaskCompletionSource;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Fragment que gestiona las reuniones del usuario.
+ * Dispone de un TabLayout y un ViewPager con 3 pestañas:
+ * 0. Invitaciones pendientes
+ * 1. Reuniones activas
+ * 2. Reuniones pasadas
+ */
 public class HomeFragment extends Fragment {
-    ViewPager2 viewPager;
-    TabLayout tabs;
+    //Componentes de paginador
+    private ViewPager2 viewPager;
+    private TabLayout tabs;
 
+    //Lista de reuniones y mapa de invitaciones
     private List<Reunion> reunionesList;
     private Map<String,Invitacion> invitacionesMap;
+
+    //Control de cambios
+    private boolean hayCambios;
 
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        hayCambios = false;
     }
 
     @Override
@@ -54,6 +74,8 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
+        viewPager = view.findViewById(R.id.vpHomeViewPager);
+        tabs = view.findViewById(R.id.tlHomeTabLayout);
 
         //Habilitar menu hamburguesa
         ((_SuperActivity)requireActivity()).setDrawerMenu(true);
@@ -61,10 +83,14 @@ public class HomeFragment extends Fragment {
         //Mostrar pantalla carga
         ((_SuperActivity)requireActivity()).setCargando(false);
 
-        //Consulta de reuniones e invitaciones
-        viewPager = view.findViewById(R.id.vpHomeViewPager);
-        tabs = view.findViewById(R.id.tlHomeTabLayout);
-        dataBinding();
+        //Añadir reunion de enlace (en su caso)
+        String idReunion = ((UsuarioActivity)requireActivity()).getIdReunionLink();
+        if(idReunion != null) {
+            cargarReunionLink(idReunion);
+            ((UsuarioActivity)requireActivity()).nullIdReunionLink();//Se anula el codigo del link
+        }
+        else //Si no hay reunion, se realizan las consultas directamente
+            dataBinding(); //Consulta de reuniones e invitaciones
 
         //Boton inferior
         final Dialog dialog = new Dialog(getContext());
@@ -78,6 +104,54 @@ public class HomeFragment extends Fragment {
         return view;
     }
 
+    /**
+     * Comprueba el id de reunion pasado por enlace.
+     * Posibilidades:
+     * 1. Enlace no valido.
+     * 2. Reunion creada por el usuario.
+     * 3. Reunion
+     * @param idReunion
+     */
+    private void cargarReunionLink(String idReunion) {
+        new ReunionDAO().obtenerRegistroPorId(idReunion, resultado -> {
+            Reunion r = (Reunion)resultado;
+            String idUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            int mensaje = 0;
+
+            //Vigilante de tarea completa
+            TaskCompletionSource<DocumentSnapshot> tcs = null;
+
+            if(r == null)
+                mensaje = R.string.msj_enlace_fail;
+            else if(r.getIdCreador().equals(idUser))
+                mensaje = R.string.msj_invitacion_creador;
+            else if(r.getInvitadosList().contains(idUser))
+                mensaje = R.string.msj_invitacion_yainvitado;
+            else{
+                //Si se crea una invitacion, la consulta de reuniones debe esperar
+                mensaje = R.string.msj_invitacion_annadida;
+                tcs = new InvitarUsuario().enviarInvitacion(idReunion,idUser);
+            }
+            if(tcs != null){
+                //Cuando termine la tarea de enviar invitacion, se realizan las demas consultas
+                Task<DocumentSnapshot> getTask = tcs.getTask();
+                getTask.addOnSuccessListener(documentSnapshot -> {
+                    dataBinding();
+                });
+            }else
+                dataBinding();
+
+            if(mensaje != 0)
+                Toast.makeText(requireActivity(),
+                        getResources().getString(mensaje),
+                        Toast.LENGTH_SHORT).show();
+        });
+    }
+
+    /**
+     * Se llenan la lista de reuniones y el mapa de invitaciones
+     * con aquellas vinculadas con el usuario.
+     */
     private void dataBinding() {
         String idUsuario = FirebaseAuth.getInstance().getCurrentUser().getUid();
         new ReunionDAO().obtenerReunionesUsuario(idUsuario, true, rList -> {
@@ -89,6 +163,10 @@ public class HomeFragment extends Fragment {
         });
     }
 
+    /**
+     * Configura el viewPager con 3 fragments,
+     * que se aloja en el TabLayout con 3 tabs
+     */
     private void setupViewPager(){
         //Configuracion ViewPager
         viewPager.setAdapter(new PagerAdapter(requireActivity()));
@@ -123,17 +201,30 @@ public class HomeFragment extends Fragment {
     public void popUpInvitaciones (int invitaciones){
         View header = LayoutInflater.from(requireActivity()).inflate(R.layout.tab_header,null);
         TextView contador = header.findViewById(R.id.tab_contador);
-        contador.setText(String.valueOf(invitaciones));
-        contador.setVisibility(View.VISIBLE);
+        if(invitaciones == 0){
+            contador.setVisibility(View.GONE);
+        }else{
+            contador.setText(String.valueOf(invitaciones));
+            contador.setVisibility(View.VISIBLE);
+        }
         tabs.getTabAt(0).setCustomView(header);
     }
 
+    //GETTERS Y SETTERS para los fragments del viewPager
     public List<Reunion> getReunionesList() {
         return reunionesList;
     }
 
     public Map<String,Invitacion> getInvitacionesMap() {
         return invitacionesMap;
+    }
+
+    public boolean hayCambios() {
+        return hayCambios;
+    }
+
+    public void setHayCambios(boolean hayCambios) {
+        this.hayCambios = hayCambios;
     }
 
     /**
@@ -186,7 +277,7 @@ public class HomeFragment extends Fragment {
         UnirseLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                new InvitarUsuario().generarEnlaceInvitacion("A7JozOiSzQpadQvPONhg",requireActivity());
                 dialog.dismiss();
 
 

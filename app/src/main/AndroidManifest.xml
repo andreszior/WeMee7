@@ -12,7 +12,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         tools:targetApi="31">
-        <!--        android:theme="@style/Theme.NavigationDrawer"-->
         <activity
             android:name="com.example.weMee7.activities.ReunionActivity"
             android:exported="false" />
@@ -29,7 +28,16 @@
             android:exported="false" />
         <activity
             android:name="com.example.weMee7.view.usuario.UsuarioActivity"
-            android:exported="false" />
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="http"
+                    android:host="wemee7.acd" />
+            </intent-filter>
+        </activity>
+
     </application>
 
 </manifest>

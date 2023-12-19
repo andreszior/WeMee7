@@ -1,0 +1,135 @@
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/item_fondo"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="20dp"
+    card_view:cardBackgroundColor="@color/white"
+    card_view:cardCornerRadius="15dp"
+    card_view:cardElevation="6dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/card_border"
+        android:padding="12dp">
+        <LinearLayout
+            android:id="@+id/llDialogHeader"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            card_view:layout_constraintTop_toTopOf="parent"
+            card_view:layout_constraintBottom_toTopOf="@id/llDialogLugar"
+            card_view:layout_constraintStart_toStartOf="parent"
+            card_view:layout_constraintEnd_toEndOf="parent">
+            <TextView
+                android:id="@+id/dialog_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                android:text="Titulo"
+                android:textAllCaps="true"
+                android:textColor="@color/dark"
+                android:textSize="18sp" />
+            <TextView
+                android:id="@+id/dialog_descripcion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="Descripcion"
+                android:maxLines="4"
+                android:textColor="@color/dark"
+                android:textSize="14sp" />
+            <include layout="@layout/separador"/>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/llDialogLugar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            card_view:layout_constraintTop_toBottomOf="@id/llDialogHeader"
+            card_view:layout_constraintBottom_toTopOf="@id/llDialogFecha"
+            card_view:layout_constraintStart_toStartOf="parent"
+            card_view:layout_constraintEnd_toEndOf="parent"
+            card_view:layout_constraintHorizontal_bias="0">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:layout_gravity="center"
+                card_view:srcCompat="@drawable/location_on_fill0_wght400_grad0_opsz24"
+                card_view:tint="@color/dark" />
+            <TextView
+                android:id="@+id/dialog_lugar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Lugar"
+                android:layout_gravity="center"
+                android:textColor="@color/dark" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/llDialogFecha"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="10dp"
+            card_view:layout_constraintTop_toBottomOf="@id/llDialogLugar"
+            card_view:layout_constraintBottom_toTopOf="@id/btDialogUnirse"
+            card_view:layout_constraintStart_toStartOf="parent"
+            card_view:layout_constraintEnd_toEndOf="parent"
+            card_view:layout_constraintHorizontal_bias="0">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                card_view:srcCompat="@drawable/alarm_on_fill0_wght400_grad0_opsz24"
+                android:layout_margin="5dp"
+                android:layout_gravity="top"
+                card_view:tint="@color/dark" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_gravity="center">
+                <TextView
+                    android:id="@+id/dialog_fecha"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Fecha"
+                    android:textColor="@color/dark" />
+                <TextView
+                    android:id="@+id/dialog_hora"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Hora"
+                    android:textColor="@color/dark" />
+            </LinearLayout>
+        </LinearLayout>
+        <Button
+            android:id="@+id/btDialogUnirse"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/bt_unirse"
+            card_view:layout_constraintTop_toBottomOf="@id/llDialogFecha"
+            card_view:layout_constraintBottom_toBottomOf="parent"
+            card_view:layout_constraintStart_toEndOf="@+id/btDialogRechazar"
+            card_view:layout_constraintEnd_toEndOf="parent"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:backgroundTint="@color/medium" />
+        <Button
+            android:id="@+id/btDialogRechazar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            card_view:layout_constraintTop_toTopOf="@id/btDialogUnirse"
+            card_view:layout_constraintBottom_toBottomOf="parent"
+            card_view:layout_constraintStart_toStartOf="parent"
+            card_view:layout_constraintEnd_toStartOf="@id/btDialogUnirse"
+            android:text="@string/bt_rechazar"
+            android:textColor="@color/avatar_rojo"
+            android:backgroundTint="@color/white" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

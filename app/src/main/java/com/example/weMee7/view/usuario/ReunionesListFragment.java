@@ -1,5 +1,6 @@
 package com.example.weMee7.view.usuario;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -12,6 +13,7 @@ import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.weMee7.activities.ReunionActivity;
@@ -43,7 +45,7 @@ public class ReunionesListFragment extends Fragment {
 
     //Componentes del layout
     RecyclerView rvReunionesList;
-    TextView tvSinReuniones;
+    TextView tvMensaje;
 
     //Gestion de tab seleccionada
     int tab;//tab seleccionada que determina la lista
@@ -54,6 +56,7 @@ public class ReunionesListFragment extends Fragment {
     //Carga de info en segundo plano
     private ExecutorService exec;
     private Future<?> task;
+    private boolean cargado;
 
     public static ReunionesListFragment newInstance(int tab){
         ReunionesListFragment fragment = new ReunionesListFragment();
@@ -67,6 +70,7 @@ public class ReunionesListFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        cargado = false;
         if(getArguments() != null)
             tab = getArguments().getInt("TAB_KEY");
         else
@@ -79,7 +83,7 @@ public class ReunionesListFragment extends Fragment {
         // Inflar layout
         View view = inflater.inflate(R.layout.fragment_reuniones_list, container, false);
         rvReunionesList = view.findViewById(R.id.rvHomeLista);
-        tvSinReuniones = view.findViewById(R.id.tvHomeSinReuniones);
+        tvMensaje = view.findViewById(R.id.tvHomeMensaje);
 
         //Carga de informacion en un hilo secundario
         exec = Executors.newSingleThreadExecutor();
@@ -91,8 +95,10 @@ public class ReunionesListFragment extends Fragment {
             }
             // Actualizar la UI en el hilo principal
             getActivity().runOnUiThread(() -> {
-                if(tab == REUNIONES_ACTIVAS)
+                if(tab == REUNIONES_ACTIVAS) {
                     llenarRecyclerView();
+                    cargado = true;
+                }
             });
         });
 
@@ -103,7 +109,6 @@ public class ReunionesListFragment extends Fragment {
                 ((_SuperActivity)requireActivity()).ocultarCargando();
             }catch(InterruptedException | ExecutionException e){
                 e.printStackTrace();
-                //Controlar esta excepcion !!!
             }
         });
 
@@ -111,22 +116,36 @@ public class ReunionesListFragment extends Fragment {
     }
 
     /**
-     * Aplazar tareas para que se realicen
+     * Estas tareas se realizan
      * solamente cuando el Fragment es visible
      */
     @Override
     public void onResume() {
         super.onResume();
-        switch(tab) {
-            case LISTA_INVITACIONES:
-                //Cargar RecyclerView
+
+        if(!cargado){
+            switch(tab) {
+                case LISTA_INVITACIONES://TAB 0
+                    //Cargar RecyclerView
+                    llenarRecyclerView();
+                    break;
+                case REUNIONES_PASADAS://TAB 2
+                    //Hacer consultas y cargar RecyclerView
+                    cargarReunionesPasadas();
+                    break;
+                default:
+            }
+            cargado = true;
+        }
+
+        //TAB 1: Se actualiza cuando se acepta una invitacion
+        if(tab == REUNIONES_ACTIVAS){
+            HomeFragment hf = getFragmentPadre();
+            if(hf.hayCambios()){
+                llenarListasTab(hf.getReunionesList(),hf.getInvitacionesMap());
                 llenarRecyclerView();
-                break;
-            case REUNIONES_PASADAS:
-                //Hacer consultas y cargar RecyclerView
-                cargarReunionesPasadas();
-                break;
-            default:
+                hf.setHayCambios(false);
+            }
         }
     }
 
@@ -144,6 +163,9 @@ public class ReunionesListFragment extends Fragment {
             exec.shutdownNow();
     }
 
+    /**
+     * Consulta de las reuniones e invitaciones pasadas
+     */
     private void cargarReunionesPasadas() {
         String idUsuario = FirebaseAuth.getInstance().getCurrentUser().getUid();
         new ReunionDAO().obtenerReunionesUsuario(idUsuario, false, rList -> {
@@ -157,18 +179,17 @@ public class ReunionesListFragment extends Fragment {
     /**
      * Se llenan las listas de reuniones e invitaciones
      * Tab LISTA_INVITACIONES: Se crean de 0 y se añaden reuniones pendientes
-     * Tabs REUNIONES: Se filtran las listas obtenidas en el fragment padre
-     * @param rList
-     * @param iMap
+     * Tabs REUNIONES: Se filtran las listas obtenidas en consultas previas
+     * @param rList lista de reuniones
+     * @param iMap mapa de invitaciones
      */
     private void llenarListasTab(List<Reunion> rList, Map<String,Invitacion> iMap) {
         //Inicializar las listas
-        if(tab == LISTA_INVITACIONES){
-            reunionesTab = new ArrayList<>();
-            invitacionesTab = new HashMap<>();
-        }else {
-            reunionesTab = rList;
-            invitacionesTab = iMap;
+        reunionesTab = new ArrayList<>();
+        invitacionesTab = new HashMap<>();
+        if(tab != LISTA_INVITACIONES) {
+            reunionesTab.addAll(rList);
+            invitacionesTab.putAll(iMap);
         }
 
         //Iterar sobre las invitaciones
@@ -185,11 +206,14 @@ public class ReunionesListFragment extends Fragment {
         }
 
         Collections.sort(reunionesTab,null);
-        if(tab == LISTA_INVITACIONES && !invitacionesTab.isEmpty()) {
-            HomeFragment hf = getFragmentPadre();
-            if(hf != null)
-                hf.popUpInvitaciones(iMap.size());
-        }
+        if(tab == LISTA_INVITACIONES && !invitacionesTab.isEmpty())
+            setPopUp();
+    }
+
+    private void setPopUp() {
+        HomeFragment hf = getFragmentPadre();
+        if(hf != null)
+            hf.popUpInvitaciones(invitacionesTab.size());
     }
 
     /**
@@ -232,12 +256,14 @@ public class ReunionesListFragment extends Fragment {
      * lo sustituye por un TextView
      */
     private void llenarRecyclerView() {
-        if(reunionesTab.isEmpty())
-            tvSinReuniones.setVisibility(View.VISIBLE);
-        else{
+        if(reunionesTab.isEmpty()) {
+            tvMensaje.setText(R.string.tag_no_reuniones);
+            tvMensaje.setVisibility(View.VISIBLE);
+        }else{
+            tvMensaje.setVisibility(View.GONE);
             ReunionesListAdapter reunionesListAdapter =
                     new ReunionesListAdapter(reunionesTab, invitacionesTab, tab,
-                            requireActivity(), item -> verReunion(item));
+                            requireActivity(), item -> pulsarItemReunion(item));
             rvReunionesList.setHasFixedSize(true);
             rvReunionesList.setLayoutManager(new LinearLayoutManager(getActivity()));
             rvReunionesList.setAdapter(reunionesListAdapter);
@@ -245,6 +271,11 @@ public class ReunionesListFragment extends Fragment {
         }
     }
 
+    /**
+     * Obtiene una instancia del Fragment
+     * donde se contiene el viewPager
+     * @return
+     */
     private HomeFragment getFragmentPadre(){
         Fragment padre = requireActivity().getSupportFragmentManager().findFragmentById(R.id.fragment_container);
         if(padre != null && padre instanceof HomeFragment)
@@ -254,15 +285,87 @@ public class ReunionesListFragment extends Fragment {
     }
 
 
-    public void verReunion(Reunion item) {
+    public void pulsarItemReunion(Reunion item) {
+        if(tab == LISTA_INVITACIONES)
+            mostrarDialogInvitacion(item);
+        else
+            verReunion(item);
+    }
+
+    /**
+     * Llama a una nueva Activity
+     * con el id de la reunion.
+     * @param item
+     */
+    private void verReunion(Reunion item){
         Intent intent = new Intent(getActivity(), ReunionActivity.class);
         intent.putExtra("id",item.getId());
-//        intent.putExtra("idCreador", item.getIdCreador());
-//        intent.putExtra("nombre", item.getNombre());
-//        intent.putExtra("descripcion", item.getDescripcion());
-//        intent.putExtra("lugar", item.getLugar());
-//        intent.putExtra("fechaHora", TimeUtils.timestampToFechaHora(item.getFechaHora(), false));
         startActivity(intent);
+    }
+
+    /**
+     * Cuadro de dialogo para aceptar o rechazar
+     * una invitacion pendiente.
+     * Solo se llama en tab 0 LISTA_INVITACIONES
+     * @param item
+     */
+    private void mostrarDialogInvitacion(Reunion item) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
+        LayoutInflater inflater = getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.dialog_invitacion, null);
+        builder.setView(dialogView);
+
+        //Componentes del layout
+        ((TextView)dialogView.findViewById(R.id.dialog_title)).setText(item.getNombre());
+        ((TextView)dialogView.findViewById(R.id.dialog_descripcion)).setText(item.getDescripcion());
+        ((TextView)dialogView.findViewById(R.id.dialog_lugar)).setText(item.getLugar());
+        ((TextView)dialogView.findViewById(R.id.dialog_fecha)).setText(item.obtenerFechaString());
+        ((TextView)dialogView.findViewById(R.id.dialog_hora)).setText(item.obtenerHoraString());
+
+        Button btUnirse = dialogView.findViewById(R.id.btDialogUnirse);
+        Button btRechazar = dialogView.findViewById(R.id.btDialogRechazar);
+
+        //Crear el dialog
+        AlertDialog dialog = builder.create();
+
+        //Eventos de los botones
+        btUnirse.setOnClickListener(v -> {
+            pulsarBtDialog(true,item,dialog);
+        });
+        btRechazar.setOnClickListener(v -> {
+            pulsarBtDialog(false,item,dialog);
+        });
+
+        //Mostrar el dialog
+        dialog.show();
+    }
+
+    /**
+     * UNIRSE: Se lanza la Reunion Activity y se actualiza el mapa de invitaciones.
+     * RECHAZAR: Se actualiza el mapa de invitaciones.
+     * @param unirse aceptar / rechazar
+     * @param item reunion de la invitacion
+     * @param dialog cuadro de dialogo
+     */
+    private void pulsarBtDialog(boolean unirse, Reunion item, AlertDialog dialog){
+        String idReunion = item.getId();
+        Invitacion i = invitacionesTab.get(item.getId());
+
+        new InvitarUsuario().responderInvitacion(i,unirse);
+        dialog.dismiss();
+        if(unirse) {
+            verReunion(item);
+            i.setEstado(Invitacion.EstadoInvitacion.ACEPTADA);
+            HomeFragment hf = getFragmentPadre();
+            hf.getInvitacionesMap().put(idReunion,i);
+            hf.setHayCambios(true);
+        }
+        //Se actualizan las invitaciones y reuniones de la tab 0
+        invitacionesTab.remove(idReunion);
+        reunionesTab.remove(item);
+
+        llenarRecyclerView();
+        setPopUp();
     }
 
 }

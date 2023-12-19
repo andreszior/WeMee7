@@ -1,5 +1,10 @@
 package com.example.weMee7.viewmodel;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
+import android.widget.Toast;
+
 import com.example.weMee7.model.dao.InvitacionDAO;
 import com.example.weMee7.model.dao.ReunionDAO;
 import com.example.weMee7.model.dao.UsuarioDAO;
@@ -8,20 +13,26 @@ import com.example.weMee7.model.entities.Invitacion;
 import com.example.weMee7.model.entities.Reunion;
 import com.example.weMee7.model.entities.Usuario;
 import com.example.weMee7.model.entities._SuperEntity;
+import com.example.wemee7.R;
+import com.google.android.gms.tasks.TaskCompletionSource;
+import com.google.firebase.firestore.DocumentSnapshot;
 
 public class InvitarUsuario {
 
-    InvitacionDAO invitacionDAO;
-    UsuarioDAO usuarioDAO;
-    ReunionDAO reunionDAO;
+    TaskCompletionSource<DocumentSnapshot> tcs;
+
     /**
      * Crea la invitacion,
      * e incorpora la reunion al usuario (reunionesList)
-     * y el usuario a la reunion (invitadosList)
+     * y el usuario a la reunion (invitadosList).
+     * Devuelve un TaskCompletionSource para poder controlar
+     * la finalización de esta tarea
      * @param idInvitado
      * @param idReunion
      */
-    public void enviarInvitacion(String idReunion, String idInvitado){
+    public TaskCompletionSource<DocumentSnapshot> enviarInvitacion(String idReunion, String idInvitado){
+        tcs = new TaskCompletionSource<>();
+
         //Crear y registrar invitacion
         new InvitacionDAO().insertarRegistro(new Invitacion(idInvitado,idReunion));
 
@@ -30,6 +41,8 @@ public class InvitarUsuario {
 
         //Registrar el usuario en la reunion
         registrarEnArray(new ReunionDAO(),idReunion,idInvitado,true);
+
+        return tcs;
     }
 
     /**
@@ -54,6 +67,10 @@ public class InvitarUsuario {
                 else
                     ((Reunion)e).delInvitado(idItem);
             dao.actualizarRegistro(e);
+
+            //Notifica que la reunion ha sido añadida al usuario
+            if(dao instanceof UsuarioDAO)
+                tcs.setResult(null);
         });
     }
 
@@ -84,10 +101,36 @@ public class InvitarUsuario {
         new InvitacionDAO().actualizarRegistro(i);
     }
 
+    /**
+     * Configura como yaCelebrada
+     * las invitaciones cuya reunion ya ha pasado.
+     * Si estaba ENVIADA, se considera RECHAZADA
+     * @param i
+     */
     public void actualizarInvitacion(Invitacion i){
         i.setYaCelebrada(true);
         if(i.getEstado() == Invitacion.EstadoInvitacion.ENVIADA)
             i.setEstado(Invitacion.EstadoInvitacion.RECHAZADA);
         new InvitacionDAO().actualizarRegistro(i);
+    }
+
+    /**
+     * Genera un enlace, lo copia en el portapapeles
+     * y muestra un mensaje al usuario
+     * @param idReunion id de la reunion
+     * @param c contexto
+     */
+    public void generarEnlaceInvitacion(String idReunion, Context c){
+        // Servicio de portapapeles
+        ClipboardManager clipboard = (ClipboardManager) c.getSystemService(Context.CLIPBOARD_SERVICE);
+
+        // Copiar enlace con id reunion (dominio + idReunion)
+        String enlace = c.getResources().getString(R.string.dominio) + idReunion;
+        clipboard.setPrimaryClip(ClipData.newPlainText("tag", enlace));
+
+        // Mensaje feedback
+        Toast.makeText(c,
+                c.getResources().getString(R.string.msj_enlace_invitacion),
+                Toast.LENGTH_SHORT).show();
     }
 }

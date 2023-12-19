@@ -13,6 +13,7 @@ import java.util.Date;
  */
 public class TimeUtils {
     public static final String FORMATO_FECHA = "dd/MM/yyyy";
+    public static final String FORMATO_HORA = "HH:mm";
     public static final String FECHA_INDETERMINADA = "31/12/9999";
 
     /**
@@ -48,5 +49,19 @@ public class TimeUtils {
             return "Fecha por determinar";
         else
             return fecha;
+    }
+
+    /**
+     * Devuelve la fecha en formato "dd/MM/yyyy"
+     * o la hora en formato "HH:mm",
+     * del Timestamp pasado por parametro
+     * @param ts marca de tiempo
+     * @param fecha true : fecha / false : hora
+     * @return
+     */
+    public static String timestampToFechaHora(Timestamp ts, boolean fecha){
+        SimpleDateFormat dateFormat =
+                new SimpleDateFormat(fecha ? FORMATO_FECHA : FORMATO_HORA);
+        return dateFormat.format(ts.toDate());
     }
 }

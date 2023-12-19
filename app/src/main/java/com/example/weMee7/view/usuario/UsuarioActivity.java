@@ -4,7 +4,9 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.example.weMee7.comun.seguridad.SharedPref;
 import com.example.weMee7.view._SuperActivity;
@@ -20,10 +22,27 @@ public class UsuarioActivity extends _SuperActivity {
 
     public static int GOOGLE_SIGN_IN = 7;
     public static String LOGIN_KEY = "login";
+
+    String idReunionLink;
+
+    public String getIdReunionLink() {
+        return idReunionLink;
+    }
+
+    public void nullIdReunionLink() {
+        this.idReunionLink = null;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        //Capturar reunion de enlace (en su caso)
+        Uri data = getIntent().getData();
+        if(data != null)
+            idReunionLink = data.getLastPathSegment();
+
+        //Lanzar fragment
         Fragment primerFragment;
         //Comprobar si hay sesion iniciada
         if(new SharedPref(this).get(LOGIN_KEY))
