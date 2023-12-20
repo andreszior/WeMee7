@@ -4,14 +4,16 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.weMee7.model.entities.Tarea;
+import com.example.weMee7.model.entities._SuperEntity;
+import com.example.weMee7.view._SuperActivity;
 import com.example.wemee7.R;
 
 /**
@@ -25,67 +27,64 @@ import com.example.wemee7.R;
 
 public class TareaFragment extends Fragment {
 
-    //Al dar click en la tarea de dentro de la reunion debe iniciarse este fragment
-    //Debe pasar la info a firebase, guardarla y volver al activity de reunion
-
-    TextView tvTareaDescripcion, tvTareaAsignacion;
-    EditText etTareaTitulo, etTareaDescripcion;
-    Spinner spAsignacion;
-    Button btAceptarTarea;
-
-
-
-
-
-
-
-
-
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public TareaFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment TareaFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static TareaFragment newInstance(String param1, String param2) {
-        TareaFragment fragment = new TareaFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
+   EditText et_tareaNombre, et_tareaDescripcion, et_tareaPrecio;
+   TextView asignado;
+   Button bt_aceptarTarea;
+   Spinner sp_participantes;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_tarea, container, false);
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        cargarComponentes(view);
+
+    }
+
+
+
+
+
+    private void cargarComponentes(View view){
+        et_tareaNombre = view.findViewById(R.id.editTextTaskTitle);
+        et_tareaDescripcion = view.findViewById(R.id.editTextTaskDescription);
+        et_tareaPrecio = view.findViewById(R.id.editTextPrecioTarea);
+        bt_aceptarTarea = view.findViewById(R.id.buttonCreateTask);
+        sp_participantes = view.findViewById(R.id.SpinnerTarea);
+
+        bt_aceptarTarea.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                crearTarea();
+            }
+        });
+    }
+
+
+    private void crearTarea(){
+        String idTarea = "id_de_tarea"; // Aquí debes obtener el id de la tarea
+        String tareaNombre = et_tareaNombre.getText().toString();
+        String descripcionTarea = et_tareaDescripcion.getText().toString();
+        boolean formatoPrecioCorrecto = precioValido(et_tareaPrecio.getText().toString());
+        //pillar lo del spinner
+
+        if(formatoPrecioCorrecto){
+            String precioTarea = et_tareaPrecio.getText().toString();
+            ReunionActivity activity = (ReunionActivity) getActivity();
+
+            //Tarea tarea = new Tarea(activity.reunion, tareaNombre, descripcionTarea, precioTarea, encargado);
+        } else{
+            Toast.makeText(getActivity(), "Ingrese un precio válido", Toast.LENGTH_SHORT).show();
+        }
+
+
+    }
+
+    private boolean precioValido(String precio){
+        String regex = "^[0-9]+(\\.[0-9]{0,2})?$";
+        return precio.matches(regex);
     }
 }

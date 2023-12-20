@@ -49,6 +49,8 @@ public class ReunionActivity extends _SuperActivity {
 
     List<Tarea> tareas;
 
+    Reunion reunion;
+
 
 
     @Override
@@ -84,7 +86,7 @@ public class ReunionActivity extends _SuperActivity {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
-                        Reunion reunion = document.toObject(Reunion.class);
+                        reunion = document.toObject(Reunion.class);
                         cargarDetallesReunion(reunion);
 
                         // Ahora tienes el objeto Reunion y puedes usar sus datos
