@@ -300,6 +300,7 @@ public class ReunionesListFragment extends Fragment {
     private void verReunion(Reunion item){
         Intent intent = new Intent(getActivity(), ReunionActivity.class);
         intent.putExtra("id",item.getId());
+        intent.putExtra("meeting", item);
         startActivity(intent);
     }
 

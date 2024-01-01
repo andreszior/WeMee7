@@ -7,7 +7,10 @@ import com.google.firebase.Timestamp;
  * con los documentos
  * de la colección tareas de la BD.
  */
-public class Tarea extends Cuestion {
+public class Tarea extends _SuperEntity {
+
+    private String idReunion;
+    private String titulo;
     private String idEncargado;
     private String descripcion;
     private EstadoTarea estado;
@@ -32,7 +35,9 @@ public class Tarea extends Cuestion {
      */
     public Tarea(String reunion, String titulo,
                  String descripcion, int gasto, String idEncargado) {
-        super(reunion, titulo);
+        //super(reunion, titulo);
+        this.idReunion = reunion;
+        this.titulo = titulo;
         this.descripcion = descripcion;
         this.gasto = gasto;
         this.idEncargado = idEncargado;

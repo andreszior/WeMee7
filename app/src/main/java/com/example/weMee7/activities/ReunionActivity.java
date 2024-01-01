@@ -3,6 +3,7 @@ package com.example.weMee7.activities;
         import static android.content.ContentValues.TAG;
 
         import androidx.annotation.NonNull;
+        import androidx.annotation.Nullable;
         import androidx.constraintlayout.widget.ConstraintLayout;
         import androidx.fragment.app.Fragment;
         import androidx.fragment.app.FragmentManager;
@@ -11,6 +12,7 @@ package com.example.weMee7.activities;
         import androidx.recyclerview.widget.RecyclerView;
 
         import android.app.Dialog;
+        import android.content.Intent;
         import android.graphics.Color;
         import android.graphics.drawable.ColorDrawable;
         import android.os.Bundle;
@@ -26,6 +28,8 @@ package com.example.weMee7.activities;
 
         import com.example.weMee7.comun.TareaAdapter;
         import com.example.weMee7.comun.TimeUtils;
+        import com.example.weMee7.model.dao.ReunionDAO;
+        import com.example.weMee7.model.dao._SuperDAO;
         import com.example.weMee7.model.entities.Reunion;
         import com.example.weMee7.model.entities.Tarea;
         import com.example.weMee7.view._SuperActivity;
@@ -38,6 +42,7 @@ package com.example.weMee7.activities;
         import com.google.firebase.firestore.DocumentSnapshot;
         import com.google.firebase.firestore.FirebaseFirestore;
 
+        import java.io.Serializable;
         import java.util.ArrayList;
         import java.util.List;
 
@@ -52,14 +57,52 @@ public class ReunionActivity extends _SuperActivity {
     Reunion reunion;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_reunion_detalle);
-        obtenerReunion(getIntent().getStringExtra("id"));
+
+        Fragment fragment = null;
+
+        Intent intent = getIntent();
+        if (intent != null && intent.hasExtra("meeting")) {
+            //String idReunion = intent.getStringExtra("id");
+            reunion = (Reunion) intent.getParcelableExtra("meeting");
+            //cargarReunion(idReunion);
+
+            fragment = ReunionFragment.newInstance(reunion);
+        }
+
+        if (savedInstanceState == null) {
+            colocarFragment(fragment);
+        }
+
     }
 
+    //Se llama cuando se acaba el fragment de creacion de tareas, actualizar RC
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+    }
+
+    //FUNCIONA
+    private void cargarReunion(String idReunion){
+        new ReunionDAO().obtenerRegistroPorId(idReunion, resultado -> {
+            reunion = (Reunion) resultado;
+        });
+    }
+}
+        //setContentView(R.layout.activity_reunion_detalle);
+
+        //super.onCreate(savedInstanceState);
+        //botonTarea = (ImageButton) getLayoutInflater().inflate(R.layout.fragment_home, null);
+        //obtenerReunion(getIntent().getStringExtra("id"));
+        //cargarReunion(getIntent().getStringExtra("id"));
+
+
+    //}
+//}
+/*
     public void initTareasList(Reunion reunion){
         tareas = new ArrayList<>();
         tareas.add(new Tarea(reunion.getNombre(), "Comprar carbon", "Carbon para la carne", 15, "1"));
@@ -75,7 +118,14 @@ public class ReunionActivity extends _SuperActivity {
         rcEvento.setAdapter(tareaAdapter);
     }
 
-    //Deberia de coger el id que pasa por intent, coge la coleccion, crea una array de reuniones y coge la reunion
+
+
+
+
+
+
+/*
+    //Deberia de coger el id que pasa por intent, coge la coleccion, crea una array de reuniones y coge la reunion. Este lo hice andres
     private void obtenerReunion(String id){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         DocumentReference reunionRef = db.collection("reuniones").document(id);
@@ -100,6 +150,10 @@ public class ReunionActivity extends _SuperActivity {
         });
     }
 
+
+
+
+
     private void cargarDetallesReunion(Reunion reunion){
 
         TextView tvLugarEvento, tvFechaEvento, tvReunion;
@@ -109,12 +163,16 @@ public class ReunionActivity extends _SuperActivity {
         tvFechaEvento = findViewById(R.id.tvFechaEventos);
         tvReunion = findViewById(R.id.tvReunion);
         botonTarea = findViewById(R.id.boton_add);
+
+
         botonTarea.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showBotonTareaDialog();
             }
         });
+
+
 
 
 
@@ -144,11 +202,18 @@ public class ReunionActivity extends _SuperActivity {
         AddTareaLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Fragment selectedFragment = new TareaFragment();
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.contraintlayout_detalles_evento, selectedFragment);
                 fragmentTransaction.commit();
+
+
+                Fragment selectedFragment = new TareaFragment();
+                getSupportFragmentManager().beginTransaction().replace(R.id.contraintlayout_detalles_evento, selectedFragment).commit();
+                dialog.dismiss();
+
             }
         });
 
@@ -167,3 +232,4 @@ public class ReunionActivity extends _SuperActivity {
         dialog.getWindow().setGravity(Gravity.BOTTOM);
     }
 }
+*/
