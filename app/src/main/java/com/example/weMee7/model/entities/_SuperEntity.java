@@ -1,5 +1,8 @@
 package com.example.weMee7.model.entities;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.Objects;
 
 /**
@@ -11,6 +14,7 @@ import java.util.Objects;
  */
 public abstract class _SuperEntity {
     protected String id;
+
 
     public String getId() {
         return id;
@@ -35,10 +39,5 @@ public abstract class _SuperEntity {
             return false;
         _SuperEntity that = (_SuperEntity) o;
         return Objects.equals(id, that.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
     }
 }

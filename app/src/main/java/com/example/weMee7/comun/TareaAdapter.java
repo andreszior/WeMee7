@@ -31,7 +31,7 @@ public class TareaAdapter extends RecyclerView.Adapter<TareaAdapter.ViewHolder> 
     @NonNull
     @Override
     public TareaAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = layoutInflater.inflate(R.layout.fragment_tarea, null);
+        View view = layoutInflater.inflate(R.layout.card_tarea, null);
         return new TareaAdapter.ViewHolder(view);
     }
 
@@ -55,9 +55,9 @@ public class TareaAdapter extends RecyclerView.Adapter<TareaAdapter.ViewHolder> 
 
         ViewHolder(View itemView){
             super(itemView);
-            //tareaTitle = itemView.findViewById(R.id.tarea_title);
-            //fechaTarea = itemView.findViewById(R.id.item_fecha_tarea);
-            //personaAsingada = itemView.findViewById(R.id.item_tarea_usuario);
+            tareaTitle = itemView.findViewById(R.id.tarea_title1);
+            fechaTarea = itemView.findViewById(R.id.item_fecha_tarea);
+            personaAsingada = itemView.findViewById(R.id.item_tarea_usuario);
         }
 
         void bindData(final Tarea tarea){

@@ -1,11 +1,15 @@
 package com.example.weMee7.activities;
 
+import static com.example.weMee7.model.dao._SuperDAO.Fields.ID_REUNION;
+
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -17,14 +21,23 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.weMee7.comun.ReunionesListAdapter;
+import com.example.weMee7.comun.TareaAdapter;
 import com.example.weMee7.comun.TimeUtils;
 import com.example.weMee7.model.dao.ReunionDAO;
+import com.example.weMee7.model.dao.TareaDAO;
+import com.example.weMee7.model.dao._SuperDAO;
 import com.example.weMee7.model.entities.Reunion;
+import com.example.weMee7.model.entities.Tarea;
 import com.example.weMee7.view._SuperActivity;
 import com.example.weMee7.viewmodel.InvitarUsuario;
 import com.example.wemee7.R;
 import com.google.firebase.Timestamp;
 import android.app.Dialog;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -54,10 +67,11 @@ public class ReunionFragment extends Fragment {
      * @return A new instance of fragment ReunionFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static ReunionFragment newInstance(Reunion idReunion) {
+    public static ReunionFragment newInstance(Reunion reunion) {
         ReunionFragment fragment = new ReunionFragment();
         Bundle args = new Bundle();
-        args.putParcelable("meeting", idReunion);
+        args.putParcelable("meeting", reunion);
+        args.putString("id", reunion.getId());
         fragment.setArguments(args);
         return fragment;
     }
@@ -67,6 +81,7 @@ public class ReunionFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             reunion = (Reunion) getArguments().getParcelable("meeting");
+            reunion.setId(getArguments().getString("id"));
 
         }
     }
@@ -85,11 +100,18 @@ public class ReunionFragment extends Fragment {
 
         TextView tvLugarEvento, tvFechaEvento, tvReunion;
         ImageButton botonTarea;
+        RecyclerView rcReunionTareas;
 
         tvLugarEvento = view.findViewById(R.id.tvLugarReunion);
         tvFechaEvento = view.findViewById(R.id.tvFechaEventos);
         tvReunion = view.findViewById(R.id.tvReunion);
         botonTarea = view.findViewById(R.id.boton_add);
+
+        rcReunionTareas = view.findViewById(R.id.rvReunionTareas);
+        initTareasList(reunion, rcReunionTareas);
+        //llenarRecyclerViewTareas(rcReunionTareas);
+
+
 
         Timestamp fechaReunion = reunion.getFecha();
         tvLugarEvento.setText(reunion.getLugar());
@@ -109,6 +131,33 @@ public class ReunionFragment extends Fragment {
         //initTareasList(reunion);
     }
 
+    private void llenarRecyclerViewTareas(RecyclerView rcEvento){
+        List<Tarea> listaTareas = new ArrayList<>();
+        TareaAdapter tareaAdapter = new TareaAdapter(listaTareas, this.getContext());
+        new TareaDAO().obtenerListaPorIdForaneo(ID_REUNION
+        , reunion.getId(), resultado -> {
+                    rcEvento.setHasFixedSize(true);
+                    rcEvento.setLayoutManager(new LinearLayoutManager(this.getContext()));
+                    rcEvento.setAdapter(tareaAdapter);
+            tareaAdapter.setListaTareas((List<Tarea>)resultado);
+                });
+
+
+    }
+
+    public void initTareasList(Reunion reunion, RecyclerView rcEvento){
+        ArrayList<Tarea> tareas = new ArrayList<>();
+        tareas.add(new Tarea(reunion.getNombre(), "Comprar carbon", "Carbon para la carne", 15, "1"));
+        tareas.add(new Tarea(reunion.getNombre(), "Comprar carbon", "Carbon para la carne", 15, "1"));
+        tareas.add(new Tarea(reunion.getNombre(), "Comprar carbon", "Carbon para la carne", 15, "1"));
+        tareas.add(new Tarea(reunion.getNombre(), "Comprar carbon", "Carbon para la carne", 15, "1"));
+        tareas.add(new Tarea(reunion.getNombre(), "Comprar carbon", "Carbon para la carne", 15, "1"));
+
+        TareaAdapter tareaAdapter = new TareaAdapter(tareas, this.getContext());
+        rcEvento.setHasFixedSize(true);
+        rcEvento.setLayoutManager(new LinearLayoutManager(this.getContext()));
+        rcEvento.setAdapter(tareaAdapter);
+    }
 
     private void showBottomDialog() {
         Fragment selectedFragment = null;
@@ -129,13 +178,6 @@ public class ReunionFragment extends Fragment {
             public void onClick(View v) {
                 Fragment selectedFragment = new TareaFragment();
 
-
-                /*
-                if (getActivity() != null) {
-                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
-                }
-
-                 */
                 ((_SuperActivity)requireActivity()).colocarFragment(selectedFragment);
                 dialog.dismiss();
 

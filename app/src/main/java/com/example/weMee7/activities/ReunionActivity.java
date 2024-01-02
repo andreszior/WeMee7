@@ -65,10 +65,10 @@ public class ReunionActivity extends _SuperActivity {
 
         Intent intent = getIntent();
         if (intent != null && intent.hasExtra("meeting")) {
-            //String idReunion = intent.getStringExtra("id");
+            String idReunion = intent.getStringExtra("id");
             reunion = (Reunion) intent.getParcelableExtra("meeting");
             //cargarReunion(idReunion);
-
+            reunion.setId(idReunion);
             fragment = ReunionFragment.newInstance(reunion);
         }
 

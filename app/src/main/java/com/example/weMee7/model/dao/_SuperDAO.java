@@ -55,6 +55,10 @@ public abstract class _SuperDAO {
         void onCallback(Object resultado);
     }
 
+    public interface FirebaseCallbackList<T>{
+        void onCallback(T resultado);
+    }
+
     //FUNCIONES BASICAS DAO
     /**
      * Recibe un objeto/entidad,
