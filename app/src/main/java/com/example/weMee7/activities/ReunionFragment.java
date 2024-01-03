@@ -6,8 +6,6 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -20,23 +18,20 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import com.example.weMee7.comun.ReunionesListAdapter;
 import com.example.weMee7.comun.TareaAdapter;
 import com.example.weMee7.comun.TimeUtils;
-import com.example.weMee7.model.dao.ReunionDAO;
+
 import com.example.weMee7.model.dao.TareaDAO;
-import com.example.weMee7.model.dao._SuperDAO;
+
 import com.example.weMee7.model.entities.Reunion;
 import com.example.weMee7.model.entities.Tarea;
 import com.example.weMee7.view._SuperActivity;
-import com.example.weMee7.viewmodel.InvitarUsuario;
+
 import com.example.wemee7.R;
 import com.google.firebase.Timestamp;
 import android.app.Dialog;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -46,14 +41,6 @@ import java.util.List;
  *
  */
 public class ReunionFragment extends Fragment {
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
 
     Reunion reunion;
 
@@ -80,7 +67,8 @@ public class ReunionFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            reunion = (Reunion) getArguments().getParcelable("meeting");
+            reunion = getArguments().getParcelable("meeting");
+            assert reunion != null;
             reunion.setId(getArguments().getString("id"));
 
         }
@@ -144,43 +132,48 @@ public class ReunionFragment extends Fragment {
     }
 
     private void showBottomDialog() {
-        final Dialog dialog = new Dialog(getContext());
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.boton_add);
+        if(getContext() != null){
+            final Dialog dialog = new Dialog(getContext());
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.setContentView(R.layout.boton_add);
 
-        LinearLayout AddLayout = dialog.findViewById(R.id.layoutAdd);
-        LinearLayout UnirseLayout = dialog.findViewById(R.id.layoutUnirse);
-        LinearLayout AddTareaLayout = dialog.findViewById(R.id.layoutaddTarea);
-        ImageView cancelButton = dialog.findViewById(R.id.cancelButton);
+            LinearLayout AddLayout = dialog.findViewById(R.id.layoutAdd);
+            LinearLayout UnirseLayout = dialog.findViewById(R.id.layoutUnirse);
+            LinearLayout AddTareaLayout = dialog.findViewById(R.id.layoutaddTarea);
+            ImageView cancelButton = dialog.findViewById(R.id.cancelButton);
 
-        UnirseLayout.setVisibility(View.GONE);
-        AddLayout.setVisibility(View.GONE);
+            UnirseLayout.setVisibility(View.GONE);
+            AddLayout.setVisibility(View.GONE);
 
-        AddTareaLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Fragment selectedFragment = new TareaFragment();
+            AddTareaLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Fragment selectedFragment = new TareaFragment();
 
-                ((_SuperActivity)requireActivity()).colocarFragment(selectedFragment);
-                dialog.dismiss();
+                    ((_SuperActivity)requireActivity()).colocarFragment(selectedFragment);
+                    dialog.dismiss();
 
 
 
+                }
+            });
+
+            cancelButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dialog.dismiss();
+                }
+            });
+
+            dialog.show();
+            if(dialog.getWindow() != null){
+                dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+                dialog.getWindow().setGravity(Gravity.BOTTOM);
             }
-        });
 
-        cancelButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog.dismiss();
-            }
-        });
-
-        dialog.show();
-        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-        dialog.getWindow().setGravity(Gravity.BOTTOM);
+        }
 
     }
 }
