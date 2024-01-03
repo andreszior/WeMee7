@@ -108,8 +108,8 @@ public class ReunionFragment extends Fragment {
         botonTarea = view.findViewById(R.id.boton_add);
 
         rcReunionTareas = view.findViewById(R.id.rvReunionTareas);
-        initTareasList(reunion, rcReunionTareas);
-        //llenarRecyclerViewTareas(rcReunionTareas);
+        //initTareasList(reunion, rcReunionTareas);
+        llenarRecyclerViewTareas(rcReunionTareas);
 
 
 
@@ -141,26 +141,9 @@ public class ReunionFragment extends Fragment {
                     rcEvento.setAdapter(tareaAdapter);
             tareaAdapter.setListaTareas((List<Tarea>)resultado);
                 });
-
-
-    }
-
-    public void initTareasList(Reunion reunion, RecyclerView rcEvento){
-        ArrayList<Tarea> tareas = new ArrayList<>();
-        tareas.add(new Tarea(reunion.getNombre(), "Comprar carbon", "Carbon para la carne", 15, "1"));
-        tareas.add(new Tarea(reunion.getNombre(), "Comprar carbon", "Carbon para la carne", 15, "1"));
-        tareas.add(new Tarea(reunion.getNombre(), "Comprar carbon", "Carbon para la carne", 15, "1"));
-        tareas.add(new Tarea(reunion.getNombre(), "Comprar carbon", "Carbon para la carne", 15, "1"));
-        tareas.add(new Tarea(reunion.getNombre(), "Comprar carbon", "Carbon para la carne", 15, "1"));
-
-        TareaAdapter tareaAdapter = new TareaAdapter(tareas, this.getContext());
-        rcEvento.setHasFixedSize(true);
-        rcEvento.setLayoutManager(new LinearLayoutManager(this.getContext()));
-        rcEvento.setAdapter(tareaAdapter);
     }
 
     private void showBottomDialog() {
-        Fragment selectedFragment = null;
         final Dialog dialog = new Dialog(getContext());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.boton_add);

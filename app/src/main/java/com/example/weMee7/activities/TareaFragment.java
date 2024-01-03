@@ -125,7 +125,8 @@ public class TareaFragment extends Fragment {
         if (formatoPrecioCorrecto) {
             int precioTarea = Integer.parseInt(et_tareaPrecio.getText().toString());
 
-            new TareaDAO().insertarRegistro(new Tarea(activity.reunion.getId(), tareaNombre, descripcionTarea, precioTarea, idUsuarioSeleccionado));
+            new TareaDAO().insertarRegistro(new Tarea(activity.reunion.getId(),
+                    tareaNombre, descripcionTarea, precioTarea, idUsuarioSeleccionado));
 
 
         } else {

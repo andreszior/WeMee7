@@ -22,6 +22,22 @@ public class Tarea extends _SuperEntity {
     //Constructor vacio
     public Tarea() {}
 
+    public String getIdReunion() {
+        return idReunion;
+    }
+
+    public void setIdReunion(String idReunion) {
+        this.idReunion = idReunion;
+    }
+
+    public String getTitulo() {
+        return titulo;
+    }
+
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
+    }
+
     /**
      * Constructor.
      * Recibe los datos basicos por formulario;
