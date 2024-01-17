@@ -21,6 +21,7 @@ import android.widget.TextView;
 import com.example.weMee7.comun.TareaAdapter;
 import com.example.weMee7.comun.TimeUtils;
 
+import com.example.weMee7.comun.seguridad.SharedPref;
 import com.example.weMee7.model.dao.TareaDAO;
 
 import com.example.weMee7.model.entities.Reunion;
@@ -43,6 +44,8 @@ import java.util.List;
 public class ReunionFragment extends Fragment {
 
     Reunion reunion;
+
+    private SharedPref sharedPref;
 
 
 
@@ -121,7 +124,23 @@ public class ReunionFragment extends Fragment {
 
     private void llenarRecyclerViewTareas(RecyclerView rcEvento){
         List<Tarea> listaTareas = new ArrayList<>();
-        TareaAdapter tareaAdapter = new TareaAdapter(listaTareas, this.getContext());
+
+        sharedPref = new SharedPref(getContext(), true);
+
+        TareaAdapter tareaAdapter = new TareaAdapter(listaTareas, this.getContext(), sharedPref, new TareaAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(Tarea item) {
+                Fragment selectedFragment = new TareaFragment();
+                //Tarea tareaDetalles = listaTareas.get(item);
+                Bundle args = new Bundle();
+                args.putParcelable("TareaSeleccionada", item);
+                selectedFragment.setArguments(args);
+                ((_SuperActivity)requireActivity()).colocarFragment(selectedFragment);
+
+            }
+        });
+
+
         new TareaDAO().obtenerListaPorIdForaneo(ID_REUNION
         , reunion.getId(), resultado -> {
                     rcEvento.setHasFixedSize(true);

@@ -23,13 +23,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.weMee7.activities.AddFragment;
-import com.example.weMee7.activities.TareaFragment;
 import com.example.weMee7.model.dao.InvitacionDAO;
 import com.example.weMee7.model.dao.ReunionDAO;
-import com.example.weMee7.model.dao._SuperDAO;
 import com.example.weMee7.model.entities.Invitacion;
 import com.example.weMee7.model.entities.Reunion;
-import com.example.weMee7.model.entities.Usuario;
 import com.example.weMee7.view._SuperActivity;
 import com.example.weMee7.viewmodel.InvitarUsuario;
 import com.example.wemee7.R;

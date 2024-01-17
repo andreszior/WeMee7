@@ -22,8 +22,15 @@ public class SharedPref {
 
     private SharedPreferences sp;
 
+
+    private final String TAREA_CHECKBOX_PREF = "TareaPrefs";
+
     public SharedPref(Context context) {
         sp = getSharedPrefs(context);
+    }
+
+    public SharedPref(Context context, boolean tareaCheckPref){
+        sp = context.getSharedPreferences(TAREA_CHECKBOX_PREF, Context.MODE_PRIVATE);
     }
 
     private SharedPreferences getSharedPrefs(Context context){
@@ -58,5 +65,17 @@ public class SharedPref {
 
     public void clear(){
         sp.edit().clear().apply();
+    }
+
+    public boolean getCheckboxState(int pos){
+        String key = "checkbox_state_" + pos;
+        return sp.getBoolean(key, false);
+    }
+
+    public void setCheckboxState(int pos, boolean isChecked){
+        String key = "checkbox_state_" + pos;
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putBoolean(key, isChecked);
+        editor.apply();
     }
 }

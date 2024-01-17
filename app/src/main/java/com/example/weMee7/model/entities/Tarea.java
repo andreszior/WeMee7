@@ -1,5 +1,10 @@
 package com.example.weMee7.model.entities;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
+
 import com.google.firebase.Timestamp;
 
 /**
@@ -7,13 +12,18 @@ import com.google.firebase.Timestamp;
  * con los documentos
  * de la colección tareas de la BD.
  */
-public class Tarea extends _SuperEntity {
+public class Tarea extends _SuperEntity implements Comparable<Tarea>, Parcelable {
+
+    private String idTarea;
 
     private String idReunion;
     private String titulo;
     private String idEncargado;
     private String descripcion;
     private EstadoTarea estado;
+
+
+    private boolean isChecked;
     private int gasto;//El gasto se almacena como entero
     //P.ej: 45,50 € = 4550.
     private Timestamp fecha_update;//Se modifica automaticamente al cambiar de Estado
@@ -22,6 +32,11 @@ public class Tarea extends _SuperEntity {
     //Constructor vacio
     public Tarea() {}
 
+
+    public String getIdTarea(){return idTarea;}
+
+
+    public void setIdTarea(String idTarea){this.idTarea = idTarea;}
     public String getIdReunion() {
         return idReunion;
     }
@@ -102,9 +117,70 @@ public class Tarea extends _SuperEntity {
         this.idEncargado = idEncargado;
     }
 
+    public boolean isChecked() {
+        return isChecked;
+    }
+
+    public void setChecked(boolean checked) {
+        isChecked = checked;
+    }
+
     /**
      * Enumeracion que recoge valores constantes
      * con los diferentes estados de una invitacion
      */
     public enum EstadoTarea {CREADA,ASIGNADA,COMPLETADA;}
+
+
+
+
+    protected Tarea(Parcel in) {
+        idTarea = in.readString();
+        idReunion = in.readString();
+        titulo = in.readString();
+        idEncargado = in.readString();
+        descripcion = in.readString();
+        isChecked = in.readByte() != 0;
+        gasto = in.readInt();
+        fecha_update = in.readParcelable(Timestamp.class.getClassLoader());
+    }
+
+    public static final Creator<Tarea> CREATOR = new Creator<Tarea>() {
+        @Override
+        public Tarea createFromParcel(Parcel in) {
+            return new Tarea(in);
+        }
+
+        @Override
+        public Tarea[] newArray(int size) {
+            return new Tarea[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel dest, int flags) {
+        dest.writeString(idTarea);
+        dest.writeString(idReunion);
+        dest.writeString(titulo);
+        dest.writeString(idEncargado);
+        dest.writeString(descripcion);
+        dest.writeByte((byte) (isChecked ? 1 : 0));
+        dest.writeInt(gasto);
+        dest.writeParcelable(fecha_update, flags);
+    }
+
+    @Override
+    public int compareTo(Tarea o) {
+        return 0;
+    }
+
+
+
+
+
 }

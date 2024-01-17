@@ -1,14 +1,11 @@
 package com.example.weMee7;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Toast;
 
 import com.example.weMee7.activities.MenuActivity;
 import com.example.weMee7.activities.ReunionActivity;
-import com.example.weMee7.model.TESTpruebasDAO;
 import com.example.weMee7.view._SuperActivity;
 import com.example.weMee7.view.usuario.UsuarioActivity;
 import com.example.wemee7.R;

@@ -12,26 +12,19 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.weMee7.model.dao.ReunionDAO;
 import com.example.weMee7.model.dao.TareaDAO;
 import com.example.weMee7.model.dao.UsuarioDAO;
-import com.example.weMee7.model.dao._SuperDAO;
-import com.example.weMee7.model.entities.Reunion;
 import com.example.weMee7.model.entities.Tarea;
 import com.example.weMee7.model.entities.Usuario;
-import com.example.weMee7.model.entities._SuperEntity;
-import com.example.weMee7.view._SuperActivity;
 import com.example.wemee7.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -44,14 +37,16 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class TareaFragment extends Fragment {
 
+
     EditText et_tareaNombre, et_tareaDescripcion, et_tareaPrecio;
     TextView asignado;
     Button bt_aceptarTarea;
     Spinner sp_participantes;
 
     ReunionActivity activity;
-    String idSeleccion;
     String idUsuarioSeleccionado;
+    Map<String, String> mapaNombresIds = new HashMap<>();
+    ArrayAdapter<String> adapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -62,12 +57,26 @@ public class TareaFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_tarea, container, false);
-        cargarComponentes(view);
+
+        Bundle args = getArguments();
+        if(args != null){
+            Tarea tareaDetalles = (Tarea) args.getParcelable("TareaSeleccionada");
+            cargarComponentes(view);
+            cargarTareaDetalles(tareaDetalles);
+            botonCrearTarea(bt_aceptarTarea);
+        } else {
+            cargarComponentes(view);
+            botonCrearTarea(bt_aceptarTarea);
+        }
         return view;
     }
 
+
+
+    //
     private void cargarComponentes(View view) {
         activity = (ReunionActivity) getActivity();
 
@@ -75,40 +84,16 @@ public class TareaFragment extends Fragment {
         et_tareaDescripcion = view.findViewById(R.id.editTextTaskDescription);
         et_tareaPrecio = view.findViewById(R.id.editTextPrecioTarea);
         bt_aceptarTarea = view.findViewById(R.id.buttonCreateTask);
-
         sp_participantes = view.findViewById(R.id.SpinnerTarea);
         cargarParticipantes(activity);
+    }
 
-/*
-        List listaParticipantes = nombres2ParticipantesSpinner(activity.reunion.getInvitadosList());
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(activity,
-                android.R.layout.simple_dropdown_item_1line, listaParticipantes);
-
-        sp_participantes.setAdapter(adapter);
-        sp_participantes.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String seleccion = parent.getItemAtPosition(position).toString();
-                new UsuarioDAO().obtenerRegistroPorId(seleccion, resultado -> {
-                    Usuario user = (Usuario) resultado;
-                    idSeleccion = user.getId();
-                });
-            }
-
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
- */
-
-        bt_aceptarTarea.setOnClickListener(new View.OnClickListener() {
+    //
+    private void botonCrearTarea(Button button){
+        button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                crearTarea();
+                aceptarTarea();
                 Toast.makeText(getActivity(), "Tarea Creada", Toast.LENGTH_SHORT).show();
                 requireActivity().onBackPressed();
             }
@@ -116,7 +101,8 @@ public class TareaFragment extends Fragment {
     }
 
 
-    private void crearTarea() {
+
+    private void aceptarTarea() {
         String tareaNombre = et_tareaNombre.getText().toString();
         String descripcionTarea = et_tareaDescripcion.getText().toString();
         boolean formatoPrecioCorrecto = precioValido(et_tareaPrecio.getText().toString());
@@ -140,23 +126,9 @@ public class TareaFragment extends Fragment {
         return precio.matches(regex);
     }
 
-    private ArrayList<String> nombres2ParticipantesSpinner(ArrayList lista) {
-        ArrayList<String> nombres = new ArrayList<>();
-        for (Object elemento : lista) {
-            if (elemento instanceof String) {
-                new UsuarioDAO().obtenerRegistroPorId((String) elemento, resultado -> {
-                    Usuario user = (Usuario) resultado;
-                    nombres.add(user.getNombre());
-                });
-            }
-        }
-        return nombres;
-    }
-
     private void cargarParticipantes(ReunionActivity actividad) {
 
         List<String> listaInvitados = actividad.reunion.getInvitadosList();
-        Map<String, String> mapaNombresIds = new HashMap<>();
 
         for (String idUsuario : listaInvitados) {
             obtenerNombreUsuario(idUsuario, mapaNombresIds); // Se inicia la carga de nombres
@@ -183,10 +155,11 @@ public class TareaFragment extends Fragment {
         // Crear una lista de nombres únicos para el adaptador
         List<String> listaNombres = new ArrayList<>(mapaNombresIds.values());
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(activity,
+        adapter = new ArrayAdapter<>(activity,
                 android.R.layout.simple_dropdown_item_1line, listaNombres);
 
         sp_participantes.setAdapter(adapter);
+
 
         sp_participantes.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -211,6 +184,29 @@ public class TareaFragment extends Fragment {
             }
         }
         return null; // Manejar el caso en el que no se encuentra la clave
+    }
+
+
+
+    private void cargarTareaDetalles(Tarea tarea){
+        String idTarea = tarea.getId();
+        et_tareaNombre.setText(tarea.getTitulo());
+        et_tareaDescripcion.setText(tarea.getDescripcion());
+        String precioTarea = String.valueOf(tarea.getGasto());
+        et_tareaPrecio.setText(precioTarea);
+        //int posicionAdapter = obtenerPosicionAdapter(adapter, tarea.getIdEncargado());
+        //sp_participantes.setSelection(posicionAdapter);
+
+
+    }
+
+    private int obtenerPosicionAdapter(ArrayAdapter<String> adapter, String id){
+        for(int i = 0; i< adapter.getCount(); i++) {
+            if(adapter.getItem(i).equals(id)){
+                return i;
+            }
+        }
+        return -1;
     }
 
 }

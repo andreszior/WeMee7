@@ -17,6 +17,7 @@
         android:background="@color/light"
         android:padding="10dp">
 
+        <!-- Imagen en la parte izquierda -->
         <ImageView
             android:id="@+id/item_image1"
             android:layout_width="100dp"
@@ -28,51 +29,87 @@
             android:layout_marginRight="16dp"
             card_view:tint="@color/dark" />
 
+        <!-- Título de la tarea al lado de la imagen -->
         <TextView
             android:id="@+id/tarea_title1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_marginStart="25dp"
-
-            android:layout_marginLeft="25dp"
-            android:layout_marginTop="13dp"
-            android:layout_toEndOf="@+id/item_image1"
-            android:layout_toRightOf="@+id/item_image1"
+            android:layout_alignTop="@id/item_image1"
+            android:layout_toEndOf="@id/item_image1"
+            android:layout_toRightOf="@id/item_image1"
             android:text="Accion"
             android:textAllCaps="true"
             android:textColor="@color/dark"
             android:textSize="18sp" />
 
-        <TextView
-            android:id="@+id/item_tarea_usuario"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/item_fecha_tarea"
-            android:layout_marginStart="15dp"
+        <!-- Fecha de la tarea debajo del título -->
 
+        <!-- Usuario de la tarea debajo de la fecha -->
 
-            android:layout_marginTop="9dp"
-            android:layout_toEndOf="@+id/item_image1"
-            android:text="Realizada por"
-            android:textColor="@color/dark"
-            android:textSize="18sp" />
+        <!-- Checkbox en la parte derecha -->
+
+        <!-- Botón debajo del Checkbox -->
 
         <TextView
-            android:id="@+id/item_fecha_tarea"
+            android:id="@+id/item_precio_tarea"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/tarea_title1"
-            android:layout_marginStart="41dp"
-            android:layout_marginLeft="41dp"
-            android:layout_marginTop="9dp"
-            android:layout_toEndOf="@+id/item_image1"
-            android:layout_toRightOf="@+id/item_image1"
+            android:layout_below="@id/tarea_title1"
+            android:layout_alignStart="@id/tarea_title1"
+            android:layout_alignLeft="@id/tarea_title1"
+            android:layout_marginStart="13dp"
+            android:layout_marginLeft="13dp"
+            android:layout_marginTop="13dp"
             android:text="Fecha"
             android:textColor="@color/dark"
             android:textSize="18sp" />
 
+        <TextView
+            android:id="@+id/item_tarea_usuario"
+            android:layout_width="125dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/item_precio_tarea"
+            android:layout_alignStart="@id/item_precio_tarea"
+            android:layout_alignLeft="@id/item_precio_tarea"
+            android:layout_marginStart="-14dp"
+            android:layout_marginLeft="-14dp"
+            android:layout_marginTop="22dp"
+            android:text="Encargad@: "
+            android:textColor="@color/dark"
+            android:textSize="18sp" />
+
+        <CheckBox
+            android:id="@+id/checkBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/item_image1"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="-1dp"
+            android:layout_marginEnd="34dp"
+            android:text="Realizada" />
+
+        <Button
+            android:id="@+id/editarboton_tarea"
+            android:layout_width="wrap_content"
+            android:layout_height="34dp"
+            android:layout_below="@id/checkBox"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="9dp"
+            android:layout_marginEnd="31dp"
+            android:text="Editar" />
+
+        <ImageView
+            android:id="@+id/delete_icon_image"
+            android:layout_width="49dp"
+            android:layout_height="37dp"
+            android:layout_below="@+id/button2"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="60dp"
+            android:src="@drawable/delete_icon" />
+
 
     </RelativeLayout>
+
 
 </androidx.cardview.widget.CardView>

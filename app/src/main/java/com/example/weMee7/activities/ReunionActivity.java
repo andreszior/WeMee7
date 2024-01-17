@@ -1,49 +1,23 @@
 package com.example.weMee7.activities;
 
-        import static android.content.ContentValues.TAG;
-
-        import androidx.annotation.NonNull;
         import androidx.annotation.Nullable;
-        import androidx.constraintlayout.widget.ConstraintLayout;
         import androidx.fragment.app.Fragment;
-        import androidx.fragment.app.FragmentManager;
-        import androidx.fragment.app.FragmentTransaction;
-        import androidx.recyclerview.widget.LinearLayoutManager;
         import androidx.recyclerview.widget.RecyclerView;
 
-        import android.app.Dialog;
         import android.content.Intent;
-        import android.graphics.Color;
-        import android.graphics.drawable.ColorDrawable;
         import android.os.Bundle;
-        import android.util.Log;
-        import android.view.Gravity;
-        import android.view.View;
-        import android.view.ViewGroup;
-        import android.view.Window;
-        import android.widget.ImageButton;
-        import android.widget.ImageView;
-        import android.widget.LinearLayout;
-        import android.widget.TextView;
 
-        import com.example.weMee7.comun.TareaAdapter;
-        import com.example.weMee7.comun.TimeUtils;
         import com.example.weMee7.model.dao.ReunionDAO;
-        import com.example.weMee7.model.dao._SuperDAO;
         import com.example.weMee7.model.entities.Reunion;
         import com.example.weMee7.model.entities.Tarea;
         import com.example.weMee7.view._SuperActivity;
         import com.example.wemee7.R;
-        import com.google.android.gms.tasks.OnCompleteListener;
-        import com.google.android.gms.tasks.Task;
         import com.google.firebase.Timestamp;
         import com.google.firebase.auth.FirebaseAuth;
         import com.google.firebase.firestore.DocumentReference;
         import com.google.firebase.firestore.DocumentSnapshot;
         import com.google.firebase.firestore.FirebaseFirestore;
 
-        import java.io.Serializable;
-        import java.util.ArrayList;
         import java.util.List;
 
 //
