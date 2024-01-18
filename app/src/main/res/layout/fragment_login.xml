@@ -25,6 +25,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
+        android:maxLength="30"
+        android:inputType="textEmailAddress"
         android:hint="@string/hint_email"
         app:layout_constraintBottom_toTopOf="@+id/etLoginPass"
         app:layout_constraintEnd_toStartOf="@id/glLoginRight"
@@ -40,10 +42,23 @@
         android:inputType="textPassword"
         android:hint="@string/hint_pass"
         android:autofillHints="password"
+        android:maxLength="16"
         app:layout_constraintTop_toBottomOf="@id/etLoginEmail"
         app:layout_constraintStart_toStartOf="@id/glLoginLeft"
-        app:layout_constraintEnd_toStartOf="@id/glLoginRight"
+        app:layout_constraintEnd_toStartOf="@id/btShowPass"
         app:layout_constraintHorizontal_bias="0.3" />
+
+    <ImageButton
+        android:id="@+id/btShowPass"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5sp"
+        android:background="@android:color/transparent"
+        app:layout_constraintTop_toTopOf="@id/etLoginPass"
+        app:layout_constraintBottom_toBottomOf="@+id/etLoginPass"
+        app:layout_constraintStart_toEndOf="@+id/etLoginPass"
+        app:layout_constraintEnd_toEndOf="@id/glLoginRight"
+        app:srcCompat="@android:drawable/ic_menu_view" />
 
     <Button
         android:id="@+id/btLoginRegistrar"

@@ -48,12 +48,12 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/tag_eliminar_cuenta"
+            android:text="@string/tag_deshabilitar"
             style="@style/titulo_boton"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/tag_subtitulo_eliminar"
+            android:text="@string/tag_subtitulo_deshabilitar"
             style="@style/subtitulo_boton"/>
         <include layout="@layout/separador" />
     </LinearLayout>

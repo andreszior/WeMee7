@@ -9,12 +9,18 @@ public class InputControl {
                         Pattern.CASE_INSENSITIVE).matcher(email).matches();
     }
 
+    public static boolean passOk(String pass){
+        return pass.length() >= 6 && pass.length() <= 16;
+    }
+
     public static String phoneOk(String prefijo, String telefono){
         String completo = prefijo.concat(telefono);
         if(completo.matches("\\+\\d{11}"))
             return completo;
         return null;
     }
+
+
 
     public static boolean todoCumplimentado(String[] campos){
         for(String campo : campos)

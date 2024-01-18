@@ -91,7 +91,7 @@ public class HomeFragment extends Fragment {
 
         //Boton inferior
         final Dialog dialog = new Dialog(getContext());
-        ImageButton boton_add = view.findViewById(R.id.boton_add);
+        ImageButton boton_add = view.findViewById(R.id.bt_compartir);
         boton_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -106,14 +106,15 @@ public class HomeFragment extends Fragment {
      * Posibilidades:
      * 1. Enlace no valido.
      * 2. Reunion creada por el usuario.
-     * 3. Reunion
+     * 3. Reunion a la que ya está invitado el usuario.
+     * 4. Se genera una invitación
      * @param idReunion
      */
     private void cargarReunionLink(String idReunion) {
         new ReunionDAO().obtenerRegistroPorId(idReunion, resultado -> {
             Reunion r = (Reunion)resultado;
             String idUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
-            int mensaje = 0;
+            int mensaje;
 
             //Vigilante de tarea completa
             TaskCompletionSource<DocumentSnapshot> tcs = null;
@@ -250,9 +251,9 @@ public class HomeFragment extends Fragment {
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.boton_add);
 
-        LinearLayout AddLayout = dialog.findViewById(R.id.layoutAdd);
-        LinearLayout UnirseLayout = dialog.findViewById(R.id.layoutUnirse);
-        LinearLayout AddTareaLayout = dialog.findViewById(R.id.layoutaddTarea);
+        LinearLayout AddLayout = dialog.findViewById(R.id.llPrimeraOpcion);
+        LinearLayout UnirseLayout = dialog.findViewById(R.id.llSegundaOpcion);
+        LinearLayout AddTareaLayout = dialog.findViewById(R.id.llTerceraOpcion);
         ImageView cancelButton = dialog.findViewById(R.id.cancelButton);
 
         AddTareaLayout.setVisibility(View.GONE);
@@ -265,8 +266,6 @@ public class HomeFragment extends Fragment {
                     getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
                 }
                 dialog.dismiss();
-
-
 
             }
         });

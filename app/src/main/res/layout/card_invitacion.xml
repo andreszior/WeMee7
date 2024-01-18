@@ -61,7 +61,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:layout_gravity="center"
-                card_view:srcCompat="@drawable/send_icon"
+                card_view:srcCompat="@drawable/icon_send"
                 card_view:tint="@color/dark" />
             <TextView
                 android:id="@+id/item_creador"

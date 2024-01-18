@@ -352,7 +352,7 @@ public class ReunionesListFragment extends Fragment {
         String idReunion = item.getId();
         Invitacion i = invitacionesTab.get(item.getId());
 
-        new InvitarUsuario().responderInvitacion(i,unirse);
+        new InvitarUsuario().actualizarInvitacion(i,unirse);
         dialog.dismiss();
         if(unirse) {
             verReunion(item);

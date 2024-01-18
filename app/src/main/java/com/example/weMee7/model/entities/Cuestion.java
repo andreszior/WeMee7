@@ -5,7 +5,7 @@ import java.util.ArrayList;
 /** Clase abstracta
  *  con atributos comunes a encuestas y tareas
  */
-public abstract class Cuestion {
+public abstract class Cuestion extends _SuperEntity {
     private String idReunion;
     private String titulo;
     private ArrayList<String> idUsuariosExcluidos;//OPCIONAL

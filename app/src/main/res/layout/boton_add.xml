@@ -18,25 +18,24 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-
         <TextView
             android:id="@+id/createText"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="4"
             android:textAlignment="viewStart"
             android:text="Opcion"
             android:padding="8dp"
             android:textColor="@color/dark"
             android:layout_marginStart="12dp"
             android:layout_marginTop="5dp"
-            android:textSize="25dp" />
-
+            android:textSize="25sp" />
         <ImageView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:src="@drawable/nav_close"
-            android:layout_marginLeft="250dp"
-            android:layout_marginTop="8dp"
+            android:layout_gravity="end|top"
             android:id="@+id/cancelButton"
             app:tint="@color/medium"/>
 
@@ -44,33 +43,30 @@
 
 
     <LinearLayout
-        android:id="@+id/layoutAdd"
+        android:id="@+id/llPrimeraOpcion"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:padding="10dp">
-
         <ImageView
+            android:id="@+id/ivPrimeraOpcionIcon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/nav_add"
             app:tint="@color/medium"/>
-
         <TextView
+            android:id="@+id/tvPrimeraOpcionText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Crear un evento"
             android:textColor="@color/dark"
-            android:layout_marginLeft="30dp"
+            android:layout_marginStart="30dp"
             android:textSize="16sp"/>
-
-
-
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/layoutUnirse"
+        android:id="@+id/llSegundaOpcion"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -78,23 +74,24 @@
 
 
         <ImageView
+            android:id="@+id/ivSegundaOpcionIcon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/groups_fill0_wght400_grad0_opsz24"
             app:tint="@color/medium"/>
 
         <TextView
+            android:id="@+id/tvSegundaOpcionText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Unirse a un evento"
             android:textColor="@color/dark"
-            android:layout_marginLeft="30dp"
+            android:layout_marginStart="30dp"
             android:textSize="16sp"/>
-
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/layoutaddTarea"
+        android:id="@+id/llTerceraOpcion"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -102,21 +99,19 @@
 
 
         <ImageView
+            android:id="@+id/ivTerceraOpcionIcon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/groups_fill0_wght400_grad0_opsz24"
             app:tint="@color/medium"/>
 
         <TextView
+            android:id="@+id/tvTerceraOpcionText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Crear una tarea"
             android:textColor="@color/dark"
-            android:layout_marginLeft="30dp"
+            android:layout_marginStart="30dp"
             android:textSize="16sp"/>
-
     </LinearLayout>
-
-
-
 </LinearLayout>

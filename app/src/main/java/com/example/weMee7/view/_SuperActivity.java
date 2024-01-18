@@ -176,6 +176,9 @@ public abstract class _SuperActivity extends AppCompatActivity
             case "PhoneCodeFragment":
                 tituloToolbar = R.string.hint_codigo_verificacion;
                 break;
+            case "InvitadosFragment":
+                tituloToolbar = R.string.menu_invitados;
+                break;
             //Para los demás fragments, incluir titulo de barra a partir de aqui !!!
         }
         if(op != -1)

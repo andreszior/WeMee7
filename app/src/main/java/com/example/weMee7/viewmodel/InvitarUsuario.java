@@ -93,7 +93,7 @@ public class InvitarUsuario {
         registrarEnArray(new ReunionDAO(),idReunion,idUsuario,false);
     }
 
-    public void responderInvitacion(Invitacion i, boolean aceptar){
+    public void actualizarInvitacion(Invitacion i, boolean aceptar){
         Invitacion.EstadoInvitacion estado = aceptar ?
                 Invitacion.EstadoInvitacion.ACEPTADA :
                 Invitacion.EstadoInvitacion.RECHAZADA;

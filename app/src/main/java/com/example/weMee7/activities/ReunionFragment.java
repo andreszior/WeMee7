@@ -96,7 +96,7 @@ public class ReunionFragment extends Fragment {
         tvLugarEvento = view.findViewById(R.id.tvLugarReunion);
         tvFechaEvento = view.findViewById(R.id.tvFechaEventos);
         tvReunion = view.findViewById(R.id.tvReunion);
-        botonTarea = view.findViewById(R.id.boton_add);
+        botonTarea = view.findViewById(R.id.bt_compartir);
 
         rcReunionTareas = view.findViewById(R.id.rvReunionTareas);
         //initTareasList(reunion, rcReunionTareas);
@@ -156,9 +156,9 @@ public class ReunionFragment extends Fragment {
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             dialog.setContentView(R.layout.boton_add);
 
-            LinearLayout AddLayout = dialog.findViewById(R.id.layoutAdd);
-            LinearLayout UnirseLayout = dialog.findViewById(R.id.layoutUnirse);
-            LinearLayout AddTareaLayout = dialog.findViewById(R.id.layoutaddTarea);
+            LinearLayout AddLayout = dialog.findViewById(R.id.llPrimeraOpcion);
+            LinearLayout UnirseLayout = dialog.findViewById(R.id.llSegundaOpcion);
+            LinearLayout AddTareaLayout = dialog.findViewById(R.id.llTerceraOpcion);
             ImageView cancelButton = dialog.findViewById(R.id.cancelButton);
 
             UnirseLayout.setVisibility(View.GONE);

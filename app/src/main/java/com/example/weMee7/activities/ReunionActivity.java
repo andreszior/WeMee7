@@ -11,6 +11,7 @@ package com.example.weMee7.activities;
         import com.example.weMee7.model.entities.Reunion;
         import com.example.weMee7.model.entities.Tarea;
         import com.example.weMee7.view._SuperActivity;
+        import com.example.weMee7.view.reunion.InvitadosFragment;
         import com.example.wemee7.R;
         import com.google.firebase.Timestamp;
         import com.google.firebase.auth.FirebaseAuth;
@@ -35,21 +36,22 @@ public class ReunionActivity extends _SuperActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Fragment fragment = null;
+//        Fragment fragment = null;
+//
+//        Intent intent = getIntent();
+//        if (intent != null && intent.hasExtra("meeting")) {
+//            String idReunion = intent.getStringExtra("id");
+//            reunion = (Reunion) intent.getParcelableExtra("meeting");
+//            //cargarReunion(idReunion);
+//            reunion.setId(idReunion);
+//            fragment = ReunionFragment.newInstance(reunion);
+//        }
+//
+//        if (savedInstanceState == null) {
+//            colocarFragment(fragment);
+//        }
 
-        Intent intent = getIntent();
-        if (intent != null && intent.hasExtra("meeting")) {
-            String idReunion = intent.getStringExtra("id");
-            reunion = (Reunion) intent.getParcelableExtra("meeting");
-            //cargarReunion(idReunion);
-            reunion.setId(idReunion);
-            fragment = ReunionFragment.newInstance(reunion);
-        }
-
-        if (savedInstanceState == null) {
-            colocarFragment(fragment);
-        }
-
+        colocarFragment(new InvitadosFragment());
     }
 
     //Se llama cuando se acaba el fragment de creacion de tareas, actualizar RC

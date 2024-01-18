@@ -11,8 +11,13 @@
     <string name="menu_nueva_reunion">Nueva reunión</string>
     <string name="menu_about">Acerca de la aplicación</string>
     <string name="menu_settings">Ajustes de la cuenta</string>
+    <string name="menu_invitados">Lista de invitados</string>
     <string name="open_nav">Open Navigation Drawer</string>
     <string name="close_nav">Close Navigation Drawer</string>
+
+    <!--    Opciones del drawer inferior-->
+    <string name="drawer_invitar_contacto">Invitar contactos</string>
+    <string name="drawer_link_invitacion">Compartir enlace de invitación</string>
 
     <!--    Texto de mensajes Toast-->
     <string name="msj_offline">No hay conexión a Internet</string>
@@ -22,6 +27,8 @@
     <string name="msj_desvincular_fail">Error al desvincular el teléfono</string>
     <string name="msj_rellenar_campos">Rellene todos los campos</string>
     <string name="msj_email_fail">Formato de email incorrecto</string>
+    <string name="msj_pass_fail">La contraseña ha de tener entre 6 y 16 caracteres</string>
+    <string name="msj_pass_diferente">Debes introducir la misma contraseña</string>
     <string name="msj_telefono_fail">Formato de teléfono incorrecto</string>
     <string name="msj_fUser_fail">No se ha podido recuperar el usuario</string>
     <string name="msj_googleToken_fail">No se ha podido validar la cuenta seleccionada</string>
@@ -38,17 +45,21 @@
     <string name="bt_registrar">REGISTRAR</string>
     <string name="bt_acceder">ACCEDER</string>
     <string name="bt_google">INICIAR SESIÓN CON GOOGLE</string>
+    <string name="bt_confirmar">CONFIRMAR</string>
+    <string name="bt_cancelar">CANCELAR</string>
     <string name="bt_solicitar_codigo">SOLICITAR CODIGO</string>
     <string name="bt_guardar">GUARDAR</string>
     <string name="bt_verificar">VERIFICAR</string>
     <string name="bt_aceptar_tarea">CREAR</string>
     <string name="bt_unirse">UNIRSE</string>
     <string name="bt_rechazar">RECHAZAR</string>
+    <string name="bt_ok">OK</string>
 
     <!--    Etiquetas de texto-->
-    <string name="tag_nombre">Nombre de usuario </string>
-    <string name="tag_imagen">Imagen de perfil </string>
-    <string name="tag_cuenta">Cuenta de usuario </string>
+    <string name="tag_nombre">Nombre de usuario</string>
+    <string name="tag_imagen">Imagen de perfil</string>
+    <string name="tag_cuenta">Cuenta de usuario</string>
+    <string name="tag_confirmar_pass">Confirma tu contraseña</string>
     <string name="tag_vincular_tlf">Vincular teléfono</string>
     <string name="tag_desvincular_tlf">Desvincular teléfono</string>
     <string name="tag_subtitulo_vincular">Vincular el teléfono permite enviar
@@ -56,17 +67,21 @@
     <string name="tag_cerrar_sesion">Cerrar sesión</string>
     <string name="tag_subtitulo_cerrar">Si cierras sesión, tendrás que
         validar tus credenciales al volver a iniciar la app.</string>
-    <string name="tag_eliminar_cuenta">Eliminar cuenta</string>
-    <string name="tag_subtitulo_eliminar">Borrarás tu usuario y todas tus reuniones.
-        ¡Esta operación es irreversible!</string>
+    <string name="tag_deshabilitar">Deshabilitar cuenta</string>
+    <string name="tag_subtitulo_deshabilitar">Saldrás de todas las reuniones activas a las que hayas sido invitado
+        y se suspenderán todas las reuniones activas que hayas creado.</string>
     <string name="tag_mis_reuniones">Mis reuniones</string>
     <string name="tag_no_reuniones">No hay elementos para mostrar</string>
     <string name="tag_asignado">Encargado</string>
+    <string name="tag_creador">[Creador]</string>
+    <string name="tag_expulsar">¿Expulsar a</string>
+    <string name="tag_reenviar">¿Reenviar invitación a</string>
 
 
     <!--    Varios-->
     <string name="text_prefijo_sp">+34</string>
     <string name="text_cargando">Cargando...</string>
+    <string name="text_invitados">Cargando invitados...</string>
 
     <!--    Hints-->
     <string name="hint_email">Email</string>

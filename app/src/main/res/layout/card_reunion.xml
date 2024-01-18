@@ -84,7 +84,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                card_view:srcCompat="@drawable/alarm_on_fill0_wght400_grad0_opsz24"
+                card_view:srcCompat="@drawable/icon_time"
                 android:layout_margin="5dp"
                 android:layout_gravity="top"
                 card_view:tint="@color/dark" />

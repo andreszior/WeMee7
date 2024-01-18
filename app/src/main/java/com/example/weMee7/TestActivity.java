@@ -4,10 +4,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-import com.example.weMee7.activities.MenuActivity;
 import com.example.weMee7.activities.ReunionActivity;
+
 import com.example.weMee7.view._SuperActivity;
 import com.example.weMee7.view.usuario.UsuarioActivity;
+import com.example.weMee7.viewmodel.InvitarUsuario;
 import com.example.wemee7.R;
 
 public class TestActivity extends _SuperActivity {
@@ -21,7 +22,10 @@ public class TestActivity extends _SuperActivity {
     }
 
     public void iniciarApp (View view){
-
+        if(noHayConexion())
+            return;
+        Intent intent = new Intent(this, UsuarioActivity.class);
+        startActivity(intent);
     }
 
     //
@@ -35,7 +39,7 @@ public class TestActivity extends _SuperActivity {
     }
 
     public void testCarlos (View view){
-        Intent intent = new Intent(this, MenuActivity.class);
+        Intent intent = new Intent(this, UsuarioActivity.class);
 
         //Lanzar la nueva actividad
         startActivity(intent);
@@ -43,9 +47,7 @@ public class TestActivity extends _SuperActivity {
     }
 
     public void testDaniel (View view){
-        if(noHayConexion())
-            return;
-        Intent intent = new Intent(this, UsuarioActivity.class);
+        Intent intent = new Intent(this, ReunionActivity.class);
         startActivity(intent);
     }
 }
