@@ -11,6 +11,7 @@ import java.util.Map;
 public class Usuario extends _SuperEntity {
     private String nombre;
     private String foto;
+    private boolean activo;
     private Map<String,Boolean> credenciales;
     private ArrayList<String> reunionesInvitado;
 
@@ -37,6 +38,7 @@ public class Usuario extends _SuperEntity {
         this.id = id;
         this.nombre = nombre;
         this.foto = foto;
+        this.activo = true;
         credenciales = new HashMap<>();
         credenciales.put(method.toString(),true);
         reunionesInvitado = new ArrayList<>();
@@ -58,6 +60,10 @@ public class Usuario extends _SuperEntity {
     public void setFoto(String foto) {
         this.foto = foto;
     }
+
+    public boolean isActivo() {return this.activo;}
+
+    public void setActivo(boolean activo){this.activo = activo;}
 
     public Map<String, Boolean> getCredenciales() {
         return credenciales;

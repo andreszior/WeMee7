@@ -5,6 +5,7 @@ import com.google.firebase.Timestamp;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -63,5 +64,15 @@ public class TimeUtils {
         SimpleDateFormat dateFormat =
                 new SimpleDateFormat(fecha ? FORMATO_FECHA : FORMATO_HORA);
         return dateFormat.format(ts.toDate());
+    }
+
+    public static Timestamp hoy(){
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+
+        return new Timestamp(calendar.getTime());
     }
 }

@@ -1,15 +1,17 @@
 package com.example.weMee7.model.dao;
 
+import com.example.weMee7.comun.TimeUtils;
 import com.example.weMee7.model.entities.Reunion;
+import com.example.weMee7.model.entities._SuperEntity;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.sql.Timestamp;
+import com.google.firebase.Timestamp;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -26,16 +28,11 @@ public class ReunionDAO extends _SuperDAO {
      * anteriores o posteriores a la fecha de hoy
      * @param idUsuario usuario objetivo
      * @param activas posteriores / anteriores
+     * @param callback callback
      */
     public void obtenerReunionesUsuario(String idUsuario, boolean activas, FirebaseCallback callback){
         // Crear Timestamp con la fecha de hoy (a las 0:00)
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY, 0);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
-        calendar.set(Calendar.MILLISECOND, 0);
-
-        Timestamp hoy = new Timestamp(calendar.getTimeInMillis());
+        Timestamp hoy = TimeUtils.hoy();
 
         //Consulta reuniones creadas
         Query q1 = DB_COLECCION
@@ -71,6 +68,28 @@ public class ReunionDAO extends _SuperDAO {
             //Devolver en calllback los resultados combinados
             callback.onCallback(listaCombinada);
         });
+    }
+
+    /**
+     * Consulta las reuniones activas creadas por un usuario,
+     * y devuelve una lista con sus id
+     * @param idUsuario id del usuario creador de la reunion
+     * @param callback callback
+     */
+    public void obtenerIdReunionesActivasCreadas (String idUsuario, FirebaseCallback callback) {
+        DB_COLECCION
+                .whereEqualTo(Fields.REUNIONES_POR_CREADOR.getField(), idUsuario)
+                .whereGreaterThanOrEqualTo(Fields.FECHA_REUNION.getField(), TimeUtils.hoy())
+                .get().addOnCompleteListener(task -> {
+                    if (task.isSuccessful() && task.getResult() != null) {
+                        List<String> idReunionesList = new ArrayList<>();
+                        for (QueryDocumentSnapshot doc : task.getResult()) {
+                            Reunion reunion = (Reunion) doc.toObject(CLASE_DAO);
+                            idReunionesList.add(reunion.getId());
+                        }
+                        callback.onCallback(idReunionesList);
+                    }
+                });
     }
 
 }

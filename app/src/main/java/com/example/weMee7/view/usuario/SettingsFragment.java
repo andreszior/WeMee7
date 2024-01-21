@@ -56,6 +56,6 @@ public class SettingsFragment extends Fragment {
      * Elimina al usuario de Firebase y de la base de datos
      */
     private void pulsarEliminarCuenta() {
-        new ValidarUsuario(getActivity()).eliminarCuenta();
+        new ValidarUsuario(getActivity()).deshabilitarCuenta();
     }
 }

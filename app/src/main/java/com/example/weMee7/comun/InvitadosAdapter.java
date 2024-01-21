@@ -15,6 +15,7 @@ import java.util.Map;
 
 import android.content.res.ColorStateList;
 import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.TransitionDrawable;
 import android.view.LayoutInflater;
@@ -28,7 +29,7 @@ import android.widget.TextView;
 public class InvitadosAdapter extends RecyclerView.Adapter<InvitadosAdapter.ViewHolder> {
     private final List<Usuario> uList;
     private final Map<String,Invitacion> iMap;
-    private final boolean esCreador;
+    private final boolean esModificable;
     private final Context context;
     private int ultimaFilaSeleccionada = -1;
 
@@ -38,12 +39,11 @@ public class InvitadosAdapter extends RecyclerView.Adapter<InvitadosAdapter.View
         void onItemClick(Invitacion i);
     }
 
-    public InvitadosAdapter(List<Usuario> uList, Map<String,Invitacion> iMap, boolean esCreador,
+    public InvitadosAdapter(List<Usuario> uList, Map<String,Invitacion> iMap, boolean esModificable,
                                 Context context, InvitadosAdapter.OnItemClickListener listener){
-
         this.uList = uList;
         this.iMap = iMap;
-        this.esCreador = esCreador;
+        this.esModificable = esModificable;
         this.context= context;
         this.listener = listener;
     }
@@ -97,8 +97,7 @@ public class InvitadosAdapter extends RecyclerView.Adapter<InvitadosAdapter.View
                             R.color.avatar_verde : R.color.avatar_rojo)));
             filaNormal();
 
-
-            if(esCreador){
+            if(esModificable && invitado.isActivo()){
                 //Listener click en fila
                 llFondo.setOnClickListener(view -> {
                     int filaSeleccionada = getAbsoluteAdapterPosition();
@@ -123,7 +122,9 @@ public class InvitadosAdapter extends RecyclerView.Adapter<InvitadosAdapter.View
         }
 
         private void filaNormal() {
-            if(i.getEstado() == Invitacion.EstadoInvitacion.ENVIADA)
+            if(!invitado.isActivo())
+                imagenEstado = R.drawable.icon_disabled;
+            else if(i.getEstado() == Invitacion.EstadoInvitacion.ENVIADA)
                 imagenEstado = R.drawable.icon_unknown;
             else if (i.getEstado() == Invitacion.EstadoInvitacion.ACEPTADA)
                 imagenEstado = R.drawable.icon_accepted;
@@ -141,8 +142,12 @@ public class InvitadosAdapter extends RecyclerView.Adapter<InvitadosAdapter.View
 
             //Nombre de usuario
             tvNombreInvitado.setText(nombreInvitado);
-            tvNombreInvitado.setTextColor(context.getResources().getColor(R.color.black));
-            if(esCreador)
+            int colorTexto = (invitado.isActivo() ? R.color.black : R.color.avatar_gris);
+            tvNombreInvitado.setTextColor(context.getResources().getColor(colorTexto));
+
+            if(!invitado.isActivo())
+                tvNombreInvitado.setTypeface(null, Typeface.ITALIC);
+            else if(esModificable)
                 tvNombreInvitado.setPaintFlags(tvNombreInvitado.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
             ivEstadoInvitado.setVisibility(View.VISIBLE);
             ivIconoInvitado.setVisibility(View.VISIBLE);
@@ -167,7 +172,7 @@ public class InvitadosAdapter extends RecyclerView.Adapter<InvitadosAdapter.View
             ivIconoInvitado.setVisibility(View.GONE);
             tvNombreInvitado.setText(mensaje);
             tvNombreInvitado.setTextColor(context.getResources().getColor(R.color.white));
-            if(esCreador)
+            if(esModificable)
                 tvNombreInvitado.setPaintFlags(tvNombreInvitado.getPaintFlags() & ~Paint.UNDERLINE_TEXT_FLAG);
             btConfirmar.setVisibility(View.VISIBLE);
 
@@ -177,7 +182,7 @@ public class InvitadosAdapter extends RecyclerView.Adapter<InvitadosAdapter.View
 
         private void cambiarFondo(){
             final ColorDrawable blanco =  new ColorDrawable(ContextCompat.getColor(context, R.color.white));
-            ColorDrawable colores[] = {
+            ColorDrawable[] colores = {
                     (seleccionada ? blanco : colorSeleccion),
                     (seleccionada ? colorSeleccion : blanco)};
 

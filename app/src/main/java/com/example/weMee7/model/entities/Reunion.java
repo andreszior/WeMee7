@@ -124,6 +124,15 @@ public class Reunion extends _SuperEntity implements Comparable<Reunion>, Parcel
         this.hora = hora;
     }
 
+    /**
+     * Devuelve si la fecha de reunion es igual o posterior
+     * a la fecha de hoy, es decir, si se ha celebrado o no.
+     * @return true / false
+     */
+    public boolean estaActiva(){
+        return this.getFecha().compareTo(TimeUtils.hoy()) >= 0;
+    }
+
     //Getters y setters de fecha y hora en formato String
     public String obtenerFechaString(){
         return TimeUtils.timestampToFecha(this.fecha);

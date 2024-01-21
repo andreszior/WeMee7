@@ -5,11 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="3dp"
-    android:visibility="gone"
+    android:visibility="visible"
     card_view:cardBackgroundColor="@color/white"
     card_view:cardCornerRadius="15dp"
-    card_view:cardElevation="6dp"
-    card_view:contentPadding="4dp">
+    card_view:cardElevation="6dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

@@ -19,7 +19,7 @@ public class Invitacion extends _SuperEntity{
         Este dato se actualizará cuando el usuario consulte sus reuniones
         y su fecha haya pasado.
          */
-    private Timestamp fecha_envio;//Invariable
+    private Timestamp fecha_envio;
 
     //Constructor vacio
     public Invitacion() {}
@@ -38,7 +38,7 @@ public class Invitacion extends _SuperEntity{
         this.idReunion = idReunion;
         this.estado = EstadoInvitacion.ENVIADA;
         this.yaCelebrada = false;
-        this.fecha_envio = Timestamp.now();
+        enviarAhora();
     }
 
     public String getIdUsuario() {
@@ -68,6 +68,8 @@ public class Invitacion extends _SuperEntity{
     public Timestamp getFecha_envio() {
         return fecha_envio;
     }
+
+    public void enviarAhora(){fecha_envio = Timestamp.now();}
 
     /**
      * Enumeracion que recoge valores constantes

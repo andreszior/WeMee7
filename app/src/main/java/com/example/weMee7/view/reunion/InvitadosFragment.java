@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.example.weMee7.comun.Avatar;
 import com.example.weMee7.comun.InvitadosAdapter;
+import com.example.weMee7.comun.TimeUtils;
 import com.example.weMee7.model.dao.InvitacionDAO;
 import com.example.weMee7.model.dao.ReunionDAO;
 import com.example.weMee7.model.dao.UsuarioDAO;
@@ -42,7 +43,8 @@ public class InvitadosFragment extends Fragment {
     private TextView tvCargando;
     private RecyclerView rvInvitados;
     private ImageButton btCompartir;
-    private boolean esCreador;
+    private boolean esModificable;
+    //La lista es modificable por el creador de la reunion & si la reunion esta activa
 
 
     public InvitadosFragment() {}
@@ -79,11 +81,13 @@ public class InvitadosFragment extends Fragment {
 
     private void consultaCreador(){
         new ReunionDAO().obtenerRegistroPorId(idReunion, reunion -> {
+            Reunion r = (Reunion) reunion;
             new UsuarioDAO().obtenerRegistroPorId(((Reunion) reunion).getIdCreador(), creador -> {
                 //Añadir usuario creador
                 Usuario u = (Usuario) creador;
-                esCreador = (FirebaseAuth.getInstance().getCurrentUser().getUid().equals(u.getId()));
-                if (esCreador)
+                esModificable = FirebaseAuth.getInstance().getCurrentUser().getUid().equals(u.getId())
+                && r.estaActiva();
+                if (esModificable)
                     btCompartir.setVisibility(View.VISIBLE);
                 cargarCreador(u);
                 consultaInvitados();
@@ -100,7 +104,6 @@ public class InvitadosFragment extends Fragment {
                 requireActivity().getResources().getColor(avatar.getColor())));
 
         //Cargar nombre del creador
-
         tvNombreInvitado.setTypeface(null, Typeface.BOLD);
         tvNombreInvitado.setTextColor(requireActivity().getResources().getColor(R.color.light));
         tvNombreInvitado.setText(creador.getNombre());
@@ -122,7 +125,7 @@ public class InvitadosFragment extends Fragment {
 
     private void llenarLista() {
         InvitadosAdapter adapter = new InvitadosAdapter(
-                asistentesList,invitacionMap,esCreador,
+                asistentesList,invitacionMap, esModificable,
                 requireActivity(),item -> pulsarOpcionInvitado(item));
         rvInvitados.setHasFixedSize(true);
         rvInvitados.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -132,9 +135,14 @@ public class InvitadosFragment extends Fragment {
 
     private void pulsarOpcionInvitado(Invitacion i) {
         //Modificar invitacion
-        i.setEstado(i.getEstado() == Invitacion.EstadoInvitacion.RECHAZADA ?
+        boolean reenviar = i.getEstado() == Invitacion.EstadoInvitacion.RECHAZADA;
+
+        i.setEstado(reenviar ? //Cambio de estado
             Invitacion.EstadoInvitacion.ENVIADA :
             Invitacion.EstadoInvitacion.RECHAZADA);
+
+        if(reenviar) //Cambio fecha de envio
+            i.enviarAhora();
 
         //Actualizar base de datos
         new InvitacionDAO().actualizarRegistro(i);
@@ -144,6 +152,5 @@ public class InvitadosFragment extends Fragment {
 
         //Refrescar recyclerView
         llenarLista();
-
     }
 }

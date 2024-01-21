@@ -62,14 +62,12 @@
     <string name="tag_confirmar_pass">Confirma tu contraseña</string>
     <string name="tag_vincular_tlf">Vincular teléfono</string>
     <string name="tag_desvincular_tlf">Desvincular teléfono</string>
-    <string name="tag_subtitulo_vincular">Vincular el teléfono permite enviar
-        y recibir invitaciones entre contactos de manera sencilla </string>
+
     <string name="tag_cerrar_sesion">Cerrar sesión</string>
     <string name="tag_subtitulo_cerrar">Si cierras sesión, tendrás que
         validar tus credenciales al volver a iniciar la app.</string>
     <string name="tag_deshabilitar">Deshabilitar cuenta</string>
-    <string name="tag_subtitulo_deshabilitar">Saldrás de todas las reuniones activas a las que hayas sido invitado
-        y se suspenderán todas las reuniones activas que hayas creado.</string>
+
     <string name="tag_mis_reuniones">Mis reuniones</string>
     <string name="tag_no_reuniones">No hay elementos para mostrar</string>
     <string name="tag_asignado">Encargado</string>
@@ -77,11 +75,20 @@
     <string name="tag_expulsar">¿Expulsar a</string>
     <string name="tag_reenviar">¿Reenviar invitación a</string>
 
+    <!--    Textos largos-->
+    <string name="text_subtitulo_vincular">Vincular el teléfono permite enviar
+        y recibir invitaciones entre contactos de manera sencilla </string>
+    <string name="text_subtitulo_deshabilitar">Se suspenderá tu actividad, pero podrás rehabilitarla
+        volviendo a acceder a la cuenta.</string>
+    <string name="text_dialog_deshabilitar">Si dehabilitas tu cuenta: \n
+    - Ya no podrás acceder a las reuniones activas a las que hayas sido invitado.\n
+    - Los demás no podrán acceder a las reuniones que hayas creado y todavía no se hayan celebrado.\n
+    ¿Deseas deshabilitar tu cuenta?</string>
 
     <!--    Varios-->
     <string name="text_prefijo_sp">+34</string>
-    <string name="text_cargando">Cargando...</string>
-    <string name="text_invitados">Cargando invitados...</string>
+    <string name="text_cargando">Cargando…</string>
+    <string name="text_invitados">Cargando invitados…</string>
 
     <!--    Hints-->
     <string name="hint_email">Email</string>

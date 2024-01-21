@@ -93,7 +93,12 @@ public class InvitarUsuario {
         registrarEnArray(new ReunionDAO(),idReunion,idUsuario,false);
     }
 
-    public void actualizarInvitacion(Invitacion i, boolean aceptar){
+    /**
+     * Cambia el estado de la invitacion segun el parametro
+     * @param i objeto Invitacion
+     * @param aceptar true : ACEPTADA / false : RECHAZADA
+     */
+    public void responderInvitacion(Invitacion i, boolean aceptar){
         Invitacion.EstadoInvitacion estado = aceptar ?
                 Invitacion.EstadoInvitacion.ACEPTADA :
                 Invitacion.EstadoInvitacion.RECHAZADA;

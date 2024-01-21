@@ -29,6 +29,7 @@ import com.example.weMee7.model.entities.Invitacion;
 import com.example.weMee7.model.entities.Reunion;
 import com.example.weMee7.view._SuperActivity;
 import com.example.weMee7.viewmodel.InvitarUsuario;
+import com.example.weMee7.viewmodel.ValidarUsuario;
 import com.example.wemee7.R;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.TaskCompletionSource;
@@ -59,10 +60,14 @@ public class HomeFragment extends Fragment {
     //Control de cambios
     private boolean hayCambios;
 
+    //Id del usuario
+    private String idUsuarioActual;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        idUsuarioActual = FirebaseAuth.getInstance().getCurrentUser().getUid();
         hayCambios = false;
     }
 
@@ -74,30 +79,38 @@ public class HomeFragment extends Fragment {
         viewPager = view.findViewById(R.id.vpHomeViewPager);
         tabs = view.findViewById(R.id.tlHomeTabLayout);
 
+        //ViewModel Validar
+        ValidarUsuario vmValidar = new ValidarUsuario(requireActivity());
+
+        //Error en el id del Usuario > Vuelve al login
+        if(idUsuarioActual == null){
+            _SuperActivity activity = (_SuperActivity)requireActivity();
+            activity.lanzarMensaje(R.string.msj_fUser_fail);
+            vmValidar.reiniciarCredenciales();
+            onDestroy();
+            return null;
+        }
+
         //Habilitar menu hamburguesa
         ((_SuperActivity)requireActivity()).setDrawerMenu(true);
 
         //Mostrar pantalla carga
         ((_SuperActivity)requireActivity()).setCargando(false);
 
+        //Reactivar usuario (si estuviera inactivo)
+        vmValidar.rehabilitarUsuario(idUsuarioActual);
+
         //Añadir reunion de enlace (en su caso)
         String idReunion = ((UsuarioActivity)requireActivity()).getIdReunionLink();
         if(idReunion != null) {
             cargarReunionLink(idReunion);
             ((UsuarioActivity)requireActivity()).nullIdReunionLink();//Se anula el codigo del link
-        }
-        else //Si no hay reunion, se realizan las consultas directamente
-            dataBinding(); //Consulta de reuniones e invitaciones
+        } else //Si no hay reunion, se realizan las consultas directamente
+            cargarDatos(); //Consulta de reuniones e invitaciones
 
         //Boton inferior
-        final Dialog dialog = new Dialog(getContext());
         ImageButton boton_add = view.findViewById(R.id.bt_compartir);
-        boton_add.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showBottomDialog();
-            }
-        });
+        boton_add.setOnClickListener(view1 -> showBottomDialog());
         return view;
     }
 
@@ -113,7 +126,6 @@ public class HomeFragment extends Fragment {
     private void cargarReunionLink(String idReunion) {
         new ReunionDAO().obtenerRegistroPorId(idReunion, resultado -> {
             Reunion r = (Reunion)resultado;
-            String idUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
             int mensaje;
 
             //Vigilante de tarea completa
@@ -121,23 +133,23 @@ public class HomeFragment extends Fragment {
 
             if(r == null)
                 mensaje = R.string.msj_enlace_fail;
-            else if(r.getIdCreador().equals(idUser))
+            else if(r.getIdCreador().equals(idUsuarioActual))
                 mensaje = R.string.msj_invitacion_creador;
-            else if(r.getInvitadosList().contains(idUser))
+            else if(r.getInvitadosList().contains(idUsuarioActual))
                 mensaje = R.string.msj_invitacion_yainvitado;
             else{
                 //Si se crea una invitacion, la consulta de reuniones debe esperar
                 mensaje = R.string.msj_invitacion_annadida;
-                tcs = new InvitarUsuario().enviarInvitacion(idReunion,idUser);
+                tcs = new InvitarUsuario().enviarInvitacion(idReunion,idUsuarioActual);
             }
             if(tcs != null){
                 //Cuando termine la tarea de enviar invitacion, se realizan las demas consultas
                 Task<DocumentSnapshot> getTask = tcs.getTask();
                 getTask.addOnSuccessListener(documentSnapshot -> {
-                    dataBinding();
+                    cargarDatos();
                 });
             }else
-                dataBinding();
+                cargarDatos();
 
             if(mensaje != 0)
                 Toast.makeText(requireActivity(),
@@ -150,11 +162,10 @@ public class HomeFragment extends Fragment {
      * Se llenan la lista de reuniones y el mapa de invitaciones
      * con aquellas vinculadas con el usuario.
      */
-    private void dataBinding() {
-        String idUsuario = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        new ReunionDAO().obtenerReunionesUsuario(idUsuario, true, rList -> {
+    private void cargarDatos() {
+        new ReunionDAO().obtenerReunionesUsuario(idUsuarioActual, true, rList -> {
             reunionesList = (List)rList;
-            new InvitacionDAO().obtenerInvitacionesActivas(idUsuario,true, iMap -> {
+            new InvitacionDAO().obtenerInvitacionesActivas(idUsuarioActual,true, iMap -> {
                 invitacionesMap = (Map)iMap;
                 setupViewPager();
             });
@@ -246,7 +257,6 @@ public class HomeFragment extends Fragment {
     }
 
     private void showBottomDialog() {
-        Fragment selectedFragment = null;
         final Dialog dialog = new Dialog(getContext());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.boton_add);

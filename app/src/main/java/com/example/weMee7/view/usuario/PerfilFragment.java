@@ -158,7 +158,7 @@ public class PerfilFragment extends Fragment {
         tagVincular.setText(telefonoVinculado ?
                 R.string.tag_desvincular_tlf : R.string.tag_vincular_tlf);
         if(!telefonoVinculado){
-            subtitleVincular.setText(R.string.tag_subtitulo_vincular);
+            subtitleVincular.setText(R.string.text_subtitulo_vincular);
             subtitleVincular.setJustificationMode(LineBreaker.JUSTIFICATION_MODE_INTER_WORD);
         }
     }

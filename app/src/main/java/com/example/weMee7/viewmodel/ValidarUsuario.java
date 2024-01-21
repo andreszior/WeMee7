@@ -12,7 +12,10 @@ import androidx.fragment.app.Fragment;
 
 import com.example.weMee7.comun.Avatar;
 import com.example.weMee7.comun.seguridad.SharedPref;
+import com.example.weMee7.model.dao.InvitacionDAO;
+import com.example.weMee7.model.dao.ReunionDAO;
 import com.example.weMee7.model.dao.UsuarioDAO;
+import com.example.weMee7.model.entities.Invitacion;
 import com.example.weMee7.model.entities.Usuario;
 import com.example.weMee7.view._SuperActivity;
 import com.example.weMee7.view.usuario.HomeFragment;
@@ -38,6 +41,9 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthOptions;
 import com.google.firebase.auth.PhoneAuthProvider;
+
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -363,7 +369,7 @@ public class ValidarUsuario {
 
     //endregion
 
-    //region LOGOUT
+    //region LOGOUT Y DESHABILITAR USUARIO
 
     /**
      * Cierra la sesion en Firebase del usuario en el dispositivo.
@@ -377,28 +383,68 @@ public class ValidarUsuario {
     };
 
     /**
-     * Elimina al usuario de Firebase Authentication
-     * y de la BD.
-     * !!! FALTA IMPLEMENTAR EL BORRADO DE ENTIDADES DEPENDIENTES
-     * PARA GARANTIZAR LA INTEGRIDAD REFERENCIAL
+     * Deshabilita al usuario de la BD;
+     * rechaza todas sus invitaciones activas,
+     * y rechaza las invitaciones de las reuniones activas creadas.
      */
-    public void eliminarCuenta(){
+    public void deshabilitarCuenta(){
         mostrarCargando();
-        //Solicitar de nuevo la validacion de credenciales !!!
-        FirebaseUser fUser = mAuth.getCurrentUser();
-        new UsuarioDAO().borrarRegistro(fUser.getUid());
-        //Eliminar reuniones creadas por el usuario !!!
-        //Eliminar invitaciones a nombre del usuario !!!
-        //Desasignar encomiendas del usuario !!!
-        fUser.delete();
+        String idUser = mAuth.getCurrentUser().getUid();
+        InvitarUsuario vmInvitar = new InvitarUsuario();
+        UsuarioDAO uDAO = new UsuarioDAO();
+
+        uDAO.obtenerRegistroPorId(idUser, entity -> {
+            Usuario usuario = (Usuario) entity;
+            usuario.setActivo(false);
+            uDAO.actualizarRegistro(usuario);
+        });
+
+        //Rechazar invitaciones activas
+        InvitacionDAO iDAO = new InvitacionDAO();
+        iDAO.obtenerInvitacionesActivas(idUser,true, invitacionesMap -> {
+            Map<String,Invitacion> invitaciones = (Map)invitacionesMap;
+                for (Map.Entry<String,Invitacion> i : invitaciones.entrySet())
+                        vmInvitar.responderInvitacion(i.getValue(), false);
+        });
+
+        //Rechazar invitaciones de reuniones activas creadas
+        new ReunionDAO().obtenerIdReunionesActivasCreadas(idUser, idReunionesList ->{
+            for(String idReunion : (List<String>)idReunionesList){
+                iDAO.obtenerInvitacionesReunion(idReunion, invitacionesOtros ->{
+                    Map<String,Invitacion> invitaciones = (Map)invitacionesOtros;
+                    for(Map.Entry<String,Invitacion> i : invitaciones.entrySet())
+                        vmInvitar.responderInvitacion(i.getValue(),false);
+                });
+            }
+        });
+
+        //Desasignar tareas encargadas !!!
+
+
         reiniciarCredenciales();
         ocultarCargando();
     }
 
     /**
+     * Comprueba si el usuario esta activo;
+     * si no lo esta, lo activa.
+     * @param idUsuario usuario
+     */
+    public void rehabilitarUsuario(String idUsuario){
+        UsuarioDAO uDAO = new UsuarioDAO();
+        uDAO.obtenerRegistroPorId(idUsuario, entity -> {
+            Usuario u = (Usuario)entity;
+            if(!u.isActivo()){
+                u.setActivo(true);
+                uDAO.actualizarRegistro(u);
+            }
+        });
+    }
+
+    /**
      * Borra el inicio de sesion de las preferencias compartidas
      */
-    private void reiniciarCredenciales(){
+    public void reiniciarCredenciales(){
         //Limpiar preferencias compartidas
         SharedPref sharedPref = new SharedPref(context);
         if(sharedPref.get(LOGIN_KEY))
