@@ -99,7 +99,6 @@ public class TareaAdapter extends RecyclerView.Adapter<TareaAdapter.ViewHolder> 
 
         }
 
-
         void bindData(final Tarea tarea) {
 
             String precio = String.valueOf(tarea.getGasto());
@@ -113,7 +112,5 @@ public class TareaAdapter extends RecyclerView.Adapter<TareaAdapter.ViewHolder> 
             });
             checkboxTarea.setChecked(tarea.isChecked());
         }
-
-
     }
 }
