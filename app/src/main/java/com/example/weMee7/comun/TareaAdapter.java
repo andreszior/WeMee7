@@ -6,20 +6,16 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.weMee7.comun.seguridad.SharedPref;
 import com.example.weMee7.model.dao.TareaDAO;
 import com.example.weMee7.model.dao.UsuarioDAO;
 import com.example.weMee7.model.entities.Tarea;
 import com.example.weMee7.model.entities.Usuario;
-import com.example.weMee7.view._SuperActivity;
 import com.example.wemee7.R;
 
 import java.util.List;
@@ -29,11 +25,7 @@ public class TareaAdapter extends RecyclerView.Adapter<TareaAdapter.ViewHolder> 
     private List<Tarea> listaTareas;
     private LayoutInflater layoutInflater;
     Context context;
-
-
     int position;
-
-
     final TareaAdapter.OnItemClickListener listener;
 
     public interface OnItemClickListener {
@@ -72,20 +64,21 @@ public class TareaAdapter extends RecyclerView.Adapter<TareaAdapter.ViewHolder> 
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tareaTitle, precioTarea, personaAsingada;
-        ImageView deleteImage;
-        Button editarTareaBoton;
-        CheckBox tareaCheckBox;
+        TextView tituloTarea, precioTarea, encargadoTarea;
+        CheckBox checkboxTarea;
 
 
         ViewHolder(View itemView) {
             super(itemView);
-            tareaTitle = itemView.findViewById(R.id.tarea_title1);
+
+            //Componentes
+            tituloTarea = itemView.findViewById(R.id.tarea_title1);
             precioTarea = itemView.findViewById(R.id.item_precio_tarea);
-            personaAsingada = itemView.findViewById(R.id.item_tarea_usuario);
+            encargadoTarea = itemView.findViewById(R.id.item_tarea_usuario);
+            checkboxTarea = itemView.findViewById(R.id.checkBox);
 
-            tareaCheckBox = itemView.findViewById(R.id.checkBox);
 
+            //Comportamiento modificable de los componentes
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -96,11 +89,7 @@ public class TareaAdapter extends RecyclerView.Adapter<TareaAdapter.ViewHolder> 
                 }
             });
 
-
-            //Revisar esto porque el checkbox no se guarda en el firebase, por ende,
-            //usuarios que no lo ponen, no veran si esta selañado o no
-
-            tareaCheckBox.setOnCheckedChangeListener(((buttonView, isChecked) -> {
+            checkboxTarea.setOnCheckedChangeListener(((buttonView, isChecked) -> {
                 position = getAdapterPosition();
                 if (position != RecyclerView.NO_POSITION) {
                     listaTareas.get(position).setChecked(isChecked);
@@ -110,19 +99,19 @@ public class TareaAdapter extends RecyclerView.Adapter<TareaAdapter.ViewHolder> 
 
         }
 
+
         void bindData(final Tarea tarea) {
-            tareaTitle.setText(tarea.getTitulo());
 
             String precio = String.valueOf(tarea.getGasto());
+
+            tituloTarea.setText(tarea.getTitulo());
             precioTarea.setText(precio);
 
             new UsuarioDAO().obtenerRegistroPorId(tarea.getIdEncargado(), resultado -> {
                 Usuario encargadoTarea = (Usuario) resultado;
-                personaAsingada.setText(encargadoTarea.getNombre());
+                this.encargadoTarea.setText(encargadoTarea.getNombre());
             });
-
-            tareaCheckBox.setChecked(tarea.isChecked());
-
+            checkboxTarea.setChecked(tarea.isChecked());
         }
 
 

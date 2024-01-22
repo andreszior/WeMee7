@@ -14,7 +14,7 @@ import com.google.firebase.Timestamp;
  */
 public class Tarea extends _SuperEntity implements Comparable<Tarea>, Parcelable {
 
-    private String idTarea;
+    //private String idTarea;
 
     private String idReunion;
     private String titulo;
@@ -33,10 +33,10 @@ public class Tarea extends _SuperEntity implements Comparable<Tarea>, Parcelable
     public Tarea() {}
 
 
-    public String getIdTarea(){return idTarea;}
+    //public String getIdTarea(){return idTarea;}
 
 
-    public void setIdTarea(String idTarea){this.idTarea = idTarea;}
+    //public void setIdTarea(String idTarea){this.idTarea = idTarea;}
     public String getIdReunion() {
         return idReunion;
     }
@@ -135,7 +135,7 @@ public class Tarea extends _SuperEntity implements Comparable<Tarea>, Parcelable
 
 
     protected Tarea(Parcel in) {
-        idTarea = in.readString();
+        //idTarea = in.readString();
         idReunion = in.readString();
         titulo = in.readString();
         idEncargado = in.readString();
@@ -164,7 +164,7 @@ public class Tarea extends _SuperEntity implements Comparable<Tarea>, Parcelable
 
     @Override
     public void writeToParcel(@NonNull Parcel dest, int flags) {
-        dest.writeString(idTarea);
+        //dest.writeString(idTarea);
         dest.writeString(idReunion);
         dest.writeString(titulo);
         dest.writeString(idEncargado);
