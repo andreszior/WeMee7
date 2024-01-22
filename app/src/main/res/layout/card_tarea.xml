@@ -50,19 +50,33 @@
 
         <!-- Botón debajo del Checkbox -->
 
-        <TextView
-            android:id="@+id/item_precio_tarea"
+        <ImageView
+            android:id="@+id/ivHomeFoto"
+
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tarea_title1"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="11dp"
+            android:layout_marginEnd="23dp"
+            android:backgroundTint="@color/medium"
+            android:src="@drawable/euro_icon" />
+
+        <TextView
+            android:id="@+id/item_precio_tarea"
+            android:layout_width="72dp"
+            android:layout_height="wrap_content"
             android:layout_alignStart="@id/tarea_title1"
             android:layout_alignLeft="@id/tarea_title1"
-            android:layout_marginStart="13dp"
-            android:layout_marginLeft="13dp"
-            android:layout_marginTop="13dp"
-            android:text="Fecha"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="122dp"
+            android:layout_marginLeft="122dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginEnd="14dp"
+            android:layout_toStartOf="@+id/ivHomeFoto"
+            android:text="Precio"
             android:textColor="@color/dark"
-            android:textSize="18sp" />
+            android:textSize="15sp" />
 
         <TextView
             android:id="@+id/item_tarea_usuario"
@@ -71,9 +85,9 @@
             android:layout_below="@id/item_precio_tarea"
             android:layout_alignStart="@id/item_precio_tarea"
             android:layout_alignLeft="@id/item_precio_tarea"
-            android:layout_marginStart="-14dp"
-            android:layout_marginLeft="-14dp"
-            android:layout_marginTop="22dp"
+            android:layout_marginStart="-155dp"
+            android:layout_marginLeft="-155dp"
+            android:layout_marginTop="28dp"
             android:text="Encargad@: "
             android:textColor="@color/dark"
             android:textSize="18sp" />
@@ -84,8 +98,8 @@
             android:layout_height="wrap_content"
             android:layout_alignTop="@id/item_image1"
             android:layout_alignParentEnd="true"
-            android:layout_marginTop="-1dp"
-            android:layout_marginEnd="34dp"
+            android:layout_marginTop="52dp"
+            android:layout_marginEnd="26dp"
             android:text="Realizada" />
 
 
