@@ -16,7 +16,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.example.weMee7.activities.ReunionActivity;
+import com.example.weMee7.activities.ReunionFragment;
 import com.example.weMee7.comun.ReunionesListAdapter;
 import com.example.weMee7.model.dao.InvitacionDAO;
 import com.example.weMee7.model.dao.ReunionDAO;
@@ -289,19 +289,24 @@ public class ReunionesListFragment extends Fragment {
         if(tab == LISTA_INVITACIONES)
             mostrarDialogInvitacion(item);
         else
-            verReunion(item);
+            verReunion(item.getId(),item.getIdCreador());
     }
 
     /**
      * Llama a una nueva Activity
      * con el id de la reunion.
-     * @param item
+     * @param idReunion
      */
-    private void verReunion(Reunion item){
-        Intent intent = new Intent(getActivity(), ReunionActivity.class);
-        intent.putExtra("id",item.getId());
-        intent.putExtra("meeting", item);
-        startActivity(intent);
+    private void verReunion(String idReunion, String idCreador){
+        UsuarioActivity activity = (UsuarioActivity)requireActivity();
+        activity.setIdReunionActual(idReunion,idCreador);
+        activity.colocarFragment(new ReunionFragment());
+
+//
+//        Intent intent = new Intent(getActivity(), ReunionActivity.class);
+//        intent.putExtra("id",item.getId());
+//        intent.putExtra("meeting", item);
+//        startActivity(intent);
     }
 
     /**
@@ -355,7 +360,7 @@ public class ReunionesListFragment extends Fragment {
         new InvitarUsuario().responderInvitacion(i,unirse);
         dialog.dismiss();
         if(unirse) {
-            verReunion(item);
+            verReunion(item.getId(),item.getIdCreador());
             i.setEstado(Invitacion.EstadoInvitacion.ACEPTADA);
             HomeFragment hf = getFragmentPadre();
             hf.getInvitacionesMap().put(idReunion,i);

@@ -60,7 +60,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:layout_gravity="center"
-                card_view:srcCompat="@drawable/location_on_fill0_wght400_grad0_opsz24"
+                card_view:srcCompat="@drawable/icon_location"
                 card_view:tint="@color/dark" />
             <TextView
                 android:id="@+id/dialog_lugar"

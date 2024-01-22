@@ -34,7 +34,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/tag_subtitulo_cerrar"
+            android:text="@string/text_subtitulo_cerrar"
             style="@style/subtitulo_boton"/>
         <include layout="@layout/separador" />
     </LinearLayout>

@@ -90,7 +90,7 @@ public class PerfilFragment extends Fragment {
         //Mostrar animacion de carga (que se ocultara cuando se recuperen los datos de la BD)
         ((_SuperActivity)getActivity()).setCargando(true);
 
-        //Definir componentes
+        //Databinding
         etNombre = view.findViewById(R.id.etPerfilNombre);
         ivFoto = view.findViewById(R.id.ivPerfilImagen);
         tagVincular = view.findViewById(R.id.tagVincularTelefono);
@@ -119,7 +119,7 @@ public class PerfilFragment extends Fragment {
         btGuardar
                 .setOnClickListener(v-> pulsarGuardar());
 
-        dataBinding();
+        consultaUsuario();
 
         return view;
     }
@@ -128,7 +128,7 @@ public class PerfilFragment extends Fragment {
      * Recupera datos de la base de datos
      * y los muestra en los distintos componentes del layout
      */
-    private void dataBinding() {
+    private void consultaUsuario() {
         //Recuperar id del usuario
         FirebaseUser fUser = FirebaseAuth.getInstance().getCurrentUser();
         if(fUser != null){

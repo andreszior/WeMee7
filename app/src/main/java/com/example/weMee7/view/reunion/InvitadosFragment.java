@@ -24,6 +24,7 @@ import com.example.weMee7.model.dao._SuperDAO;
 import com.example.weMee7.model.entities.Invitacion;
 import com.example.weMee7.model.entities.Reunion;
 import com.example.weMee7.model.entities.Usuario;
+import com.example.weMee7.view.usuario.UsuarioActivity;
 import com.example.weMee7.viewmodel.InvitarUsuario;
 import com.example.wemee7.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -35,7 +36,7 @@ import java.util.Map;
 
 public class InvitadosFragment extends Fragment {
 
-    private String idReunion = "A7JozOiSzQpadQvPONhg";
+    private String idReunion;
     private List<Usuario> asistentesList;
     private Map<String, Invitacion> invitacionMap;
     private View fondoCreador;
@@ -52,6 +53,7 @@ public class InvitadosFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        idReunion = ((UsuarioActivity)requireActivity()).getIdReunionActual();
     }
 
     @Override
@@ -86,6 +88,7 @@ public class InvitadosFragment extends Fragment {
                 //Añadir usuario creador
                 Usuario u = (Usuario) creador;
                 esModificable = FirebaseAuth.getInstance().getCurrentUser().getUid().equals(u.getId())
+                        //Sustituir por UsuarioActivity.esCreador;
                 && r.estaActiva();
                 if (esModificable)
                     btCompartir.setVisibility(View.VISIBLE);

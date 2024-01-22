@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -14,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -21,15 +23,17 @@ import android.widget.TextView;
 import com.example.weMee7.comun.TareaAdapter;
 import com.example.weMee7.comun.TimeUtils;
 
-import com.example.weMee7.comun.seguridad.SharedPref;
+import com.example.weMee7.model.dao.ReunionDAO;
 import com.example.weMee7.model.dao.TareaDAO;
 
 import com.example.weMee7.model.entities.Reunion;
 import com.example.weMee7.model.entities.Tarea;
 import com.example.weMee7.view._SuperActivity;
 
+import com.example.weMee7.view.reunion.InvitadosFragment;
+import com.example.weMee7.view.usuario.UsuarioActivity;
 import com.example.wemee7.R;
-import com.google.firebase.Timestamp;
+
 import android.app.Dialog;
 
 import java.util.ArrayList;
@@ -44,9 +48,12 @@ import java.util.List;
 public class ReunionFragment extends Fragment {
 
     Reunion reunion;
+    View llInfoReunion, llEditReunion, llMostrarInvitados, llMostrarTareas, flTareas, fragmentContainer;
+    TextView tvNombreReunion, tvDescripReunion, tvLugarReunion, tvFechaReunion, tvHoraReunion;
+    ImageButton btEditReunion,btBorrarReunion;
+    RecyclerView rvTareasReunion;
 
-
-
+    public ReunionFragment(){}
 
 
     /**
@@ -68,12 +75,6 @@ public class ReunionFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            reunion = getArguments().getParcelable("meeting");
-            assert reunion != null;
-            reunion.setId(getArguments().getString("id"));
-
-        }
     }
 
     @Override
@@ -81,48 +82,88 @@ public class ReunionFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         // Inflate the layout for this fragment
-        View view =  inflater.inflate(R.layout.activity_reunion_detalle, container, false);
-        cargarDetallesReunion(reunion, view);
+        View view =  inflater.inflate(R.layout.fragment_reunion, container, false);
+
+        //Captar id de reunion
+        String idReunion = ((UsuarioActivity)requireActivity()).getIdReunionActual();
+
+        //Controlar id == null
+
+
+        //Databinding
+        dataBinding(view);
+
+
+        //Cargar reunion + cargar recyclerView
+        cargarDetallesReunion(idReunion);
         return view;
     }
 
-    private void cargarDetallesReunion(Reunion reunion, View view){
 
-        TextView tvLugarEvento, tvFechaEvento, tvReunion;
-        ImageButton botonTarea;
-        RecyclerView rcReunionTareas;
+    private void dataBinding (View view){
 
-        tvLugarEvento = view.findViewById(R.id.tvLugarReunion);
-        tvFechaEvento = view.findViewById(R.id.tvFechaEventos);
-        tvReunion = view.findViewById(R.id.tvReunion);
-        botonTarea = view.findViewById(R.id.boton_add);
+        boolean esCreador = ((UsuarioActivity)requireActivity()).esCreador();
 
-        rcReunionTareas = view.findViewById(R.id.rvReunionTareas);
-        llenarRecyclerViewTareas(rcReunionTareas);
+        //Contenedores
+        llInfoReunion = view.findViewById(R.id.llReunionInfo);
+        llEditReunion = view.findViewById(R.id.llReunionEdit);
+        llMostrarInvitados = view.findViewById(R.id.llMostrarInvitados);
+        llMostrarTareas = view.findViewById(R.id.llMostrarTareas);
+        flTareas = view.findViewById(R.id.flTareas);
+        fragmentContainer = view.findViewById(R.id.reunionContainer);
 
+        llInfoReunion.setVisibility(View.VISIBLE);
+        llEditReunion.setVisibility(View.GONE);
+        llMostrarInvitados.setVisibility(View.VISIBLE);
+        llMostrarTareas.setVisibility(View.VISIBLE);
+        flTareas.setVisibility(View.GONE);
 
+        //RecyclerView
+        rvTareasReunion = view.findViewById(R.id.rvReunionTareas);
 
-        Timestamp fechaReunion = reunion.getFecha();
-        tvLugarEvento.setText(reunion.getLugar());
-        tvFechaEvento.setText(TimeUtils.timestampToFecha(fechaReunion));
-        tvReunion.setText(reunion.getNombre());
+        //Etiquetas
+        tvNombreReunion = view.findViewById(R.id.tvNombreReunion);
+        tvDescripReunion = view.findViewById(R.id.tvReunionDescrip);
+        tvLugarReunion = view.findViewById(R.id.tvReunionLugar);
+        tvFechaReunion = view.findViewById(R.id.tvReunionFecha);
+        tvHoraReunion = view.findViewById(R.id.tvReunionHora);
 
-        botonTarea.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showBottomDialog();
-            }
-        });
+        //Botones
+        btEditReunion = view.findViewById(R.id.btReunionEdit);
+        btBorrarReunion = view.findViewById(R.id.btReunionDelete);
 
+        int visible = (esCreador ? View.VISIBLE : View.GONE);
 
+        btEditReunion.setVisibility(visible);
+        btBorrarReunion.setVisibility(visible);
 
+        //Asignar listeners
+        llMostrarInvitados.setOnClickListener(v -> mostrarInvitados());
+        llMostrarTareas.findViewById(R.id.btMostrarTareas).setOnClickListener(v -> mostrarTareas());
+        view.findViewById(R.id.boton_add).setOnClickListener(v -> showBottomDialog());
 
-        //initTareasList(reunion);
+        if(esCreador){
+            btEditReunion.setOnClickListener(v -> editarReunion());
+            btBorrarReunion.setOnClickListener(v -> borrarReunion());
+            view.findViewById(R.id.btReunionUndo).setOnClickListener(v -> deshacerCambios());
+            view.findViewById(R.id.btReunionGuardar).setOnClickListener(v -> guardarCambios());
+        }
     }
 
-    private void llenarRecyclerViewTareas(RecyclerView rcEvento){
-        List<Tarea> listaTareas = new ArrayList<>();
+    private void cargarDetallesReunion(String idReunion){
+        new ReunionDAO().obtenerRegistroPorId(idReunion, entity ->{
+            reunion = (Reunion)entity;
+            tvNombreReunion.setText(reunion.getNombre());
+            tvDescripReunion.setText(reunion.getDescripcion());
+            tvLugarReunion.setText(reunion.getLugar());
+            tvFechaReunion.setText(reunion.obtenerFechaString());
+            tvHoraReunion.setText(reunion.obtenerHoraString());
+            llenarRecyclerViewTareas();
+        });
+    }
 
+    private void llenarRecyclerViewTareas(){
+        List<Tarea> listaTareas = new ArrayList<>();
 
         TareaAdapter tareaAdapter = new TareaAdapter(listaTareas, this.getContext(),  new TareaAdapter.OnItemClickListener() {
             @Override
@@ -137,15 +178,74 @@ public class ReunionFragment extends Fragment {
             }
         });
 
-
         new TareaDAO().obtenerListaPorIdForaneo(ID_REUNION
         , reunion.getId(), resultado -> {
-                    rcEvento.setHasFixedSize(true);
-                    rcEvento.setLayoutManager(new LinearLayoutManager(this.getContext()));
-                    rcEvento.setAdapter(tareaAdapter);
+                    rvTareasReunion.setHasFixedSize(true);
+                    rvTareasReunion.setLayoutManager(new LinearLayoutManager(this.getContext()));
+                    rvTareasReunion.setAdapter(tareaAdapter);
             tareaAdapter.setListaTareas((List<Tarea>)resultado);
                 });
     }
+
+    //region EVENTOS BOTON
+    private void editarReunion(){
+        ((_SuperActivity)requireActivity()).lanzarMensaje(R.string.bt_editar_tarea);
+
+    }
+
+    private void borrarReunion(){
+        ((_SuperActivity)requireActivity()).lanzarMensaje(R.string.bt_delete_tarea);
+    }
+
+    private void deshacerCambios(){
+
+    }
+
+    private void guardarCambios(){
+
+    }
+
+    private void mostrarInvitados(){
+        ImageView ivBack = llMostrarInvitados.findViewById(R.id.ivInvitadosBack);
+        ImageView ivIn = llMostrarInvitados.findViewById(R.id.ivInvitadosIn);
+        FragmentManager fm = requireActivity().getSupportFragmentManager();
+        Fragment fActual = fm.findFragmentById(R.id.fragment_container);
+        if(ivBack.getVisibility() == View.GONE){
+            //La lista de invitados no se esta mostrando
+            ivIn.setVisibility(View.GONE);
+            ivBack.setVisibility(View.VISIBLE);
+
+            if(!(fActual instanceof TareaFragment))
+                fm.beginTransaction()
+                        .replace(R.id.reunionContainer,new InvitadosFragment())
+                        .commit();
+            llInfoReunion.setVisibility(View.GONE);
+            llEditReunion.setVisibility(View.GONE);
+            llMostrarTareas.setVisibility(View.GONE);
+            fragmentContainer.setVisibility(View.VISIBLE);
+
+        }else{
+            //La lista de invitados se esta mostrando
+            ivIn.setVisibility(View.VISIBLE);
+            ivBack.setVisibility(View.GONE);
+
+            llInfoReunion.setVisibility(View.VISIBLE);
+            llMostrarTareas.setVisibility(View.VISIBLE);
+            fragmentContainer.setVisibility(View.GONE);
+        }
+
+    }
+
+    private void mostrarTareas(){
+        ImageView ivTareasToggle = llMostrarTareas.findViewById(R.id.ivTareasShow);
+        ivTareasToggle.setRotation(180);
+        if(flTareas.getVisibility() == View.GONE){
+            flTareas.setVisibility(View.VISIBLE);
+        }else{
+            flTareas.setVisibility(View.GONE);
+        }
+    }
+
 
     private void showBottomDialog() {
         if(getContext() != null){
@@ -165,21 +265,12 @@ public class ReunionFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     Fragment selectedFragment = new TareaFragment();
-
                     ((_SuperActivity)requireActivity()).colocarFragment(selectedFragment);
                     dialog.dismiss();
-
-
-
                 }
             });
 
-            cancelButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    dialog.dismiss();
-                }
-            });
+            cancelButton.setOnClickListener(view -> dialog.dismiss());
 
             dialog.show();
             if(dialog.getWindow() != null){
@@ -188,8 +279,7 @@ public class ReunionFragment extends Fragment {
                 dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
                 dialog.getWindow().setGravity(Gravity.BOTTOM);
             }
-
         }
-
     }
+    //endregion
 }

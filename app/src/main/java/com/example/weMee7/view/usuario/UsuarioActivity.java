@@ -10,6 +10,7 @@ import android.os.Bundle;
 import com.example.weMee7.comun.seguridad.SharedPref;
 import com.example.weMee7.view._SuperActivity;
 import com.example.wemee7.R;
+import com.google.firebase.auth.FirebaseAuth;
 
 /**
  * Activity que gestiona los fragments
@@ -30,6 +31,22 @@ public class UsuarioActivity extends _SuperActivity {
 
     public void nullIdReunionLink() {
         this.idReunionLink = null;
+    }
+
+
+    String idReunionActual;
+    boolean userCreador;
+    public String getIdReunionActual(){
+        return idReunionActual;
+    }
+
+    public void setIdReunionActual(String idReunionActual, String idCreador){
+        this.idReunionActual = idReunionActual;
+        this.userCreador = idCreador.equals(FirebaseAuth.getInstance().getCurrentUser().getUid());
+    }
+
+    public boolean esCreador(){
+        return this.userCreador;
     }
 
     @Override
