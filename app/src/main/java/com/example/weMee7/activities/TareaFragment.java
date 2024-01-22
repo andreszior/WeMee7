@@ -40,13 +40,14 @@ public class TareaFragment extends Fragment {
 
     EditText et_tareaNombre, et_tareaDescripcion, et_tareaPrecio;
     TextView asignado;
-    Button bt_aceptarTarea;
+    Button bt_crearTarea, bt_editarTarea, bt_borrarTarea, bt_aceptarEdicionTarea;
     Spinner sp_participantes;
 
     ReunionActivity activity;
     String idUsuarioSeleccionado;
     Map<String, String> mapaNombresIds = new HashMap<>();
     ArrayAdapter<String> adapter;
+    Tarea tareaDetalles;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -61,15 +62,15 @@ public class TareaFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_tarea, container, false);
 
+        //Recibe la tarea, por ende deberia abrir el el fragment tarea con los botones editar y borrar
         Bundle args = getArguments();
         if(args != null){
-            Tarea tareaDetalles = (Tarea) args.getParcelable("TareaSeleccionada");
-            cargarComponentes(view);
+            tareaDetalles = (Tarea) args.getParcelable("TareaSeleccionada");
+            cargarComponentes(view, true);
             cargarTareaDetalles(tareaDetalles);
-            botonCrearTarea(bt_aceptarTarea);
         } else {
-            cargarComponentes(view);
-            botonCrearTarea(bt_aceptarTarea);
+            //Proviene de crear tarea
+            cargarComponentes(view, false);
         }
         return view;
     }
@@ -77,19 +78,54 @@ public class TareaFragment extends Fragment {
 
 
     //
-    private void cargarComponentes(View view) {
-        activity = (ReunionActivity) getActivity();
+    private void cargarComponentes(View view, boolean deleteOrEditTask) {
 
+        activity = (ReunionActivity) getActivity();
         et_tareaNombre = view.findViewById(R.id.editTextTaskTitle);
         et_tareaDescripcion = view.findViewById(R.id.editTextTaskDescription);
         et_tareaPrecio = view.findViewById(R.id.editTextPrecioTarea);
-        bt_aceptarTarea = view.findViewById(R.id.buttonCreateTask);
         sp_participantes = view.findViewById(R.id.SpinnerTarea);
+        bt_aceptarEdicionTarea = view.findViewById(R.id.buttonAcceptEditTask);
+
         cargarParticipantes(activity);
+
+
+        if(!deleteOrEditTask){
+            bt_crearTarea = view.findViewById(R.id.buttonCreateTask);
+            bt_crearTarea.setVisibility(View.VISIBLE);
+            accionBotonCrearTarea(bt_crearTarea);
+        } else {
+            //bt_crearTarea.setVisibility(View.GONE);
+            //Lo vuelve inmodificable
+            modificacionPermitida(false);
+            bt_editarTarea = view.findViewById(R.id.buttonEditTask);
+            bt_borrarTarea = view.findViewById(R.id.buttonDeleteTask);
+
+
+            bt_editarTarea.setVisibility(View.VISIBLE);
+            accionBotonEditarTarea(bt_editarTarea);
+
+            bt_borrarTarea.setVisibility(View.VISIBLE);
+            accionBotonBorrarTarea(bt_borrarTarea);
+        }
     }
 
-    //
-    private void botonCrearTarea(Button button){
+    private void modificacionPermitida(boolean esModificable){
+        if(!esModificable){
+            et_tareaNombre.setEnabled(false);
+            et_tareaDescripcion.setEnabled(false);
+            et_tareaPrecio.setEnabled(false);
+            sp_participantes.setEnabled(false);
+        } else {
+            et_tareaNombre.setEnabled(true);
+            et_tareaDescripcion.setEnabled(true);
+            et_tareaPrecio.setEnabled(true);
+            sp_participantes.setEnabled(true);
+        }
+    }
+
+
+    private void accionBotonCrearTarea(Button button){
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -100,30 +136,92 @@ public class TareaFragment extends Fragment {
         });
     }
 
+    private void accionBotonEditarTarea(Button button){
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //bt_aceptarEdicionTarea = view.findViewById(R.id.buttonAcceptEditTask);
+                editarTarea();
 
+                //requireActivity().onBackPressed();
+            }
+        });
+    }
+
+    private void accionBotonBorrarTarea(Button button){
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                borrarTarea();
+                Toast.makeText(getActivity(), "Tarea Borrada", Toast.LENGTH_SHORT).show();
+                requireActivity().onBackPressed();
+            }
+        });
+    }
+
+    private void editarTarea(){
+
+        modificacionPermitida(true);
+        bt_editarTarea.setVisibility(View.GONE);
+        bt_borrarTarea.setVisibility(View.GONE);
+        bt_aceptarEdicionTarea.setVisibility(View.VISIBLE);
+
+        bt_aceptarEdicionTarea.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                String nombreTareaActualizada = et_tareaNombre.getText().toString();
+                String descripcionTareaActualizada = et_tareaDescripcion.getText().toString();
+
+                int precioTareaActualizado = 0;
+
+
+
+                if(esPrecioValido(et_tareaPrecio.getText().toString())){
+                    precioTareaActualizado = Integer.parseInt(et_tareaPrecio.getText().toString());
+                    tareaDetalles.setTitulo(nombreTareaActualizada);
+                    tareaDetalles.setDescripcion(descripcionTareaActualizada);
+                    tareaDetalles.setGasto(precioTareaActualizado);
+                    tareaDetalles.setIdEncargado(idUsuarioSeleccionado);
+                    new TareaDAO().actualizarRegistro(tareaDetalles);
+
+                    Toast.makeText(getActivity(), "Tarea Modificada", Toast.LENGTH_SHORT).show();
+                    requireActivity().onBackPressed();
+                } else {
+                    Toast.makeText(getActivity(), "Ingrese un precio válido", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
+    }
+
+    private void borrarTarea(){
+        new TareaDAO().borrarRegistro(tareaDetalles.getId());
+    }
 
     private void aceptarTarea() {
         String tareaNombre = et_tareaNombre.getText().toString();
         String descripcionTarea = et_tareaDescripcion.getText().toString();
-        boolean formatoPrecioCorrecto = precioValido(et_tareaPrecio.getText().toString());
-        //pillar lo del spinner
 
-        if (formatoPrecioCorrecto) {
+        if(esPrecioValido(et_tareaPrecio.getText().toString())){
             int precioTarea = Integer.parseInt(et_tareaPrecio.getText().toString());
 
             new TareaDAO().insertarRegistro(new Tarea(activity.reunion.getId(),
                     tareaNombre, descripcionTarea, precioTarea, idUsuarioSeleccionado));
-
-
         } else {
             Toast.makeText(getActivity(), "Ingrese un precio válido", Toast.LENGTH_SHORT).show();
         }
 
     }
 
-    private boolean precioValido(String precio) {
-        String regex = "^[0-9]+(\\.[0-9]{0,2})?$";
-        return precio.matches(regex);
+    // Método auxiliar para verificar si el precio es un entero válido
+    private boolean esPrecioValido(String precio) {
+        try {
+            int valor = Integer.parseInt(precio);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
 
     private void cargarParticipantes(ReunionActivity actividad) {
@@ -131,25 +229,22 @@ public class TareaFragment extends Fragment {
         List<String> listaInvitados = actividad.reunion.getInvitadosList();
 
         for (String idUsuario : listaInvitados) {
-            obtenerNombreUsuario(idUsuario, mapaNombresIds); // Se inicia la carga de nombres
+            //obtenerNombreUsuario(idUsuario, mapaNombresIds); // Se inicia la carga de nombres
+            new UsuarioDAO().obtenerRegistroPorId(idUsuario, resultado -> {
+                Usuario user = (Usuario) resultado;
+                String nombreUsuario = user.getNombre();
+                // Asocia directamente el ID con el nombre en el mapa
+                mapaNombresIds.put(idUsuario, nombreUsuario);
+                // Verifica si se completaron todas las llamadas asíncronas
+                if (mapaNombresIds.size() == activity.reunion.getInvitadosList().size()) {
+                    // Todas las llamadas asíncronas han completado, ahora podemos configurar el adaptador
+                    configurarAdapter(mapaNombresIds);
+                }
+            });
         }
+
     }
 
-    private void obtenerNombreUsuario(String idUsuario, Map<String, String> mapaNombresIds) {
-        new UsuarioDAO().obtenerRegistroPorId(idUsuario, resultado -> {
-            Usuario user = (Usuario) resultado;
-            String nombreUsuario = user.getNombre();
-
-            // Asocia directamente el ID con el nombre en el mapa
-            mapaNombresIds.put(idUsuario, nombreUsuario);
-
-            // Verifica si se completaron todas las llamadas asíncronas
-            if (mapaNombresIds.size() == activity.reunion.getInvitadosList().size()) {
-                // Todas las llamadas asíncronas han completado, ahora podemos configurar el adaptador
-                configurarAdapter(mapaNombresIds);
-            }
-        });
-    }
 
     private void configurarAdapter(Map<String, String> mapaNombresIds) {
         // Crear una lista de nombres únicos para el adaptador
@@ -189,24 +284,36 @@ public class TareaFragment extends Fragment {
 
 
     private void cargarTareaDetalles(Tarea tarea){
-        String idTarea = tarea.getId();
         et_tareaNombre.setText(tarea.getTitulo());
         et_tareaDescripcion.setText(tarea.getDescripcion());
         String precioTarea = String.valueOf(tarea.getGasto());
         et_tareaPrecio.setText(precioTarea);
+
+        configurarAdapter(mapaNombresIds);
+        int posicionEncargado = obtenerPosicionEnSpinner(sp_participantes, tarea.getIdEncargado());
+
+        // Establece la selección en el Spinner
+        if (posicionEncargado != -1) {
+            sp_participantes.setSelection(posicionEncargado);
+        }
+        //sp_participantes.setSelection(obtenerPosicionEnSpinner(sp_participantes, tarea.getIdEncargado()));
         //int posicionAdapter = obtenerPosicionAdapter(adapter, tarea.getIdEncargado());
         //sp_participantes.setSelection(posicionAdapter);
 
-
     }
 
-    private int obtenerPosicionAdapter(ArrayAdapter<String> adapter, String id){
-        for(int i = 0; i< adapter.getCount(); i++) {
-            if(adapter.getItem(i).equals(id)){
-                return i;
+    private int obtenerPosicionEnSpinner(Spinner spinner, String idBuscado) {
+        ArrayAdapter<String> adapterAux = (ArrayAdapter<String>) spinner.getAdapter();
+
+        if (adapterAux != null) {
+            for (int i = 0; i < adapterAux.getCount(); i++) {
+                String idEnSpinner = getKeyFromValue(mapaNombresIds, adapterAux.getItem(i));
+
+                if (idBuscado.equals(idEnSpinner)) {
+                    return i;  // Se encontró el ID en la posición 'i'
+                }
             }
         }
-        return -1;
+        return -1;  // No se encontró el ID en el Spinner
     }
-
 }

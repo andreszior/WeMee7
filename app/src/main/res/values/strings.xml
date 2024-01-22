@@ -54,6 +54,8 @@
     <string name="bt_unirse">UNIRSE</string>
     <string name="bt_rechazar">RECHAZAR</string>
     <string name="bt_ok">OK</string>
+    <string name="bt_editar_tarea">EDITAR</string>
+    <string name="bt_delete_tarea">BORRAR</string>
 
     <!--    Etiquetas de texto-->
     <string name="tag_nombre">Nombre de usuario</string>

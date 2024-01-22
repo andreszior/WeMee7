@@ -30,11 +30,9 @@ public class TareaAdapter extends RecyclerView.Adapter<TareaAdapter.ViewHolder> 
     private LayoutInflater layoutInflater;
     Context context;
 
-    private SharedPref sharedPref;
 
     int position;
 
-    private _SuperActivity superActivity;
 
     final TareaAdapter.OnItemClickListener listener;
 
@@ -44,11 +42,10 @@ public class TareaAdapter extends RecyclerView.Adapter<TareaAdapter.ViewHolder> 
 
 
 
-    public TareaAdapter(List<Tarea> tareaList, Context context, SharedPref sharedPref,  OnItemClickListener listener) {
+    public TareaAdapter(List<Tarea> tareaList, Context context,   OnItemClickListener listener) {
         layoutInflater = LayoutInflater.from(context);
         this.context = context;
         listaTareas = tareaList;
-        this.sharedPref = sharedPref;
         this.listener = listener;
     }
 
@@ -62,7 +59,7 @@ public class TareaAdapter extends RecyclerView.Adapter<TareaAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull TareaAdapter.ViewHolder holder, int position) {
 
-        holder.bindData(listaTareas.get(position), position);
+        holder.bindData(listaTareas.get(position));
     }
 
     @Override
@@ -102,47 +99,18 @@ public class TareaAdapter extends RecyclerView.Adapter<TareaAdapter.ViewHolder> 
 
             //Revisar esto porque el checkbox no se guarda en el firebase, por ende,
             //usuarios que no lo ponen, no veran si esta selañado o no
-            /*
+
             tareaCheckBox.setOnCheckedChangeListener(((buttonView, isChecked) -> {
                 position = getAdapterPosition();
                 if (position != RecyclerView.NO_POSITION) {
-                    listaTareas.get(position).setChecked(tareaCheckBox.isChecked());
-                    sharedPref.setCheckboxState(position, isChecked);
+                    listaTareas.get(position).setChecked(isChecked);
+                    new TareaDAO().actualizarRegistro(listaTareas.get(position));
                 }
             }));
 
-             */
-
-            editarTareaBoton = itemView.findViewById(R.id.editarboton_tarea);
-            editarTareaBoton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //Fragment selectedFragment = new TareaFragment();
-                    position = getAdapterPosition();
-                    if (listener != null) {
-                        listener.onItemClick(listaTareas.get(position));
-                    }
-                    //dialog.dismiss();
-
-                }
-            });
-
-
-            deleteImage = itemView.findViewById(R.id.delete_icon_image);
-            deleteImage.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    position = getAdapterPosition();
-                    if(position != RecyclerView.NO_POSITION){
-                        new TareaDAO().borrarRegistro(listaTareas.get(position).getId());
-                        notifyItemRemoved(position);
-                    }
-                }
-            });
-
         }
 
-        void bindData(final Tarea tarea, int pos) {
+        void bindData(final Tarea tarea) {
             tareaTitle.setText(tarea.getTitulo());
 
             String precio = String.valueOf(tarea.getGasto());
@@ -153,8 +121,7 @@ public class TareaAdapter extends RecyclerView.Adapter<TareaAdapter.ViewHolder> 
                 personaAsingada.setText(encargadoTarea.getNombre());
             });
 
-            boolean checkBoxState = sharedPref.getCheckboxState(pos);
-            tareaCheckBox.setChecked(checkBoxState);
+            tareaCheckBox.setChecked(tarea.isChecked());
 
         }
 

@@ -45,7 +45,6 @@ public class ReunionFragment extends Fragment {
 
     Reunion reunion;
 
-    private SharedPref sharedPref;
 
 
 
@@ -96,10 +95,9 @@ public class ReunionFragment extends Fragment {
         tvLugarEvento = view.findViewById(R.id.tvLugarReunion);
         tvFechaEvento = view.findViewById(R.id.tvFechaEventos);
         tvReunion = view.findViewById(R.id.tvReunion);
-        botonTarea = view.findViewById(R.id.bt_compartir);
+        botonTarea = view.findViewById(R.id.boton_add);
 
         rcReunionTareas = view.findViewById(R.id.rvReunionTareas);
-        //initTareasList(reunion, rcReunionTareas);
         llenarRecyclerViewTareas(rcReunionTareas);
 
 
@@ -125,9 +123,8 @@ public class ReunionFragment extends Fragment {
     private void llenarRecyclerViewTareas(RecyclerView rcEvento){
         List<Tarea> listaTareas = new ArrayList<>();
 
-        sharedPref = new SharedPref(getContext(), true);
 
-        TareaAdapter tareaAdapter = new TareaAdapter(listaTareas, this.getContext(), sharedPref, new TareaAdapter.OnItemClickListener() {
+        TareaAdapter tareaAdapter = new TareaAdapter(listaTareas, this.getContext(),  new TareaAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(Tarea item) {
                 Fragment selectedFragment = new TareaFragment();
