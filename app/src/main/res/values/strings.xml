@@ -74,6 +74,7 @@
     <string name="tag_reenviar">¿Reenviar invitación a</string>
     <string name="tag_asistentes">Lista de asistentes</string>
     <string name="tag_tareas">Tareas</string>
+    <string name="tag_done">Realizada</string>
 
     <!--    Textos largos-->
     <string name="text_subtitulo_cerrar">Si cierras sesión, tendrás que
@@ -86,9 +87,11 @@
     - Ya no podrás acceder a las reuniones activas a las que hayas sido invitado.\n
     - Los demás no podrán acceder a las reuniones que hayas creado y todavía no se hayan celebrado.\n
     ¿Deseas deshabilitar tu cuenta?</string>
+    <string name="text_borrar_reunion">¿Deseas borrar esta reunión?\nEsta acción es permanente.</string>
 
     <!--    Varios-->
     <string name="text_prefijo_sp">+34</string>
+    <string name="text_sin_asignar">Sin asignar</string>
     <string name="text_cargando">Cargando…</string>
     <string name="text_invitados">Cargando invitados…</string>
 

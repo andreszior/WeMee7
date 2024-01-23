@@ -1,5 +1,6 @@
 package com.example.weMee7.model.entities;
 
+import android.annotation.SuppressLint;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -13,8 +14,6 @@ import com.google.firebase.Timestamp;
  * de la colección tareas de la BD.
  */
 public class Tarea extends _SuperEntity implements Comparable<Tarea>, Parcelable {
-
-    //private String idTarea;
 
     private String idReunion;
     private String titulo;
@@ -33,10 +32,6 @@ public class Tarea extends _SuperEntity implements Comparable<Tarea>, Parcelable
     public Tarea() {}
 
 
-    //public String getIdTarea(){return idTarea;}
-
-
-    //public void setIdTarea(String idTarea){this.idTarea = idTarea;}
     public String getIdReunion() {
         return idReunion;
     }
@@ -109,6 +104,11 @@ public class Tarea extends _SuperEntity implements Comparable<Tarea>, Parcelable
         this.fecha_update = fecha_update;
     }
 
+    @SuppressLint("DefaultLocale")
+    public String obtenerGastoString(){
+        return String.format("%.2f",this.gasto / 100f).concat(" €");
+    }
+
     public String getIdEncargado() {
         return idEncargado;
     }
@@ -117,13 +117,6 @@ public class Tarea extends _SuperEntity implements Comparable<Tarea>, Parcelable
         this.idEncargado = idEncargado;
     }
 
-    public boolean isChecked() {
-        return isChecked;
-    }
-
-    public void setChecked(boolean checked) {
-        isChecked = checked;
-    }
 
     /**
      * Enumeracion que recoge valores constantes

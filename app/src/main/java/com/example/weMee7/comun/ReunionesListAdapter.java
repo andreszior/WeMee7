@@ -78,7 +78,7 @@ public class ReunionesListAdapter extends RecyclerView.Adapter<ReunionesListAdap
 
         ViewHolder(View itemView){
             super(itemView);
-            item_fondo = itemView.findViewById(R.id.item_fondo);
+            item_fondo = itemView.findViewById(R.id.reunion_fondo);
             item_image = itemView.findViewById(R.id.item_image);
             item_title = itemView.findViewById(R.id.item_title);
             item_1 = itemView.findViewById(tab == 0 ? R.id.item_creador :

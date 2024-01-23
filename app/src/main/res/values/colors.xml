@@ -9,6 +9,7 @@
     <color name="medium">#2286A9</color>
     <color name="sepia">#D2C3B4</color>
     <color name="sepia_dark">#443322</color>
+    <color name="task_done">#60DEC4</color>
 
 <!--    fondo avatares-->
     <color name="avatar_rojo">#FFFF5400</color>

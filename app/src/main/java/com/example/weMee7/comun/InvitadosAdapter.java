@@ -189,7 +189,6 @@ public class InvitadosAdapter extends RecyclerView.Adapter<InvitadosAdapter.View
             TransitionDrawable transicion = new TransitionDrawable(colores);
             llFondo.setBackground(transicion);
             transicion.startTransition(300);
-
         }
     }
 }

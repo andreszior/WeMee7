@@ -17,6 +17,7 @@ import com.example.weMee7.model.dao.TareaDAO;
 import com.example.weMee7.model.dao.UsuarioDAO;
 import com.example.weMee7.model.entities.Tarea;
 import com.example.weMee7.model.entities.Usuario;
+import com.example.weMee7.view.usuario.HomeFragment;
 import com.example.wemee7.R;
 
 import java.util.ArrayList;
@@ -32,7 +33,6 @@ public class TareaFragment extends Fragment {
     private Button bt_aceptarEdicionTarea;
     private Spinner sp_participantes;
 
-    private ReunionActivity activity;
     private String idUsuarioSeleccionado;
     private Map<String, String> mapNombresUsuarioPorId = new HashMap<>();
     private Tarea tareaSeleccionada;
@@ -40,23 +40,26 @@ public class TareaFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_tarea, container, false);
+        tareaSeleccionada = getFragmentPadre().getTareaSeleccionada();
 
-        // Recibe la tarea, por ende debería abrir el fragment tarea con los botones editar y borrar
-        Bundle args = getArguments();
-        if (args != null) {
-            tareaSeleccionada = args.getParcelable("TareaSeleccionada");
+        if(tareaSeleccionada != null){
             cargarComponentes(view, true);
             cargaInfoTareaSeleccionada(tareaSeleccionada);
-        } else {
-            // Proviene de crear tarea
+        }else
             cargarComponentes(view, false);
-        }
 
         return view;
     }
 
+    private ReunionFragment getFragmentPadre(){
+        Fragment padre = requireActivity().getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+        if(padre instanceof ReunionFragment)
+            return (ReunionFragment)padre;
+        else
+            return null;
+    }
+
     private void cargarComponentes(View view, boolean deleteOrEditTask) {
-        activity = (ReunionActivity) getActivity();
 
         //Etiquetas
         et_tareaNombre = view.findViewById(R.id.editTextTaskTitle);
@@ -70,7 +73,7 @@ public class TareaFragment extends Fragment {
         bt_aceptarEdicionTarea = view.findViewById(R.id.buttonAcceptEditTask);
 
         //Carga de informacion en el spinner
-        cargaParticipantesEnSpinner(activity);
+        cargaParticipantesEnSpinner();
 
 
         //Carga de boton si debe crear una tarea nueva
@@ -167,7 +170,7 @@ public class TareaFragment extends Fragment {
         if (esPrecioValido(et_tareaPrecio.getText().toString())) {
             int precioTarea = Integer.parseInt(et_tareaPrecio.getText().toString());
 
-            new TareaDAO().insertarRegistro(new Tarea(activity.reunion.getId(),
+            new TareaDAO().insertarRegistro(new Tarea(getFragmentPadre().getIdReunionActual(),
                     tareaNombre, descripcionTarea, precioTarea, idUsuarioSeleccionado));
         } else {
             Toast.makeText(getActivity(), "Ingrese un precio válido", Toast.LENGTH_SHORT).show();
@@ -175,6 +178,8 @@ public class TareaFragment extends Fragment {
     }
 
     //Funcion auxiliar para comprobar si el precio es válido
+
+    //Corregir + mover a inputControl
     private boolean esPrecioValido(String precio) {
         try {
             Integer.parseInt(precio);
@@ -185,8 +190,8 @@ public class TareaFragment extends Fragment {
     }
 
     //Carga de información en el spinner
-    private void cargaParticipantesEnSpinner(ReunionActivity actividad) {
-        List<String> listaInvitados = actividad.reunion.getInvitadosList();
+    private void cargaParticipantesEnSpinner() {
+        List<String> listaInvitados = getFragmentPadre().reunionActual.getInvitadosList();
 
         for (String idUsuario : listaInvitados) {
             new UsuarioDAO().obtenerRegistroPorId(idUsuario, resultado -> {
@@ -194,7 +199,7 @@ public class TareaFragment extends Fragment {
                 String nombreUsuario = user.getNombre();
                 mapNombresUsuarioPorId.put(idUsuario, nombreUsuario);
 
-                if (mapNombresUsuarioPorId.size() == actividad.reunion.getInvitadosList().size()) {
+                if (mapNombresUsuarioPorId.size() == getFragmentPadre().reunionActual.getInvitadosList().size()) {
                     configuracionAdapter(mapNombresUsuarioPorId);
                 }
             });
@@ -204,7 +209,8 @@ public class TareaFragment extends Fragment {
     //Configuracion del adapter del spinner
     private void configuracionAdapter(Map<String, String> mapaNombresIds) {
         List<String> listaNombres = new ArrayList<>(mapaNombresIds.values());
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(activity, android.R.layout.simple_dropdown_item_1line, listaNombres);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(requireActivity(),
+                android.R.layout.simple_dropdown_item_1line, listaNombres);
 
         sp_participantes.setAdapter(adapter);
 
@@ -223,7 +229,7 @@ public class TareaFragment extends Fragment {
     //Carga de los campos con la informacion de la tarea
     private void cargaInfoTareaSeleccionada(Tarea tarea) {
         et_tareaNombre.setText(tarea.getTitulo());
-        et_tareaDescripcion.setText(tarea.getDescripcion());
+        //et_tareaDescripcion.setText(tarea.getDescripcion());
         et_tareaPrecio.setText(String.valueOf(tarea.getGasto()));
 
         configuracionAdapter(mapNombresUsuarioPorId);
