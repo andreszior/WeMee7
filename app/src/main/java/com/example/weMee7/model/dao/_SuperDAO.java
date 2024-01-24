@@ -179,6 +179,7 @@ public abstract class _SuperDAO {
     public enum Fields{
         ID_USUARIO("idUsuario"),
         ID_REUNION("idReunion"),
+        ID_ENCARGADO("idEncargado"),
         ID_ENCUESTA("idEncuesta"),
         REUNIONES_POR_CREADOR("idCreador"),
         REUNIONES_POR_INVITADO("invitadosList"),

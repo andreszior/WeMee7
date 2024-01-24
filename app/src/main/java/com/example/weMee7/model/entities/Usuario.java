@@ -26,6 +26,10 @@ public class Usuario extends _SuperEntity {
         this.reunionesInvitado = reunionesInvitado;
     }
 
+    public Usuario(String id){
+        this.setId(id);
+    };
+
     /**
      * Constructor habitual.
      * Atributos recibidos por formulario.

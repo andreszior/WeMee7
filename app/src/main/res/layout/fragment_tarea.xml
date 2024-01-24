@@ -1,183 +1,128 @@
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/rounded_rectangle"
+    android:layout_margin="3dp"
     tools:context="com.example.weMee7.activities.TareaFragment">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <!-- Boton para crear la tarea -->
+        <TextView
+            android:id="@+id/tvTagTarea"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:layout_margin="5dp"/>
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guidelineTareaBot"
+        <EditText
+            android:id="@+id/etTareaTitulo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:maxLength="20"
+            android:hint="@string/hint_titulo_tarea"
+            android:inputType="text" />
+
+        <EditText
+            android:id="@+id/etTareaDescrip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:maxLength="50"
+            android:textSize="12sp"
+            android:hint="@string/hint_descrip_tarea"
+            android:inputType="textMultiLine" />
+
+        <TextView
+            android:id="@+id/tvTagEncargado"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:text="@string/tag_asignado"
+            android:textStyle="bold"/>
+
+        <Spinner
+            android:id="@+id/spEncargado"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/spinner_bg"
+            android:focusable="true"
+            android:focusableInTouchMode="true"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <EditText
+                android:id="@+id/etTareaGasto"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:layout_margin="10dp"
+                android:maxLength="10"
+                android:gravity="center"
+                android:hint="@string/hint_gasto_tarea" />
+            <CheckBox
+                android:id="@+id/cbTareaRealizada"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:text="@string/tag_done"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="10dp">
+            <ImageButton
+                android:id="@+id/btTareaUndo"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:src="@drawable/icon_undo"
+                android:background="@color/transparent"
+                android:visibility="gone"/>
+            <Button
+                android:id="@+id/btActionTarea"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:background="@drawable/default_round_button"
+                android:backgroundTint="@color/medium"
+                android:text="@string/bt_crear"
+                android:textColor="@color/white"/>
+            <ImageButton
+                android:id="@+id/btTareaDelete"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/transparent"
+                android:visibility="gone"
+                android:src="@drawable/icon_delete"
+                android:layout_gravity="center|end"
+                android:layout_margin="3dp"
+                app:tint="@color/avatar_rojo"/>
+
+
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+    <ImageButton
+        android:id="@+id/btTareaClose"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.9" />
-
-    <!--
-    <TextView
-        android:id="@+id/textViewTaskDescription"
-        android:layout_width="258dp"
-        android:layout_height="32dp"
-        android:layout_marginTop="52dp"
-        android:gravity="center"
-        android:text="Task Description"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@+id/guidelineTareaDerecha"
-        app:layout_constraintStart_toStartOf="@+id/guidelineTareaLeft"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTaskTitle" /> -->
-
-
-    <!-- Boton para crear la tarea -->
-
-    <EditText
-        android:id="@+id/editTextTaskTitle"
-        android:layout_width="276dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="24dp"
-        android:gravity="center"
-        android:hint="@string/add_hint_nombre_tarea"
-        android:inputType="text"
-        app:layout_constraintEnd_toStartOf="@+id/guidelineTareaDerecha"
-        app:layout_constraintHorizontal_bias="0.528"
-        app:layout_constraintStart_toStartOf="@+id/guidelineTareaLeft"
-        app:layout_constraintTop_toTopOf="@+id/guidelineTareaTop" />
-
-    <EditText
-        android:id="@+id/editTextTaskDescription"
-        android:layout_width="256dp"
-        android:layout_height="72dp"
-        android:layout_marginTop="36dp"
-        android:gravity="center"
-        android:hint="@string/add_descripciontitle"
-        android:inputType="textMultiLine"
-        android:lines="4"
-        app:layout_constraintEnd_toStartOf="@+id/guidelineTareaDerecha"
-        app:layout_constraintHorizontal_bias="0.657"
-        app:layout_constraintStart_toStartOf="@+id/guidelineTareaLeft"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTaskTitle" />
-
-
-    <TextView
-        android:id="@+id/editTextAssignee"
-        android:layout_width="258dp"
-        android:layout_height="32dp"
-        android:layout_marginTop="40dp"
-        android:gravity="center"
-        android:text="@string/tag_asignado"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@+id/guidelineTareaDerecha"
-        app:layout_constraintHorizontal_bias="0.676"
-        app:layout_constraintStart_toStartOf="@+id/guidelineTareaLeft"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTaskDescription" />
-
-    <Spinner
-        android:id="@+id/SpinnerTarea"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
-        android:layout_width="183dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="32dp"
-        app:layout_constraintEnd_toStartOf="@+id/guidelineTareaDerecha"
-        app:layout_constraintStart_toStartOf="@+id/guidelineTareaLeft"
-        app:layout_constraintTop_toBottomOf="@+id/editTextAssignee" />
-
-    <EditText
-        android:id="@+id/editTextPrecioTarea"
-        android:layout_width="150dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="28dp"
-
-        android:gravity="center"
-        android:hint="Precio"
-        app:layout_constraintEnd_toStartOf="@+id/guidelineTareaDerecha"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="@+id/guidelineTareaLeft"
-        app:layout_constraintTop_toBottomOf="@+id/SpinnerTarea" />
-
-    <Button
-        android:id="@+id/buttonCreateTask"
-        android:visibility="gone"
-        android:layout_width="297dp"
-        android:layout_height="48dp"
-        android:layout_marginBottom="20dp"
-        android:background="@drawable/default_round_button"
-        android:backgroundTint="@color/medium"
-        android:text="@string/bt_aceptar_tarea"
-        android:textColor="@color/white"
-        app:layout_constraintBottom_toTopOf="@+id/guidelineTareaBot"
-        app:layout_constraintEnd_toStartOf="@+id/guidelineTareaDerecha"
-        app:layout_constraintStart_toStartOf="@+id/guidelineTareaLeft"
-        app:layout_constraintTop_toBottomOf="@+id/editTextPrecioTarea"
-        app:layout_constraintVertical_bias="0.706" />
-
-    <Button
-        android:id="@+id/buttonAcceptEditTask"
-        android:visibility="gone"
-        android:layout_width="297dp"
-        android:layout_height="48dp"
-        android:layout_marginBottom="20dp"
-        android:background="@drawable/default_round_button"
-        android:backgroundTint="@color/medium"
-        android:text="@string/bt_confirmar"
-        android:textColor="@color/white"
-        app:layout_constraintBottom_toTopOf="@+id/guidelineTareaBot"
-        app:layout_constraintEnd_toStartOf="@+id/guidelineTareaDerecha"
-        app:layout_constraintStart_toStartOf="@+id/guidelineTareaLeft"
-        app:layout_constraintTop_toBottomOf="@+id/editTextPrecioTarea"
-        app:layout_constraintVertical_bias="0.706" />
-
-
-
-    <Button
-        android:id="@+id/buttonEditTask"
-        android:layout_width="119dp"
-        android:layout_height="47dp"
-        android:layout_marginStart="36dp"
-        android:layout_marginBottom="40dp"
-        android:background="@drawable/default_round_button"
-        android:backgroundTint="@color/medium"
-        android:text="@string/bt_editar_tarea"
-        android:textColor="@color/white"
-        android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@+id/guidelineTareaBot"
-        app:layout_constraintStart_toStartOf="@+id/guidelineTareaLeft"
-        app:layout_constraintTop_toBottomOf="@+id/editTextPrecioTarea"
-        app:layout_constraintVertical_bias="1.0" />
-
-    <Button
-        android:id="@+id/buttonDeleteTask"
-        android:layout_width="119dp"
-        android:layout_height="47dp"
-        android:layout_marginStart="144dp"
-        android:background="@drawable/default_round_button"
-        android:backgroundTint="@color/medium"
-        android:text="@string/bt_delete_tarea"
-        android:textColor="@color/white"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@+id/buttonEditTask"
-        app:layout_constraintStart_toStartOf="@+id/buttonEditTask"
-        app:layout_constraintTop_toTopOf="@+id/buttonEditTask"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guidelineTareaTop"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.1" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guidelineTareaDerecha"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.9" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guidelineTareaLeft"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.1" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:layout_margin="20dp"
+        android:src="@drawable/icon_close"
+        android:background="@color/transparent"
+        android:layout_gravity="top|end"/>
+</FrameLayout>

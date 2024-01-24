@@ -87,9 +87,8 @@ public class InvitadosFragment extends Fragment {
             new UsuarioDAO().obtenerRegistroPorId(((Reunion) reunion).getIdCreador(), creador -> {
                 //Añadir usuario creador
                 Usuario u = (Usuario) creador;
-                esModificable = FirebaseAuth.getInstance().getCurrentUser().getUid().equals(u.getId())
-                        //Sustituir por UsuarioActivity.esCreador;
-                && r.estaActiva();
+                esModificable = ((UsuarioActivity)requireActivity()).esCreador()
+                    && r.estaActiva();
                 if (esModificable)
                     btCompartir.setVisibility(View.VISIBLE);
                 cargarCreador(u);

@@ -40,6 +40,9 @@
     <string name="msj_invitacion_creador">Esta reunion ha sido creada por ti</string>
     <string name="msj_invitacion_yainvitado">Ya estás invitado a esta reunión</string>
     <string name="msj_invitacion_annadida">Se ha añadido una nueva invitación</string>
+    <string name="msj_titulo_tarea">Ponle un título a la tarea</string>
+    <string name="msj_gasto_tarea">Formato de gasto incorrecto</string>
+
 
     <!--    Nombres de botones-->
     <string name="bt_registrar">REGISTRAR</string>
@@ -50,7 +53,7 @@
     <string name="bt_solicitar_codigo">SOLICITAR CODIGO</string>
     <string name="bt_guardar">GUARDAR</string>
     <string name="bt_verificar">VERIFICAR</string>
-    <string name="bt_aceptar_tarea">CREAR</string>
+    <string name="bt_crear">CREAR</string>
     <string name="bt_unirse">UNIRSE</string>
     <string name="bt_rechazar">RECHAZAR</string>
     <string name="bt_ok">OK</string>
@@ -74,7 +77,8 @@
     <string name="tag_reenviar">¿Reenviar invitación a</string>
     <string name="tag_asistentes">Lista de asistentes</string>
     <string name="tag_tareas">Tareas</string>
-    <string name="tag_done">Realizada</string>
+    <string name="tag_nuevatarea">Nueva tarea</string>
+    <string name="tag_done">¡Hecho!</string>
 
     <!--    Textos largos-->
     <string name="text_subtitulo_cerrar">Si cierras sesión, tendrás que
@@ -88,10 +92,11 @@
     - Los demás no podrán acceder a las reuniones que hayas creado y todavía no se hayan celebrado.\n
     ¿Deseas deshabilitar tu cuenta?</string>
     <string name="text_borrar_reunion">¿Deseas borrar esta reunión?\nEsta acción es permanente.</string>
+    <string name="text_borrar_tarea">¿Deseas borrar esta tarea?\nEsta acción es permanente.</string>
 
     <!--    Varios-->
     <string name="text_prefijo_sp">+34</string>
-    <string name="text_sin_asignar">Sin asignar</string>
+    <string name="text_sin_asignar">~Sin asignar~</string>
     <string name="text_cargando">Cargando…</string>
     <string name="text_invitados">Cargando invitados…</string>
 
@@ -100,7 +105,9 @@
     <string name="hint_pass">Contraseña</string>
     <string name="hint_telefono">Telefono</string>
     <string name="hint_codigo_verificacion">Código de verificación</string>
-    <string name="add_hint_nombre_tarea">Nombre tarea</string>
+    <string name="hint_titulo_tarea">Nombre tarea</string>
+    <string name="hint_descrip_tarea">Descripción (opcional)</string>
+    <string name="hint_gasto_tarea">Gasto (€)</string>
 
 
     <!--    About-->

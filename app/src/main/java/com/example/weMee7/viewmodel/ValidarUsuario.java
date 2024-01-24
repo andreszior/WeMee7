@@ -14,8 +14,11 @@ import com.example.weMee7.comun.Avatar;
 import com.example.weMee7.comun.seguridad.SharedPref;
 import com.example.weMee7.model.dao.InvitacionDAO;
 import com.example.weMee7.model.dao.ReunionDAO;
+import com.example.weMee7.model.dao.TareaDAO;
 import com.example.weMee7.model.dao.UsuarioDAO;
+import com.example.weMee7.model.dao._SuperDAO;
 import com.example.weMee7.model.entities.Invitacion;
+import com.example.weMee7.model.entities.Tarea;
 import com.example.weMee7.model.entities.Usuario;
 import com.example.weMee7.view._SuperActivity;
 import com.example.weMee7.view.usuario.HomeFragment;
@@ -31,6 +34,7 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.FirebaseTooManyRequestsException;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
@@ -418,8 +422,18 @@ public class ValidarUsuario {
             }
         });
 
-        //Desasignar tareas encargadas !!!
-
+        //Desasignar tareas encargadas
+        TareaDAO tDAO = new TareaDAO();
+        new TareaDAO().obtenerListaPorIdForaneo(_SuperDAO.Fields.ID_ENCARGADO,idUser, list ->{
+            List<Tarea> listTareas = (List)list;
+            for(Tarea t : listTareas){
+                t.setIdEncargado(null);
+                t.setEstado(Tarea.EstadoTarea.CREADA);
+                t.setGasto(0);
+                t.setFecha_update(Timestamp.now());
+                tDAO.actualizarRegistro(t);
+            }
+        });
 
         reiniciarCredenciales();
         ocultarCargando();

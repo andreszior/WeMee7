@@ -60,14 +60,15 @@ public class Tarea extends _SuperEntity implements Comparable<Tarea>, Parcelable
      * @param idEncargado
      */
     public Tarea(String reunion, String titulo,
-                 String descripcion, int gasto, String idEncargado) {
+                 String descripcion, int gasto, String idEncargado,
+                 EstadoTarea estado) {
         //super(reunion, titulo);
         this.idReunion = reunion;
         this.titulo = titulo;
         this.descripcion = descripcion;
         this.gasto = gasto;
         this.idEncargado = idEncargado;
-        this.estado = EstadoTarea.CREADA;
+        this.estado = estado;
         this.fecha_update = Timestamp.now();
     }
 
@@ -106,6 +107,8 @@ public class Tarea extends _SuperEntity implements Comparable<Tarea>, Parcelable
 
     @SuppressLint("DefaultLocale")
     public String obtenerGastoString(){
+        if(this.gasto == 0)
+            return "¿?";
         return String.format("%.2f",this.gasto / 100f).concat(" €");
     }
 

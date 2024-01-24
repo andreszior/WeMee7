@@ -20,8 +20,6 @@ public class InputControl {
         return null;
     }
 
-
-
     public static boolean todoCumplimentado(String[] campos){
         for(String campo : campos)
             if(campo.isEmpty())
@@ -30,5 +28,16 @@ public class InputControl {
         return true;
     }
 
-
+    public static int formatoGasto(String gasto){
+        if(gasto.isEmpty())
+            return 0;
+        int resultado = -1;
+        try{
+            float x = Float.parseFloat(gasto.replace(",", "."));
+            resultado = Math.round(x * 100);
+        }catch(NumberFormatException ex){
+            //Nothing to do here
+        }
+        return resultado;
+    }
 }

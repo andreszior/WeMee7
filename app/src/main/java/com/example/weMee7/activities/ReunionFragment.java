@@ -27,6 +27,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.example.weMee7.comun.EncargadosAdapter;
 import com.example.weMee7.comun.TareaAdapter;
 
 import com.example.weMee7.comun.TimeUtils;
@@ -40,8 +41,11 @@ import com.example.weMee7.view._SuperActivity;
 import com.example.weMee7.view.reunion.InvitadosFragment;
 import com.example.weMee7.view.usuario.HomeFragment;
 import com.example.weMee7.view.usuario.UsuarioActivity;
-import com.example.weMee7.viewmodel.GestionarReunion;
+import com.example.weMee7.viewmodel.GestionarDatos;
 import com.example.wemee7.R;
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.TaskCompletionSource;
+import com.google.firebase.firestore.DocumentSnapshot;
 
 import android.app.Dialog;
 import android.widget.TextView;
@@ -59,7 +63,7 @@ import java.util.List;
  */
 public class ReunionFragment extends Fragment {
 
-    Reunion reunionActual;
+    private Reunion reunionActual;
     private Tarea tareaSeleccionada;
     View llInfoReunion, llEditReunion, llMostrarInvitados, llTareasClosed, llTareasOpen, fragmentContainer;
     EditText [] etCampos;
@@ -67,7 +71,7 @@ public class ReunionFragment extends Fragment {
     RecyclerView rvTareasReunion;
     Drawable fondoEditable;
 
-    GestionarReunion vmReunion = new GestionarReunion();
+    GestionarDatos vmDatos = new GestionarDatos();
 
     public ReunionFragment(){}
 
@@ -92,8 +96,8 @@ public class ReunionFragment extends Fragment {
         return tareaSeleccionada;
     }
 
-    public String getIdReunionActual(){
-        return reunionActual.getId();
+    public Reunion getReunionActual(){
+        return reunionActual;
     }
 
     @Override
@@ -115,7 +119,7 @@ public class ReunionFragment extends Fragment {
 
 
         //Databinding
-        dataBinding(view);
+        cargarComponentes(view);
 
 
         //Cargar reunion + cargar recyclerView
@@ -124,7 +128,7 @@ public class ReunionFragment extends Fragment {
     }
 
 
-    private void dataBinding (View view){
+    private void cargarComponentes(View view){
         //Contenedores
         llInfoReunion = view.findViewById(R.id.llReunionInfo);
         llEditReunion = view.findViewById(R.id.llReunionEdit);
@@ -156,8 +160,8 @@ public class ReunionFragment extends Fragment {
 
         //Asignar listeners
         llMostrarInvitados.setOnClickListener(v -> mostrarInvitados());
-        llTareasClosed.findViewById(R.id.btMostrarTareas).setOnClickListener(v -> mostrarTareas(true));
-        llTareasOpen.findViewById(R.id.btOcultarTareas).setOnClickListener(v -> mostrarTareas(false));
+        llTareasClosed.findViewById(R.id.btMostrarTareas).setOnClickListener(v -> mostrarListaTareas(true));
+        llTareasOpen.findViewById(R.id.btOcultarTareas).setOnClickListener(v -> mostrarListaTareas(false));
         btAdd.setOnClickListener(v -> showBottomDialog());
         view.findViewById(R.id.btReunionUndo).setOnClickListener(v -> deshacerCambios());
         view.findViewById(R.id.btReunionGuardar).setOnClickListener(v -> guardarCambios());
@@ -200,18 +204,26 @@ public class ReunionFragment extends Fragment {
 
     private void llenarRecyclerViewTareas(){
         List<Tarea> listaTareas = new ArrayList<>();
-        TareaAdapter tareaAdapter = new TareaAdapter(listaTareas, this.getContext(), item -> {
-            tareaSeleccionada = item;
-            cambiarSubFragment(new TareaFragment());
-            llMostrarInvitados.setVisibility(View.GONE);
-        });
 
-        new TareaDAO().obtenerListaPorIdForaneo(ID_REUNION, reunionActual.getId(), resultado -> {
-                    rvTareasReunion.setHasFixedSize(true);
-                    rvTareasReunion.setLayoutManager(new LinearLayoutManager(this.getContext()));
-                    rvTareasReunion.setAdapter(tareaAdapter);
-            tareaAdapter.setListaTareas((List<Tarea>)resultado);
-        });
+        //Vigilante de tarea completa
+        TaskCompletionSource<DocumentSnapshot> tcs =
+                vmDatos.obtenerListaTareas(listaTareas,reunionActual.getId());
+
+        if(tcs != null) {
+            //Cuando termine la tarea, se crea el adapter y se establece en el Recycler
+            Task<DocumentSnapshot> getTask = tcs.getTask();
+            getTask.addOnSuccessListener(documentSnapshot -> {
+                rvTareasReunion.setHasFixedSize(true);
+                rvTareasReunion.setLayoutManager(new LinearLayoutManager(this.getContext()));
+                rvTareasReunion.setAdapter(new TareaAdapter(
+                        listaTareas,
+                        this.getContext(), item -> {
+                            tareaSeleccionada = item;
+                            cambiarSubFragment(new TareaFragment());
+                            llMostrarInvitados.setVisibility(View.GONE);
+                }));
+            });
+        }
     }
 
 
@@ -261,6 +273,8 @@ public class ReunionFragment extends Fragment {
         btBorrarReunion.setVisibility(vis2);
         llMostrarInvitados.setVisibility(vis3);
         llTareasClosed.setVisibility(vis3);
+        llTareasOpen.setVisibility(View.GONE);
+        fragmentContainer.setVisibility(View.INVISIBLE);
         setEditable(editable);
     }
 
@@ -300,7 +314,7 @@ public class ReunionFragment extends Fragment {
 
         //Asignacion de botones
         builder.setPositiveButton(R.string.bt_delete_tarea, (dialog, which) -> {
-            vmReunion.eliminarReunion(reunionActual.getId());
+            vmDatos.eliminarReunion(reunionActual.getId());
             ((_SuperActivity)requireActivity()).colocarFragment(new HomeFragment());
         });
         builder.setNegativeButton(R.string.bt_cancelar, (dialog, which) -> dialog.cancel());
@@ -322,7 +336,7 @@ public class ReunionFragment extends Fragment {
 
     private void guardarCambios(){
         if(hayCambios())
-            vmReunion.modificarReunion(reunionActual);
+            vmDatos.modificarReunion(reunionActual);
         editarReunion(false);
     }
 
@@ -382,7 +396,7 @@ public class ReunionFragment extends Fragment {
     private void cambiarSubFragment(Fragment fragment){
         FragmentManager fm = requireActivity().getSupportFragmentManager();
         Fragment fActual = fm.findFragmentById(R.id.reunionContainer);
-        boolean fragmentNuevo = (fActual == null || fActual.getClass().equals(fragment.getClass()));
+        boolean fragmentNuevo = (fActual == null || !fActual.getClass().equals(fragment.getClass()));
 
         if(fragment instanceof TareaFragment || fragmentNuevo)
             fm.beginTransaction()
@@ -394,16 +408,32 @@ public class ReunionFragment extends Fragment {
         llEditReunion.setVisibility(View.GONE);
         llTareasClosed.setVisibility(View.GONE);
         llTareasOpen.setVisibility(View.GONE);
+        btAdd.setVisibility(View.GONE);
         fragmentContainer.setVisibility(View.VISIBLE);
     }
 
-    private void mostrarTareas(boolean mostrar){
+    private void mostrarListaTareas(boolean mostrar){
         llTareasClosed.setVisibility(mostrar ? View.GONE : View.VISIBLE);
         llTareasOpen.setVisibility(mostrar ? View.VISIBLE : View.GONE);
         btAdd.setVisibility(mostrar ? View.VISIBLE : View.GONE);
         fragmentContainer.setVisibility(mostrar ? View.GONE : View.INVISIBLE);
     }
 
+    public void cerrarTarea(boolean actualizar){
+        if(actualizar)
+            llenarRecyclerViewTareas();
+        tareaSeleccionada = null;
+
+        llMostrarInvitados.setVisibility(View.VISIBLE);
+        llInfoReunion.setVisibility(View.VISIBLE);
+        llTareasClosed.setVisibility(View.VISIBLE);
+        fragmentContainer.setVisibility(View.INVISIBLE);
+        FragmentManager fm = requireActivity().getSupportFragmentManager();
+        Fragment fActual = fm.findFragmentById(R.id.reunionContainer);
+        fm.beginTransaction()
+                .remove(fActual)
+                .commit();
+    }
 
     private void showBottomDialog() {
         if(getContext() != null){
