@@ -137,9 +137,15 @@ public class GestionarDatos {
         return tcs;
     }
 
-    public void crearTarea(Tarea t){
+    public TaskCompletionSource<DocumentSnapshot> crearTarea(Tarea t){
+        TaskCompletionSource<DocumentSnapshot> tcs = new TaskCompletionSource<>();
         TareaDAO tDAO = new TareaDAO();
-        tDAO.insertarRegistro(t);
+        tDAO.insertarRegistro(t, resultado -> {
+            if((Boolean)resultado)
+                tcs.setResult(null);
+        });
+
+        return tcs;
     }
 
     public void actualizarTarea (Tarea t){

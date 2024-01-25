@@ -17,12 +17,14 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.weMee7.comun.InputControl;
 import com.example.weMee7.model.entities.Tarea;
 import com.example.weMee7.model.entities.Usuario;
 import com.example.weMee7.view.adapters.EncargadosAdapter;
 import com.example.weMee7.view.activity._SuperActivity;
+import com.example.weMee7.view.adapters.TareaAdapter;
 import com.example.weMee7.view.fragments.ReunionFragment;
 import com.example.weMee7.viewmodel.GestionarDatos;
 import com.example.wemee7.R;
@@ -167,10 +169,10 @@ public class TareaFragment extends Fragment {
         TaskCompletionSource<DocumentSnapshot> tcs;
 
         vmDatos = new GestionarDatos();
-        if (soloEncargado)
-            tcs = vmDatos.obtenerListaSoloEncargado(encargadosList,
-                    tareaSeleccionada.getIdEncargado());
-        else {
+        if (soloEncargado) {
+            String idUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            tcs = vmDatos.obtenerListaSoloEncargado(encargadosList,idUser);
+        }else {
             String idCreador = getFragmentPadre().getReunionActual().getIdCreador();
             String idReunion = getFragmentPadre().getReunionActual().getId();
             tcs = vmDatos.obtenerListaTodosEncargados(encargadosList,
@@ -269,20 +271,23 @@ public class TareaFragment extends Fragment {
         int mensaje;
         if(tareaSeleccionada == null){
             String idReunion = getFragmentPadre().getReunionActual().getId();
-            vmDatos.crearTarea(new Tarea(idReunion,titulo,descripcion,gasto,idEncargado,estadoTarea));
             mensaje = R.string.msj_tarea_creada;
+            TaskCompletionSource<DocumentSnapshot> tcs =
+                    vmDatos.crearTarea(new Tarea(idReunion,titulo,descripcion,gasto,idEncargado,estadoTarea));
+            tcs.getTask().addOnSuccessListener(documentSnapshot -> {
+                ((_SuperActivity)requireActivity()).lanzarMensaje(mensaje);
+                accionCerrarTarea(true);
+            });
+
         }else if(hayCambios(titulo,descripcion,gasto,idEncargado,estadoTarea)) {
             vmDatos.actualizarTarea(tareaSeleccionada);
             mensaje = R.string.msj_tarea_modificada;
+            ((_SuperActivity)requireActivity()).lanzarMensaje(mensaje);
+            accionCerrarTarea(true);
         }else {
             actualizar = false;
-            mensaje = 0;
+            accionCerrarTarea(false);
         }
-        //Feedback al usuario
-        if(actualizar)
-            ((_SuperActivity)requireActivity()).lanzarMensaje(mensaje);
-
-        accionCerrarTarea(actualizar);
     }
 
     private boolean hayCambios(String titulo, String descripcion, int gasto, String idEncargado, Tarea.EstadoTarea estado){
@@ -333,6 +338,7 @@ public class TareaFragment extends Fragment {
         //Asignacion de botones
         builder.setPositiveButton(R.string.bt_delete_tarea, (dialog, which) -> {
             vmDatos.eliminarTarea(tareaSeleccionada.getId());
+            ((_SuperActivity)requireActivity()).lanzarMensaje(R.string.msj_tarea_eliminada);
             accionCerrarTarea(true);
         });
         builder.setNegativeButton(R.string.bt_cancelar, (dialog, which) -> dialog.cancel());

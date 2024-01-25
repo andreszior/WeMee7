@@ -34,7 +34,7 @@ public class InvitarUsuario {
         tcs = new TaskCompletionSource<>();
 
         //Crear y registrar invitacion
-        new InvitacionDAO().insertarRegistro(new Invitacion(idInvitado,idReunion));
+        new InvitacionDAO().insertarRegistro(new Invitacion(idInvitado, idReunion), resultado -> {});
 
         //Registrar la reunion en el usuario
         registrarEnArray(new UsuarioDAO(),idInvitado,idReunion,true);

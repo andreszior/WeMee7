@@ -484,7 +484,7 @@ public class ValidarUsuario {
                 userId,
                 userNombre,
                 new Avatar().toString(),
-                method));
+                method), resultado -> {});
         Log.d("validar","Usuario creado");
     }
 

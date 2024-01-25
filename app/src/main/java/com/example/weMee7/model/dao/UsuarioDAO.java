@@ -19,10 +19,10 @@ public class UsuarioDAO extends _SuperDAO {
      * @param usuario
      */
     @Override
-    public void insertarRegistro(_SuperEntity usuario) {
+    public void insertarRegistro(_SuperEntity usuario, FirebaseCallback callback) {
         DB_COLECCION.document(usuario.getId()).set(usuario)
-                .addOnSuccessListener(documentReference -> {
-                    System.out.println("usuario registrado");
-                });
+                .addOnSuccessListener(unused -> {
+                    callback.onCallback(true);
+        });
     }
 }

@@ -49,6 +49,7 @@
     <string name="msj_gasto_tarea">Formato de gasto incorrecto</string>
     <string name="msj_tarea_creada">Nueva tarea creada</string>
     <string name="msj_tarea_modificada">Tarea modificada</string>
+    <string name="msj_tarea_eliminada">Tarea eliminada</string>
 
 
 

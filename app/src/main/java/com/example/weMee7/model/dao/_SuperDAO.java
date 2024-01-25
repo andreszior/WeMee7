@@ -62,11 +62,12 @@ public abstract class _SuperDAO {
      * y lo inserta en la coleccion
      * @param entity
      */
-    public void insertarRegistro(_SuperEntity entity) {
+    public void insertarRegistro(_SuperEntity entity, FirebaseCallback callback) {
         DB_COLECCION.add(entity).addOnSuccessListener(documentReference -> {
             (entity).setId(documentReference.getId());
             DB_COLECCION.document(entity.getId()).set(entity).
                     addOnSuccessListener(unused -> {
+                        callback.onCallback(true);
                     });
         });
     }
