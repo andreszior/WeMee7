@@ -1,4 +1,4 @@
-package com.example.weMee7.view.usuario;
+package com.example.weMee7.view.fragments;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -20,7 +20,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.weMee7.comun.InputControl;
-import com.example.weMee7.view._SuperActivity;
+import com.example.weMee7.view.activity._SuperActivity;
 import com.example.weMee7.viewmodel.ValidarUsuario;
 import com.example.wemee7.R;
 
@@ -182,7 +182,7 @@ public class LoginFragment extends Fragment {
      * el evento lo recibe UsuarioActivity (onActivityResult)
      * @param data
      */
-    void capturarToken(Intent data){
+    public void capturarToken(Intent data){
         validador.obtenerGoogleToken(data);
     }
 

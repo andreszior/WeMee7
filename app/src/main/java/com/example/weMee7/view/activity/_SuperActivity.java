@@ -1,4 +1,4 @@
-package com.example.weMee7.view;
+package com.example.weMee7.view.activity;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
@@ -22,16 +22,16 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import com.example.weMee7.view.fragments.AboutFragment;
+import com.example.weMee7.view.fragments.AddFragment;
 import com.example.wemee7.R;
-import com.example.weMee7.activities.AboutFragment;
-import com.example.weMee7.activities.AddFragment;
 import com.example.weMee7.comun.Avatar;
 import com.example.weMee7.model.dao.UsuarioDAO;
 import com.example.weMee7.model.entities.Usuario;
-import com.example.weMee7.view.usuario.HomeFragment;
-import com.example.weMee7.view.usuario.LoginFragment;
-import com.example.weMee7.view.usuario.PerfilFragment;
-import com.example.weMee7.view.usuario.SettingsFragment;
+import com.example.weMee7.view.fragments.HomeFragment;
+import com.example.weMee7.view.fragments.LoginFragment;
+import com.example.weMee7.view.fragments.PerfilFragment;
+import com.example.weMee7.view.fragments.SettingsFragment;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;

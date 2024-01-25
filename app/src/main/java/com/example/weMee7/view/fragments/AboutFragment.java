@@ -1,4 +1,4 @@
-package com.example.weMee7.activities;
+package com.example.weMee7.view.fragments;
 
 import android.content.Intent;
 import android.net.Uri;

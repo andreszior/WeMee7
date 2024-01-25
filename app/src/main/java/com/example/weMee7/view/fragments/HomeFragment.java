@@ -1,4 +1,4 @@
-package com.example.weMee7.view.usuario;
+package com.example.weMee7.view.fragments;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -8,6 +8,10 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.app.Dialog;
+import android.content.ClipData;
+import android.content.ClipDescription;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -18,16 +22,18 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.weMee7.activities.AddFragment;
-import com.example.weMee7.model.dao.InvitacionDAO;
+
 import com.example.weMee7.model.dao.ReunionDAO;
 import com.example.weMee7.model.entities.Invitacion;
 import com.example.weMee7.model.entities.Reunion;
-import com.example.weMee7.view._SuperActivity;
+import com.example.weMee7.view.activity.UsuarioActivity;
+import com.example.weMee7.view.activity._SuperActivity;
+
+import com.example.weMee7.view.subfragments.ReunionesListFragment;
+import com.example.weMee7.viewmodel.GestionarDatos;
 import com.example.weMee7.viewmodel.InvitarUsuario;
 import com.example.weMee7.viewmodel.ValidarUsuario;
 import com.example.wemee7.R;
@@ -38,8 +44,12 @@ import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Fragment que gestiona las reuniones del usuario.
@@ -133,6 +143,8 @@ public class HomeFragment extends Fragment {
 
             if(r == null)
                 mensaje = R.string.msj_enlace_fail;
+            else if(!r.estaActiva())
+                mensaje = R.string.msj_reunion_yacelebrada;
             else if(r.getIdCreador().equals(idUsuarioActual))
                 mensaje = R.string.msj_invitacion_creador;
             else if(r.getInvitadosList().contains(idUsuarioActual))
@@ -163,13 +175,19 @@ public class HomeFragment extends Fragment {
      * con aquellas vinculadas con el usuario.
      */
     private void cargarDatos() {
-        new ReunionDAO().obtenerReunionesUsuario(idUsuarioActual, true, rList -> {
-            reunionesList = (List)rList;
-            new InvitacionDAO().obtenerInvitacionesActivas(idUsuarioActual,true, iMap -> {
-                invitacionesMap = (Map)iMap;
+        reunionesList = new ArrayList<>();
+        invitacionesMap = new HashMap<>();
+        GestionarDatos vmDatos = new GestionarDatos();
+
+        TaskCompletionSource<DocumentSnapshot> tcs =
+            vmDatos.obtenerReunionesUsuario(reunionesList,invitacionesMap,idUsuarioActual,true);
+
+        if(tcs != null) {
+            Task<DocumentSnapshot> getTask = tcs.getTask();
+            getTask.addOnSuccessListener(documentSnapshot -> {
                 setupViewPager();
             });
-        });
+        }
     }
 
     /**
@@ -261,41 +279,49 @@ public class HomeFragment extends Fragment {
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.boton_add);
 
-        LinearLayout AddLayout = dialog.findViewById(R.id.llPrimeraOpcion);
-        LinearLayout UnirseLayout = dialog.findViewById(R.id.llSegundaOpcion);
-        LinearLayout AddTareaLayout = dialog.findViewById(R.id.llTerceraOpcion);
+        View opcionLayout = dialog.findViewById(R.id.llPrimeraOpcion);
+        ((TextView)opcionLayout.findViewById(R.id.tvPrimeraOpcion)).setText(R.string.drawer_reunion);
         ImageView cancelButton = dialog.findViewById(R.id.cancelButton);
 
-        AddTareaLayout.setVisibility(View.GONE);
+        opcionLayout.setOnClickListener(v -> {
+            Fragment selectedFragment = new AddFragment();
+            if (getActivity() != null) {
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
+            }
+            dialog.dismiss();
 
-        AddLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Fragment selectedFragment = new AddFragment();
-                if (getActivity() != null) {
-                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
+        });
+
+        opcionLayout = dialog.findViewById(R.id.llSegundaOpcion);
+        opcionLayout.setVisibility(View.VISIBLE);
+        ((TextView)opcionLayout.findViewById(R.id.tvSegundaOpcion)).setText(R.string.drawer_unirse);
+
+        opcionLayout.setOnClickListener(v -> {
+            int mensaje = R.string.msj_unirse_fail;
+            ClipboardManager clipboard =
+                    (ClipboardManager) requireActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+            // Verifica si hay algo en el portapapeles
+            ClipData item = clipboard.getPrimaryClip();
+            if(item != null && item.getDescription().hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN)){
+                String clipboardContent = item.getItemAt(0).getText().toString();
+
+                Matcher matcher = Pattern
+                        .compile("wemee7\\.acd\\/(\\w+)")
+                        .matcher(clipboardContent);
+
+                if(matcher.find()) {
+                    cargarReunionLink(matcher.group(1));
+                    mensaje = 0;
                 }
-                dialog.dismiss();
-
             }
+            if(mensaje != 0)
+                ((_SuperActivity)requireActivity()).lanzarMensaje(mensaje);
+
+            dialog.dismiss();
+
         });
 
-        UnirseLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new InvitarUsuario().generarEnlaceInvitacion("A7JozOiSzQpadQvPONhg",requireActivity());
-                dialog.dismiss();
-
-
-            }
-        });
-
-        cancelButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog.dismiss();
-            }
-        });
+        cancelButton.setOnClickListener(view -> dialog.dismiss());
 
         dialog.show();
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);

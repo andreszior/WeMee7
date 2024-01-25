@@ -1,10 +1,6 @@
-package com.example.weMee7.activities;
-
-import static com.example.weMee7.model.dao._SuperDAO.Fields.ID_REUNION;
+package com.example.weMee7.view.fragments;
 
 import android.app.AlertDialog;
-import android.app.DatePickerDialog;
-import android.app.TimePickerDialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -25,45 +21,35 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-
-import com.example.weMee7.comun.EncargadosAdapter;
-import com.example.weMee7.comun.TareaAdapter;
 
 import com.example.weMee7.comun.TimeUtils;
 import com.example.weMee7.model.dao.ReunionDAO;
-import com.example.weMee7.model.dao.TareaDAO;
 
 import com.example.weMee7.model.entities.Reunion;
 import com.example.weMee7.model.entities.Tarea;
-import com.example.weMee7.view._SuperActivity;
 
-import com.example.weMee7.view.reunion.InvitadosFragment;
-import com.example.weMee7.view.usuario.HomeFragment;
-import com.example.weMee7.view.usuario.UsuarioActivity;
+import com.example.weMee7.view.adapters.TareaAdapter;
+import com.example.weMee7.view.activity._SuperActivity;
+import com.example.weMee7.view.activity.UsuarioActivity;
+import com.example.weMee7.view.subfragments.InvitadosFragment;
+import com.example.weMee7.view.subfragments.TareaFragment;
 import com.example.weMee7.viewmodel.GestionarDatos;
 import com.example.wemee7.R;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.TaskCompletionSource;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 
 import android.app.Dialog;
 import android.widget.TextView;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link ReunionFragment#newInstance} factory method to
- * create an instance of this fragment.
- *
- */
 public class ReunionFragment extends Fragment {
 
     private Reunion reunionActual;
+    private boolean esCreador;
     private Tarea tareaSeleccionada;
     View llInfoReunion, llEditReunion, llMostrarInvitados, llTareasClosed, llTareasOpen, fragmentContainer;
     EditText [] etCampos;
@@ -74,23 +60,6 @@ public class ReunionFragment extends Fragment {
     GestionarDatos vmDatos = new GestionarDatos();
 
     public ReunionFragment(){}
-
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @return A new instance of fragment ReunionFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static ReunionFragment newInstance(Reunion reunion) {
-        ReunionFragment fragment = new ReunionFragment();
-        Bundle args = new Bundle();
-        args.putParcelable("meeting", reunion);
-        args.putString("id", reunion.getId());
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     public Tarea getTareaSeleccionada() {
         return tareaSeleccionada;
@@ -127,6 +96,9 @@ public class ReunionFragment extends Fragment {
         return view;
     }
 
+    public boolean isUserCreador() {
+        return esCreador;
+    }
 
     private void cargarComponentes(View view){
         //Contenedores
@@ -149,8 +121,6 @@ public class ReunionFragment extends Fragment {
                 view.findViewById(R.id.etReunionHora)
         };
         fondoEditable = etCampos[0].getBackground();
-        etCampos[3].setFocusable(false);
-        etCampos[4].setFocusable(false);
         setEditable(false);
 
         //Botones
@@ -170,6 +140,7 @@ public class ReunionFragment extends Fragment {
     private void cargarReunion(String idReunion){
         new ReunionDAO().obtenerRegistroPorId(idReunion, entity ->{
             reunionActual = (Reunion)entity;
+            esCreador = FirebaseAuth.getInstance().getCurrentUser().getUid().equals(reunionActual.getIdCreador());
             cargarDatosReunion();
             llenarRecyclerViewTareas();
         });
@@ -185,7 +156,6 @@ public class ReunionFragment extends Fragment {
     }
 
     private void ajustarLayout(){
-        boolean esCreador = ((UsuarioActivity)requireActivity()).esCreador();
         boolean esModificable =  esCreador && reunionActual.estaActiva();
 
         btEditReunion.setVisibility(esModificable ? View.VISIBLE : View.GONE);
@@ -193,8 +163,8 @@ public class ReunionFragment extends Fragment {
 
         if(esModificable){
             //Selectores de fecha y hora
-            etCampos[3].setOnClickListener(v -> selectFecha());
-            etCampos[4].setOnClickListener(v -> selectHora());
+            etCampos[3].setOnClickListener(v -> TimeUtils.addSelectFecha(requireActivity(),etCampos[3]));
+            etCampos[4].setOnClickListener(v -> TimeUtils.addSelectHora(requireActivity(),etCampos[4]));
             //Botones de edicion
             btEditReunion.setOnClickListener(v -> editarReunion(true));
         }
@@ -216,50 +186,14 @@ public class ReunionFragment extends Fragment {
                 rvTareasReunion.setHasFixedSize(true);
                 rvTareasReunion.setLayoutManager(new LinearLayoutManager(this.getContext()));
                 rvTareasReunion.setAdapter(new TareaAdapter(
-                        listaTareas,
-                        this.getContext(), item -> {
+                        listaTareas, this.getContext(), esCreador, reunionActual.estaActiva(),
+                        item -> {
                             tareaSeleccionada = item;
                             cambiarSubFragment(new TareaFragment());
                             llMostrarInvitados.setVisibility(View.GONE);
                 }));
             });
         }
-    }
-
-
-    private void selectFecha(){
-        Calendar calendar= Calendar.getInstance();
-        DatePickerDialog.OnDateSetListener dateSetListener= (view, year, month, dayOfMonth) -> {
-            calendar.set(Calendar.YEAR, year);
-            calendar.set(Calendar.MONTH, month);
-            calendar.set(Calendar.DAY_OF_MONTH,dayOfMonth);
-
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat(TimeUtils.FORMATO_FECHA);
-            etCampos[3].setText(simpleDateFormat.format(calendar.getTime()));
-        };
-        DatePickerDialog datePicker = new DatePickerDialog(requireActivity(),
-                dateSetListener,
-                calendar.get(Calendar.YEAR),
-                calendar.get(Calendar.MONTH),
-                calendar.get(Calendar.DAY_OF_MONTH));
-
-        datePicker.getDatePicker().setMinDate(System.currentTimeMillis());
-        datePicker.show();
-    }
-
-    private void selectHora(){
-        Calendar calendar= Calendar.getInstance();
-
-        TimePickerDialog.OnTimeSetListener timeSetListener = (view, hourOfDay, minute) -> {
-            calendar.set(Calendar.HOUR_OF_DAY,hourOfDay);
-            calendar.set(Calendar.MINUTE, minute);
-
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat(TimeUtils.FORMATO_HORA);
-            etCampos[4].setText(simpleDateFormat.format(calendar.getTime()));
-        };
-        new TimePickerDialog(requireActivity(),
-                timeSetListener,calendar.get(Calendar.HOUR_OF_DAY),
-                calendar.get(Calendar.MINUTE), true).show();
     }
 
 
@@ -335,8 +269,11 @@ public class ReunionFragment extends Fragment {
     }
 
     private void guardarCambios(){
-        if(hayCambios())
+        if(hayCambios()){
             vmDatos.modificarReunion(reunionActual);
+            ((_SuperActivity)requireActivity()).lanzarMensaje(R.string.msj_reunion_modificada);
+        }
+
         editarReunion(false);
     }
 
@@ -415,7 +352,7 @@ public class ReunionFragment extends Fragment {
     private void mostrarListaTareas(boolean mostrar){
         llTareasClosed.setVisibility(mostrar ? View.GONE : View.VISIBLE);
         llTareasOpen.setVisibility(mostrar ? View.VISIBLE : View.GONE);
-        btAdd.setVisibility(mostrar ? View.VISIBLE : View.GONE);
+        btAdd.setVisibility(mostrar && reunionActual.estaActiva() ? View.VISIBLE : View.GONE);
         fragmentContainer.setVisibility(mostrar ? View.GONE : View.INVISIBLE);
     }
 
@@ -441,21 +378,15 @@ public class ReunionFragment extends Fragment {
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             dialog.setContentView(R.layout.boton_add);
 
-            LinearLayout AddLayout = dialog.findViewById(R.id.llPrimeraOpcion);
-            LinearLayout UnirseLayout = dialog.findViewById(R.id.llSegundaOpcion);
-            LinearLayout AddTareaLayout = dialog.findViewById(R.id.llTerceraOpcion);
+            View opcionLayout = dialog.findViewById(R.id.llPrimeraOpcion);
+            ((TextView)opcionLayout.findViewById(R.id.tvPrimeraOpcion)).setText(R.string.drawer_tarea);
+
             ImageView cancelButton = dialog.findViewById(R.id.cancelButton);
 
-            UnirseLayout.setVisibility(View.GONE);
-            AddLayout.setVisibility(View.GONE);
-
-            AddTareaLayout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    cambiarSubFragment(new TareaFragment());
-                    llMostrarInvitados.setVisibility(View.GONE);
-                    dialog.dismiss();
-                }
+            opcionLayout.setOnClickListener(v -> {
+                cambiarSubFragment(new TareaFragment());
+                llMostrarInvitados.setVisibility(View.GONE);
+                dialog.dismiss();
             });
 
             cancelButton.setOnClickListener(view -> dialog.dismiss());

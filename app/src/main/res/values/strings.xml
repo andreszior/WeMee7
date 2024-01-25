@@ -16,8 +16,9 @@
     <string name="close_nav">Close Navigation Drawer</string>
 
     <!--    Opciones del drawer inferior-->
-    <string name="drawer_invitar_contacto">Invitar contactos</string>
-    <string name="drawer_link_invitacion">Compartir enlace de invitación</string>
+    <string name="drawer_reunion">Crear reunión</string>
+    <string name="drawer_tarea">Nueva tarea</string>
+    <string name="drawer_unirse">Unirse a una reunión</string>
 
     <!--    Texto de mensajes Toast-->
     <string name="msj_offline">No hay conexión a Internet</string>
@@ -38,10 +39,17 @@
     <string name="msj_enlace_invitacion">El enlace de invitación se ha copiado en el portapapeles</string>
     <string name="msj_enlace_fail">Identificador de reunion desconocido</string>
     <string name="msj_invitacion_creador">Esta reunion ha sido creada por ti</string>
-    <string name="msj_invitacion_yainvitado">Ya estás invitado a esta reunión</string>
+    <string name="msj_invitacion_yainvitado">Ya has sido invitado a esta reunión</string>
+    <string name="msj_reunion_yacelebrada">Esta reunión ya se ha celebrado</string>
     <string name="msj_invitacion_annadida">Se ha añadido una nueva invitación</string>
+    <string name="msj_unirse_fail">Debes copiar un link de invitación válido</string>
+    <string name="msj_nombre_reunion">Ponle un nombre a la reunión</string>
+    <string name="msj_reunion_modificada">Reunión modificada</string>
     <string name="msj_titulo_tarea">Ponle un título a la tarea</string>
     <string name="msj_gasto_tarea">Formato de gasto incorrecto</string>
+    <string name="msj_tarea_creada">Nueva tarea creada</string>
+    <string name="msj_tarea_modificada">Tarea modificada</string>
+
 
 
     <!--    Nombres de botones-->
@@ -79,6 +87,7 @@
     <string name="tag_tareas">Tareas</string>
     <string name="tag_nuevatarea">Nueva tarea</string>
     <string name="tag_done">¡Hecho!</string>
+    <string name="tag_opcion">Opción</string>
 
     <!--    Textos largos-->
     <string name="text_subtitulo_cerrar">Si cierras sesión, tendrás que
@@ -97,6 +106,7 @@
     <!--    Varios-->
     <string name="text_prefijo_sp">+34</string>
     <string name="text_sin_asignar">~Sin asignar~</string>
+    <string name="text_undefined">[Por determinar]</string>
     <string name="text_cargando">Cargando…</string>
     <string name="text_invitados">Cargando invitados…</string>
 
@@ -109,7 +119,6 @@
     <string name="hint_descrip_tarea">Descripción (opcional)</string>
     <string name="hint_gasto_tarea">Gasto (€)</string>
 
-
     <!--    About-->
     <string name="about_equipo">Equipo de desarrollo</string>
     <string name="about_creador1">Andrés Montaño Villafañe</string>
@@ -117,15 +126,14 @@
     <string name="about_creador3">Daniel Liñeira Santos</string>
     <string name="about_tecnologias">Tecnologias empleadas</string>
     <string name="about_codigo">Codigo del proyecto</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <!--    Add-->
     <string name="add_hint_nombre">Nombre del evento</string>
-    <string name="add_hint_lugar">Donde se hace</string>
-    <string name="add_hint_fecha">Seleccione fecha y hora</string>
+    <string name="add_hint_lugar">Dónde se hace</string>
+    <string name="add_hint_fecha">Elige un día</string>
+    <string name="add_hint_hora">Elige una hora</string>
     <string name="add_descripciontitle">DESCRIPCIÓN</string>
-    <string name="add_descripcion">Resumen del evento:</string>
+    <string name="add_hint_descripcion">Resumen del evento</string>
     <string name="add_invitaciones">Generar invitacion</string>
     <string name="add_crear">Crear evento</string>
 </resources>

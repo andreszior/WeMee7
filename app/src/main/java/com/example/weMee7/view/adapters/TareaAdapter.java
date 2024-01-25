@@ -1,30 +1,27 @@
-package com.example.weMee7.comun;
+package com.example.weMee7.view.adapters;
 
 import static android.app.PendingIntent.getActivity;
 
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.ColorStateList;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.TransitionDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.weMee7.comun.Avatar;
+import com.example.weMee7.comun.TimeUtils;
 import com.example.weMee7.model.dao.TareaDAO;
 import com.example.weMee7.model.dao.UsuarioDAO;
 import com.example.weMee7.model.entities.Tarea;
 import com.example.weMee7.model.entities.Usuario;
-import com.example.weMee7.view.usuario.UsuarioActivity;
 import com.example.wemee7.R;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
@@ -33,20 +30,24 @@ import java.util.List;
 
 public class TareaAdapter extends RecyclerView.Adapter<TareaAdapter.ViewHolder> {
 
-    private List<Tarea> listaTareas;
+    private final List<Tarea> listaTareas;
     Context context;
     int position;
+    boolean esCreador;
+    boolean reunionActiva;
     final TareaAdapter.OnItemClickListener listener;
 
     public interface OnItemClickListener {
         void onItemClick(Tarea item);
     }
 
-
-
-    public TareaAdapter(List<Tarea> tareaList, Context context, OnItemClickListener listener) {
+    public TareaAdapter(List<Tarea> tareaList, Context context,
+                        boolean esCreador, boolean reunionActiva,
+                        OnItemClickListener listener) {
         this.context = context;
-        listaTareas = tareaList;
+        this.listaTareas = tareaList;
+        this.esCreador = esCreador;
+        this.reunionActiva = reunionActiva;
         this.listener = listener;
     }
 
@@ -67,10 +68,6 @@ public class TareaAdapter extends RecyclerView.Adapter<TareaAdapter.ViewHolder> 
         return listaTareas.size();
     }
 
-    public void setListaTareas(List<Tarea> items) {
-        listaTareas = items;
-    }
-
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvTituloTarea, tvFechaTarea, tvNombreEncargado, tvGastoTarea;
         ImageView ivAvatarEncargado;
@@ -87,7 +84,6 @@ public class TareaAdapter extends RecyclerView.Adapter<TareaAdapter.ViewHolder> 
             ivAvatarEncargado = itemView.findViewById(R.id.ivEncargadoIcono);
             cbRealizada = itemView.findViewById(R.id.checkRealizada);
             tareaFondo = itemView.findViewById(R.id.tarea_fondo);
-
         }
 
         void bindData(final Tarea tarea) {
@@ -97,7 +93,6 @@ public class TareaAdapter extends RecyclerView.Adapter<TareaAdapter.ViewHolder> 
             tvGastoTarea.setText(tarea.obtenerGastoString());
 
             //Datos de usuario encargado
-            boolean esCreador = ((UsuarioActivity)context).esCreador();
             if(tarea.getEstado() == Tarea.EstadoTarea.CREADA){
                 //La tarea todavía no está asignada
                 tvNombreEncargado.setText(R.string.text_sin_asignar);
@@ -122,8 +117,11 @@ public class TareaAdapter extends RecyclerView.Adapter<TareaAdapter.ViewHolder> 
                         tareaFondo.setCardBackgroundColor(context.getResources().getColor(R.color.task_done));
 
                     boolean esEncargado = FirebaseAuth.getInstance().getCurrentUser().getUid().equals(encargado.getId());
-                    if(esEncargado || (esCreador && tarea.getEstado() != Tarea.EstadoTarea.COMPLETADA))
+                    if((esEncargado || (esCreador && tarea.getEstado() != Tarea.EstadoTarea.COMPLETADA))
+                            && reunionActiva)
                         setListenerCheckBox(tarea);
+                    else
+                        cbRealizada.setEnabled(false);
                 });
             }
 

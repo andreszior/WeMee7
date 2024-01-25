@@ -1,6 +1,11 @@
 package com.example.weMee7.comun;
 
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
+import android.content.Context;
+import android.widget.EditText;
+
 import com.google.firebase.Timestamp;
 
 import java.text.ParseException;
@@ -24,7 +29,7 @@ public class TimeUtils {
      * @return
      */
     public static Timestamp fechaToTimestamp(String fecha) {
-        if(fecha == null)
+        if(fecha.isEmpty())
             fecha = FECHA_INDETERMINADA;
         SimpleDateFormat dateFormat =
                 new SimpleDateFormat(FORMATO_FECHA);
@@ -74,5 +79,43 @@ public class TimeUtils {
         calendar.set(Calendar.MILLISECOND, 0);
 
         return new Timestamp(calendar.getTime());
+    }
+
+    public static void addSelectFecha(Context c, EditText et){
+        Calendar calendar= Calendar.getInstance();
+        et.setFocusable(false);
+        et.setClickable(true);
+
+        DatePickerDialog.OnDateSetListener dateSetListener= (view, year, month, dayOfMonth) -> {
+            calendar.set(Calendar.YEAR, year);
+            calendar.set(Calendar.MONTH, month);
+            calendar.set(Calendar.DAY_OF_MONTH,dayOfMonth);
+
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat(TimeUtils.FORMATO_FECHA);
+            et.setText(simpleDateFormat.format(calendar.getTime()));
+        };
+        DatePickerDialog datePicker = new DatePickerDialog(c,
+                dateSetListener,
+                calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH));
+
+        datePicker.getDatePicker().setMinDate(System.currentTimeMillis());
+        datePicker.show();
+    }
+
+    public static void addSelectHora(Context c, EditText et){
+        Calendar calendar= Calendar.getInstance();
+        TimePickerDialog.OnTimeSetListener timeSetListener = (view, hourOfDay, minute) -> {
+            calendar.set(Calendar.HOUR_OF_DAY,hourOfDay);
+            calendar.set(Calendar.MINUTE, minute);
+
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat(TimeUtils.FORMATO_HORA);
+            et.setText(simpleDateFormat.format(calendar.getTime()));
+        };
+        new TimePickerDialog(c,
+                timeSetListener,calendar.get(Calendar.HOUR_OF_DAY),
+                calendar.get(Calendar.MINUTE), true).show();
+
     }
 }

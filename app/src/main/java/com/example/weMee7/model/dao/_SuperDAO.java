@@ -55,10 +55,6 @@ public abstract class _SuperDAO {
         void onCallback(Object resultado);
     }
 
-    public interface FirebaseCallbackList<T>{
-        void onCallback(T resultado);
-    }
-
     //FUNCIONES BASICAS DAO
     /**
      * Recibe un objeto/entidad,
@@ -71,7 +67,6 @@ public abstract class _SuperDAO {
             (entity).setId(documentReference.getId());
             DB_COLECCION.document(entity.getId()).set(entity).
                     addOnSuccessListener(unused -> {
-                        System.out.println("elemento registrado");
                     });
         });
     }

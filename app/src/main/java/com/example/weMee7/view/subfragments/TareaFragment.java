@@ -1,4 +1,4 @@
-package com.example.weMee7.activities;
+package com.example.weMee7.view.subfragments;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -18,12 +18,12 @@ import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
-import com.example.weMee7.comun.EncargadosAdapter;
 import com.example.weMee7.comun.InputControl;
 import com.example.weMee7.model.entities.Tarea;
 import com.example.weMee7.model.entities.Usuario;
-import com.example.weMee7.view._SuperActivity;
-import com.example.weMee7.view.usuario.UsuarioActivity;
+import com.example.weMee7.view.adapters.EncargadosAdapter;
+import com.example.weMee7.view.activity._SuperActivity;
+import com.example.weMee7.view.fragments.ReunionFragment;
 import com.example.weMee7.viewmodel.GestionarDatos;
 import com.example.wemee7.R;
 import com.google.android.gms.tasks.Task;
@@ -43,7 +43,6 @@ public class TareaFragment extends Fragment {
     private List<Usuario> encargadosList;
     private Tarea tareaSeleccionada;
     private GestionarDatos vmDatos;
-    private boolean editable;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -57,8 +56,9 @@ public class TareaFragment extends Fragment {
 
     private void cargarComponentes(View view) {
         boolean nuevaTarea = tareaSeleccionada == null;
-        boolean esCreador = ((UsuarioActivity) requireActivity()).esCreador();
+        boolean esCreador = getFragmentPadre().isUserCreador();
 
+        boolean editable;
         if (nuevaTarea) {
             editable = true;
         } else {
@@ -184,7 +184,7 @@ public class TareaFragment extends Fragment {
                 sp_participantes.setAdapter(
                         new EncargadosAdapter(
                                 requireActivity(), encargadosList));
-                if (tareaSeleccionada != null && tareaSeleccionada.getIdEncargado() != null) {
+                if (tareaSeleccionada != null && !tareaSeleccionada.getIdEncargado().equals("")) {
                     cargarEncargado();
                 }
             });
@@ -199,12 +199,6 @@ public class TareaFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-//                // Si el usuario borra el símbolo de euro, vuelve a añadirlo
-//                if (!s.toString().endsWith("€")) {
-//                    et_tareaGasto.setText(s + "€");
-//                    et_tareaGasto.setSelection(et_tareaGasto.getText().length() - 1);  // Mueve el cursor antes del símbolo de euro
-//                }
-
                 // Si el usuario escribe una coma al principio, añade un 0 delante
                 if (s.toString().startsWith(",")) {
                     et_tareaGasto.setText("0" + s);
@@ -215,7 +209,7 @@ public class TareaFragment extends Fragment {
             @Override
             public void afterTextChanged(Editable s) {
                 String input = s.toString();
-                String filtrado = input.replaceAll("[^0-9,]", "");
+                String filtrado = input.replaceAll("[^0-9,.]", "");
                 // Verifica si el texto ha cambiado
                 if (!input.equals(filtrado)) {
                     et_tareaGasto.setText(filtrado); // Establece el texto filtrado en el EditText
@@ -259,25 +253,36 @@ public class TareaFragment extends Fragment {
 
         //Obtener encargado
         int position = sp_participantes.getSelectedItemPosition();
-        String idEncargado = position == 0 ? null : encargadosList.get(position - 1).getId();
+        String idEncargado = position == 0 ? "" : encargadosList.get(position - 1).getId();
 
         //Obtener estado
         Tarea.EstadoTarea estadoTarea;
-        if (idEncargado == null)
+        if (idEncargado.equals(""))
             estadoTarea = Tarea.EstadoTarea.CREADA;
         else if (check_Realizada.isChecked())
             estadoTarea = Tarea.EstadoTarea.COMPLETADA;
         else
             estadoTarea = Tarea.EstadoTarea.ASIGNADA;
 
+        //Actualizar base de datos
+        boolean actualizar = true;
+        int mensaje;
         if(tareaSeleccionada == null){
             String idReunion = getFragmentPadre().getReunionActual().getId();
             vmDatos.crearTarea(new Tarea(idReunion,titulo,descripcion,gasto,idEncargado,estadoTarea));
+            mensaje = R.string.msj_tarea_creada;
         }else if(hayCambios(titulo,descripcion,gasto,idEncargado,estadoTarea)) {
             vmDatos.actualizarTarea(tareaSeleccionada);
-        }else return;
+            mensaje = R.string.msj_tarea_modificada;
+        }else {
+            actualizar = false;
+            mensaje = 0;
+        }
+        //Feedback al usuario
+        if(actualizar)
+            ((_SuperActivity)requireActivity()).lanzarMensaje(mensaje);
 
-        accionCerrarTarea(true);
+        accionCerrarTarea(actualizar);
     }
 
     private boolean hayCambios(String titulo, String descripcion, int gasto, String idEncargado, Tarea.EstadoTarea estado){
@@ -348,12 +353,11 @@ public class TareaFragment extends Fragment {
 
     //endregion
 
-    private ReunionFragment getFragmentPadre() {
+    protected ReunionFragment getFragmentPadre() {
         Fragment padre = requireActivity().getSupportFragmentManager().findFragmentById(R.id.fragment_container);
         if (padre instanceof ReunionFragment)
             return (ReunionFragment) padre;
         else
             return null;
     }
-
 }

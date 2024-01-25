@@ -1,4 +1,4 @@
-package com.example.weMee7.view.usuario;
+package com.example.weMee7.view.fragments;
 
 import android.os.Bundle;
 
@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 import com.example.weMee7.comun.InputControl;
-import com.example.weMee7.view._SuperActivity;
+import com.example.weMee7.view.activity._SuperActivity;
 import com.example.weMee7.viewmodel.ValidarUsuario;
 import com.example.wemee7.R;
 

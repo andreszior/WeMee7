@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:layout_margin="20dp"
-    tools:context="com.example.weMee7.view.usuario.SettingsFragment">
+    tools:context="com.example.weMee7.view.fragments.SettingsFragment">
 
     <TextView
         android:text="@string/tag_cuenta"

@@ -2,8 +2,6 @@ package com.example.weMee7.viewmodel;
 
 import static com.example.weMee7.model.dao._SuperDAO.Fields.ID_REUNION;
 
-import androidx.recyclerview.widget.LinearLayoutManager;
-
 import com.example.weMee7.model.dao.InvitacionDAO;
 import com.example.weMee7.model.dao.ReunionDAO;
 import com.example.weMee7.model.dao.TareaDAO;
@@ -14,21 +12,38 @@ import com.example.weMee7.model.entities.Reunion;
 import com.example.weMee7.model.entities.Tarea;
 import com.example.weMee7.model.entities.Usuario;
 import com.google.android.gms.tasks.TaskCompletionSource;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class GestionarDatos {
 
-    TaskCompletionSource<DocumentSnapshot> tcs;
-
     public GestionarDatos() {}
 
-    public TaskCompletionSource<DocumentSnapshot> obtenerListaSoloEncargado(List<Usuario> encargadosList,
-                                                          String idEncargado){
+    public TaskCompletionSource<DocumentSnapshot> obtenerReunionesUsuario(
+            List<Reunion> reunionesList, Map<String,Invitacion> invitacionesMap, String idUsuario,
+            boolean activas){
+
+        ReunionDAO rDAO = new ReunionDAO();
+        InvitacionDAO iDAO = new InvitacionDAO();
+        TaskCompletionSource<DocumentSnapshot> tcs = new TaskCompletionSource<>();
+
+        rDAO.obtenerReunionesUsuario(idUsuario, activas, rList -> {
+            reunionesList.addAll((List)rList);
+            iDAO.obtenerInvitacionesActivas(idUsuario,activas, iMap -> {
+                invitacionesMap.putAll((Map)iMap);
+                tcs.setResult(null);
+            });
+        });
+        return tcs;
+    }
+
+    public TaskCompletionSource<DocumentSnapshot> obtenerListaSoloEncargado(
+            List<Usuario> encargadosList, String idEncargado){
         UsuarioDAO uDAO = new UsuarioDAO();
-        tcs = new TaskCompletionSource<>();
+        TaskCompletionSource<DocumentSnapshot> tcs = new TaskCompletionSource<>();
 
         //Modo consulta o editar !creador -> Solo encargado
         uDAO.obtenerRegistroPorId(idEncargado, resultado -> {
@@ -42,7 +57,7 @@ public class GestionarDatos {
     public TaskCompletionSource<DocumentSnapshot> obtenerListaTodosEncargados(List<Usuario> encargadosList,
                                                                               String idReunion, String idCreador){
         UsuarioDAO uDAO = new UsuarioDAO();
-        tcs = new TaskCompletionSource<>();
+        TaskCompletionSource<DocumentSnapshot> tcs = new TaskCompletionSource<>();
 
         //Modo crear o editar & creador
         uDAO.obtenerRegistroPorId(idCreador, resultado -> {
@@ -52,6 +67,26 @@ public class GestionarDatos {
                 encargadosList.addAll((List) lista);
                 tcs.setResult(null);
             });
+        });
+        return tcs;
+    }
+
+    public TaskCompletionSource<DocumentSnapshot> crearNuevaReunion(Reunion r){
+        ReunionDAO rDAO = new ReunionDAO();
+        TaskCompletionSource<DocumentSnapshot> tcs = new TaskCompletionSource<>();
+        rDAO.insertarRegistro(r, idReunion ->{
+            r.setId((String)idReunion);
+            tcs.setResult(null);
+        });
+        return tcs;
+    }
+
+    public TaskCompletionSource<DocumentSnapshot> obtenerReunion(String idReunion, List<Reunion> r){
+        ReunionDAO rDAO = new ReunionDAO();
+        TaskCompletionSource<DocumentSnapshot> tcs = new TaskCompletionSource<>();
+        rDAO.obtenerRegistroPorId(idReunion, reunion ->  {
+            r.add((Reunion)reunion);
+            tcs.setResult(null);
         });
         return tcs;
     }
@@ -93,7 +128,7 @@ public class GestionarDatos {
 
     public TaskCompletionSource<DocumentSnapshot> obtenerListaTareas(List<Tarea> lista, String idReunion){
         TareaDAO tDAO = new TareaDAO();
-        tcs = new TaskCompletionSource<>();
+        TaskCompletionSource<DocumentSnapshot> tcs = new TaskCompletionSource<>();
 
         tDAO.obtenerListaPorIdForaneo(ID_REUNION, idReunion, resultado -> {
             lista.addAll((List<Tarea>)resultado);

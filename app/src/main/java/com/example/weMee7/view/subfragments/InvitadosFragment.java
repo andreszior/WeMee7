@@ -1,4 +1,4 @@
-package com.example.weMee7.view.reunion;
+package com.example.weMee7.view.subfragments;
 
 import android.content.res.ColorStateList;
 import android.graphics.Typeface;
@@ -15,8 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.weMee7.comun.Avatar;
-import com.example.weMee7.comun.InvitadosAdapter;
-import com.example.weMee7.comun.TimeUtils;
+import com.example.weMee7.view.adapters.InvitadosAdapter;
 import com.example.weMee7.model.dao.InvitacionDAO;
 import com.example.weMee7.model.dao.ReunionDAO;
 import com.example.weMee7.model.dao.UsuarioDAO;
@@ -24,10 +23,10 @@ import com.example.weMee7.model.dao._SuperDAO;
 import com.example.weMee7.model.entities.Invitacion;
 import com.example.weMee7.model.entities.Reunion;
 import com.example.weMee7.model.entities.Usuario;
-import com.example.weMee7.view.usuario.UsuarioActivity;
+import com.example.weMee7.view.activity.UsuarioActivity;
+import com.example.weMee7.view.fragments.ReunionFragment;
 import com.example.weMee7.viewmodel.InvitarUsuario;
 import com.example.wemee7.R;
-import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -87,7 +86,7 @@ public class InvitadosFragment extends Fragment {
             new UsuarioDAO().obtenerRegistroPorId(((Reunion) reunion).getIdCreador(), creador -> {
                 //Añadir usuario creador
                 Usuario u = (Usuario) creador;
-                esModificable = ((UsuarioActivity)requireActivity()).esCreador()
+                esModificable = (getFragmentPadre().isUserCreador())
                     && r.estaActiva();
                 if (esModificable)
                     btCompartir.setVisibility(View.VISIBLE);
@@ -154,5 +153,13 @@ public class InvitadosFragment extends Fragment {
 
         //Refrescar recyclerView
         llenarLista();
+    }
+
+    protected ReunionFragment getFragmentPadre() {
+        Fragment padre = requireActivity().getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+        if (padre instanceof ReunionFragment)
+            return (ReunionFragment) padre;
+        else
+            return null;
     }
 }

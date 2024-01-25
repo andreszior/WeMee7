@@ -1,4 +1,4 @@
-package com.example.weMee7.comun;
+package com.example.weMee7.view.adapters;
 
 import android.content.Context;
 
@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.weMee7.comun.Avatar;
 import com.example.weMee7.model.entities.Invitacion;
 import com.example.weMee7.model.entities.Usuario;
 import com.example.wemee7.R;

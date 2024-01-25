@@ -13,20 +13,11 @@
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         tools:targetApi="31">
         <activity
-            android:name="com.example.weMee7.activities.ReunionActivity"
-            android:exported="false" />
-        <activity
-            android:name="com.example.weMee7.TestActivity"
-            android:exported="true">
-        </activity>
-        <activity
-            android:name="com.example.weMee7.view.usuario.UsuarioActivity"
+            android:name="com.example.weMee7.view.activity.UsuarioActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-            <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />

@@ -29,10 +29,12 @@ public class InputControl {
     }
 
     public static int formatoGasto(String gasto){
-        if(gasto.isEmpty())
+        if(gasto.isEmpty() || gasto.equals("¿?"))
             return 0;
         int resultado = -1;
         try{
+            if(gasto.contains("€"))
+                gasto = gasto.replace("€","");
             float x = Float.parseFloat(gasto.replace(",", "."));
             resultado = Math.round(x * 100);
         }catch(NumberFormatException ex){

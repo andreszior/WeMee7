@@ -3,131 +3,148 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.weMee7.activities.AddFragment">
+    tools:context="com.example.weMee7.view.fragments.AddFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-
-
-    <EditText
-        android:id="@+id/Nombre"
-        android:layout_width="300dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="44dp"
-        android:layout_marginEnd="36dp"
-        android:ems="15"
-        android:hint="@string/add_hint_nombre"
-        android:inputType="text"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline" />
-
-    <ImageView
-        android:id="@+id/imagenombre"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="56dp"
-        android:layout_marginEnd="19dp"
-        android:src="@drawable/groups_fill0_wght400_grad0_opsz24"
-        app:layout_constraintEnd_toStartOf="@+id/Nombre"
-        app:layout_constraintTop_toTopOf="@+id/guideline"
-        app:tint="@color/medium" />
-
-    <EditText
-        android:id="@+id/Lugar"
-        android:layout_width="300dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="52dp"
-        android:layout_marginEnd="36dp"
-        android:ems="15"
-        android:hint="@string/add_hint_lugar"
-        android:inputType="text"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Nombre" />
-
-    <ImageView
-        android:id="@+id/imagedonde"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="60dp"
-        android:layout_marginEnd="19dp"
-        android:src="@drawable/icon_location"
-        app:layout_constraintEnd_toStartOf="@+id/Lugar"
-        app:layout_constraintTop_toBottomOf="@+id/imagenombre"
-        app:tint="@color/medium" />
-
-    <EditText
-        android:id="@+id/fecha"
-        android:layout_width="300dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="52dp"
-        android:layout_marginEnd="36dp"
-        android:ems="15"
-        android:hint="@string/add_hint_fecha"
-        android:inputType="text"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Lugar" />
-
-    <ImageView
-        android:id="@+id/imagefecha"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="60dp"
-        android:layout_marginEnd="19dp"
-        android:src="@drawable/icon_calendar"
-        app:layout_constraintEnd_toStartOf="@+id/fecha"
-        app:layout_constraintTop_toBottomOf="@+id/imagedonde"
-        app:tint="@color/medium" />
-
-    <TextView
-        android:id="@+id/descripcionTitle"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/llAddNombre"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="44dp"
-        android:text="@string/add_descripciontitle"
-        android:textSize="20dp"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:orientation="vertical"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/llAddLugar"
+        app:layout_constraintStart_toEndOf="@id/glAddLeft"
+        app:layout_constraintEnd_toEndOf="parent">
+        <EditText
+            android:id="@+id/etAddNombre"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="15"
+            android:maxLength="25"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="10dp"
+            android:hint="@string/add_hint_nombre"
+            android:inputType="text" />
+        <EditText
+            android:id="@+id/etAddDescripcion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="15"
+            android:maxLines="3"
+            android:maxLength="50"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="10dp"
+            android:hint="@string/add_hint_descripcion"
+            android:inputType="text"
+            android:textSize="14sp"/>
+    </LinearLayout>
+    <ImageView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:src="@drawable/icon_reunion"
+        android:layout_margin="10dp"
+        app:layout_constraintTop_toTopOf="@+id/llAddNombre"
+        app:layout_constraintBottom_toBottomOf="@id/llAddNombre"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fecha" />
+        app:layout_constraintEnd_toStartOf="@id/glAddLeft"
+        app:tint="@color/medium" />
 
-    <EditText
-        android:id="@+id/Descripcion"
-        android:layout_width="300dp"
-        android:layout_height="100dp"
-        android:layout_marginBottom="16dp"
-        android:ems="15"
-        android:hint="@string/add_descripcion"
-        android:inputType="text"
-        app:layout_constraintBottom_toTopOf="@+id/guideline2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+    <LinearLayout
+        android:id="@+id/llAddLugar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@id/llAddNombre"
+        app:layout_constraintBottom_toTopOf="@+id/llAddFecha"
+        app:layout_constraintStart_toEndOf="@id/glAddLeft"
+        app:layout_constraintEnd_toEndOf="parent">
+        <EditText
+            android:id="@+id/etAddLugar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="15"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="10dp"
+            android:hint="@string/add_hint_lugar"
+            android:inputType="text" />
+    </LinearLayout>
+    <ImageView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:src="@drawable/icon_location"
+        app:layout_constraintTop_toTopOf="@id/llAddLugar"
+        app:layout_constraintBottom_toBottomOf="@+id/llAddLugar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/glAddLeft"
+        app:tint="@color/medium" />
+
+    <LinearLayout
+        android:id="@+id/llAddFecha"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@+id/llAddLugar"
+        app:layout_constraintBottom_toTopOf="@+id/glAddBottom"
+        app:layout_constraintStart_toEndOf="@id/glAddLeft"
+        app:layout_constraintEnd_toEndOf="parent">
+        <EditText
+            android:id="@+id/etAddFecha"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="15"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="10dp"
+            android:hint="@string/add_hint_fecha"
+            android:inputType="text"/>
+        <EditText
+            android:id="@+id/etAddHora"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="15"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="10dp"
+            android:hint="@string/add_hint_hora" />
+    </LinearLayout>
+    <ImageView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintDimensionRatio="1:1"
+        android:src="@drawable/icon_calendar"
+        android:layout_margin="10dp"
+        app:layout_constraintTop_toTopOf="@id/llAddFecha"
+        app:layout_constraintBottom_toBottomOf="@+id/llAddFecha"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/glAddLeft"
+        app:tint="@color/medium" />
 
     <Button
-        android:id="@+id/buttoncrear"
-
-        android:layout_width="160dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="32dp"
+        android:id="@+id/btAddReunion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:background="@drawable/default_round_button"
         android:backgroundTint="@color/medium"
+        android:padding="20dp"
         android:text="@string/add_crear"
         android:textColor="@color/white"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintTop_toTopOf="@id/glAddBottom"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline2" />
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline"
+        android:id="@+id/glAddLeft"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.2" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/glAddBottom"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_begin="49dp" />
+        app:layout_constraintGuide_percent="0.8" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_begin="553dp" />
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:background="@drawable/rounded_rectangle"
     android:layout_margin="3dp"
-    tools:context="com.example.weMee7.activities.TareaFragment">
+    tools:context="com.example.weMee7.view.subfragments.TareaFragment">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"

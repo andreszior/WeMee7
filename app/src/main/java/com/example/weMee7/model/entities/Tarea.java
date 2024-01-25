@@ -13,7 +13,7 @@ import com.google.firebase.Timestamp;
  * con los documentos
  * de la colección tareas de la BD.
  */
-public class Tarea extends _SuperEntity implements Comparable<Tarea>, Parcelable {
+public class Tarea extends _SuperEntity {
 
     private String idReunion;
     private String titulo;
@@ -21,8 +21,6 @@ public class Tarea extends _SuperEntity implements Comparable<Tarea>, Parcelable
     private String descripcion;
     private EstadoTarea estado;
 
-
-    private boolean isChecked;
     private int gasto;//El gasto se almacena como entero
     //P.ej: 45,50 € = 4550.
     private Timestamp fecha_update;//Se modifica automaticamente al cambiar de Estado
@@ -30,7 +28,6 @@ public class Tarea extends _SuperEntity implements Comparable<Tarea>, Parcelable
 
     //Constructor vacio
     public Tarea() {}
-
 
     public String getIdReunion() {
         return idReunion;
@@ -109,6 +106,7 @@ public class Tarea extends _SuperEntity implements Comparable<Tarea>, Parcelable
     public String obtenerGastoString(){
         if(this.gasto == 0)
             return "¿?";
+
         return String.format("%.2f",this.gasto / 100f).concat(" €");
     }
 
@@ -126,57 +124,5 @@ public class Tarea extends _SuperEntity implements Comparable<Tarea>, Parcelable
      * con los diferentes estados de una invitacion
      */
     public enum EstadoTarea {CREADA,ASIGNADA,COMPLETADA;}
-
-
-
-
-    protected Tarea(Parcel in) {
-        //idTarea = in.readString();
-        idReunion = in.readString();
-        titulo = in.readString();
-        idEncargado = in.readString();
-        descripcion = in.readString();
-        isChecked = in.readByte() != 0;
-        gasto = in.readInt();
-        fecha_update = in.readParcelable(Timestamp.class.getClassLoader());
-    }
-
-    public static final Creator<Tarea> CREATOR = new Creator<Tarea>() {
-        @Override
-        public Tarea createFromParcel(Parcel in) {
-            return new Tarea(in);
-        }
-
-        @Override
-        public Tarea[] newArray(int size) {
-            return new Tarea[size];
-        }
-    };
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(@NonNull Parcel dest, int flags) {
-        //dest.writeString(idTarea);
-        dest.writeString(idReunion);
-        dest.writeString(titulo);
-        dest.writeString(idEncargado);
-        dest.writeString(descripcion);
-        dest.writeByte((byte) (isChecked ? 1 : 0));
-        dest.writeInt(gasto);
-        dest.writeParcelable(fecha_update, flags);
-    }
-
-    @Override
-    public int compareTo(Tarea o) {
-        return 0;
-    }
-
-
-
-
 
 }

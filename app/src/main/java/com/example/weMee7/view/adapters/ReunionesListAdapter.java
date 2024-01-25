@@ -1,13 +1,15 @@
-package com.example.weMee7.comun;
+package com.example.weMee7.view.adapters;
 
-import static com.example.weMee7.view.usuario.ReunionesListFragment.LISTA_INVITACIONES;
-import static com.example.weMee7.view.usuario.ReunionesListFragment.REUNIONES_ACTIVAS;
+import static com.example.weMee7.view.subfragments.ReunionesListFragment.LISTA_INVITACIONES;
+import static com.example.weMee7.view.subfragments.ReunionesListFragment.REUNIONES_ACTIVAS;
 
 import android.content.Context;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.weMee7.comun.Avatar;
+import com.example.weMee7.comun.TimeUtils;
 import com.example.weMee7.model.dao.UsuarioDAO;
 import com.example.weMee7.model.entities.Invitacion;
 import com.example.weMee7.model.entities.Reunion;

@@ -1,4 +1,4 @@
-package com.example.weMee7.comun.seguridad;
+package com.example.weMee7.comun;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -19,10 +19,7 @@ import java.security.GeneralSecurityException;
  * de no ser compatible, se utilizaran en modo privado.
  */
 public class SharedPref {
-
     private SharedPreferences sp;
-
-
     private final String TAREA_CHECKBOX_PREF = "TareaPrefs";
 
     public SharedPref(Context context) {

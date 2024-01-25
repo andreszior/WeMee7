@@ -1,4 +1,4 @@
-package com.example.weMee7.comun;
+package com.example.weMee7.view.adapters;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
@@ -13,6 +13,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.example.weMee7.comun.Avatar;
 import com.example.weMee7.model.entities.Usuario;
 import com.example.wemee7.R;
 

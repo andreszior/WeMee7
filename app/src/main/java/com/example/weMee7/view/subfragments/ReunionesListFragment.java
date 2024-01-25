@@ -1,7 +1,6 @@
-package com.example.weMee7.view.usuario;
+package com.example.weMee7.view.subfragments;
 
 import android.app.AlertDialog;
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -16,16 +15,22 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.example.weMee7.activities.ReunionFragment;
-import com.example.weMee7.comun.ReunionesListAdapter;
+import com.example.weMee7.view.adapters.ReunionesListAdapter;
 import com.example.weMee7.model.dao.InvitacionDAO;
 import com.example.weMee7.model.dao.ReunionDAO;
 import com.example.weMee7.model.entities.Invitacion;
 import com.example.weMee7.model.entities.Reunion;
-import com.example.weMee7.view._SuperActivity;
+import com.example.weMee7.view.activity.UsuarioActivity;
+import com.example.weMee7.view.activity._SuperActivity;
+import com.example.weMee7.view.fragments.HomeFragment;
+import com.example.weMee7.view.fragments.ReunionFragment;
+import com.example.weMee7.viewmodel.GestionarDatos;
 import com.example.weMee7.viewmodel.InvitarUsuario;
 import com.example.wemee7.R;
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.TaskCompletionSource;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -54,8 +59,10 @@ public class ReunionesListFragment extends Fragment {
     public static final int REUNIONES_PASADAS = 2;
 
     //Carga de info en segundo plano
-    private ExecutorService exec;
-    private Future<?> task;
+//    private ExecutorService exec;
+//    private Future<?> task;
+
+    private TaskCompletionSource<DocumentSnapshot> listaCargada;
     private boolean cargado;
 
     public static ReunionesListFragment newInstance(int tab){
@@ -75,6 +82,10 @@ public class ReunionesListFragment extends Fragment {
             tab = getArguments().getInt("TAB_KEY");
         else
             tab = REUNIONES_ACTIVAS;
+        listaCargada = new TaskCompletionSource<>();
+        listaCargada.getTask().addOnSuccessListener(documentSnapshot -> {
+            ((_SuperActivity)requireActivity()).ocultarCargando();
+        });
     }
 
     @Override
@@ -85,32 +96,39 @@ public class ReunionesListFragment extends Fragment {
         rvReunionesList = view.findViewById(R.id.rvHomeLista);
         tvMensaje = view.findViewById(R.id.tvHomeMensaje);
 
-        //Carga de informacion en un hilo secundario
-        exec = Executors.newSingleThreadExecutor();
-        task = exec.submit(() -> {
-            if(tab != REUNIONES_PASADAS){
-                HomeFragment hf = getFragmentPadre();
-                if(hf != null)
-                    llenarListasTab(hf.getReunionesList(),hf.getInvitacionesMap());
-            }
-            // Actualizar la UI en el hilo principal
-            getActivity().runOnUiThread(() -> {
-                if(tab == REUNIONES_ACTIVAS) {
-                    llenarRecyclerView();
-                    cargado = true;
-                }
-            });
-        });
+        cargarDatos();
 
-        //Ocultar capa de carga cuando se complete
-        new Handler(Looper.getMainLooper()).post(() -> {
-            try{
-                task.get();
-                ((_SuperActivity)requireActivity()).ocultarCargando();
-            }catch(InterruptedException | ExecutionException e){
-                e.printStackTrace();
-            }
-        });
+
+
+
+
+
+        //Carga de informacion en un hilo secundario
+//        exec = Executors.newSingleThreadExecutor();
+//        task = exec.submit(() -> {
+//            if(tab != REUNIONES_PASADAS){
+//                HomeFragment hf = getFragmentPadre();
+//                if(hf != null)
+//                    llenarListasTab(hf.getReunionesList(),hf.getInvitacionesMap());
+//            }
+//            // Actualizar la UI en el hilo principal
+//            getActivity().runOnUiThread(() -> {
+//                if(tab == REUNIONES_ACTIVAS) {
+//                    llenarRecyclerView();
+//                    cargado = true;
+//                }
+//            });
+//        });
+//
+//        //Ocultar capa de carga cuando se complete
+//        new Handler(Looper.getMainLooper()).post(() -> {
+//            try{
+//                task.get();
+//                ((_SuperActivity)requireActivity()).ocultarCargando();
+//            }catch(InterruptedException | ExecutionException e){
+//                e.printStackTrace();
+//            }
+//        });
 
         return view;
     }
@@ -122,7 +140,6 @@ public class ReunionesListFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-
         if(!cargado){
             switch(tab) {
                 case LISTA_INVITACIONES://TAB 0
@@ -141,7 +158,8 @@ public class ReunionesListFragment extends Fragment {
         //TAB 1: Se actualiza cuando se acepta una invitacion
         if(tab == REUNIONES_ACTIVAS){
             HomeFragment hf = getFragmentPadre();
-            if(hf.hayCambios()){
+
+            if(hf != null && hf.hayCambios()){
                 llenarListasTab(hf.getReunionesList(),hf.getInvitacionesMap());
                 llenarRecyclerView();
                 hf.setHayCambios(false);
@@ -149,18 +167,33 @@ public class ReunionesListFragment extends Fragment {
         }
     }
 
-    /**
-     * Cancela la carga de datos en segundo plano,
-     * si no ha terminado.
-     * En cualquier caso, cierra el ExecutorService.
-     */
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        if (task != null && !task.isDone())
-            task.cancel(true);
-        if (exec != null)
-            exec.shutdownNow();
+//    /**
+//     * Cancela la carga de datos en segundo plano,
+//     * si no ha terminado.
+//     * En cualquier caso, cierra el ExecutorService.
+//     */
+//    @Override
+//    public void onDestroy() {
+//        super.onDestroy();
+//        if (task != null && !task.isDone())
+//            task.cancel(true);
+//        if (exec != null)
+//            exec.shutdownNow();
+//    }
+
+    private TaskCompletionSource<DocumentSnapshot>cargarDatos(){
+        TaskCompletionSource<DocumentSnapshot> tcs = new TaskCompletionSource<>();
+        if(tab != REUNIONES_PASADAS){
+            HomeFragment hf = getFragmentPadre();
+            if(hf != null)
+                llenarListasTab(hf.getReunionesList(),hf.getInvitacionesMap());
+        }
+        if(tab == REUNIONES_ACTIVAS) {
+            llenarRecyclerView();
+            cargado = true;
+        }
+        tcs.setResult(null);
+        return tcs;
     }
 
     /**
@@ -168,12 +201,20 @@ public class ReunionesListFragment extends Fragment {
      */
     private void cargarReunionesPasadas() {
         String idUsuario = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        new ReunionDAO().obtenerReunionesUsuario(idUsuario, false, rList -> {
-            new InvitacionDAO().obtenerInvitacionesActivas(idUsuario,false, iMap -> {
-                llenarListasTab((List)rList,(Map)iMap);
+        List<Reunion> rList = new ArrayList<>();
+        Map<String,Invitacion> iMap = new HashMap<>();
+
+        GestionarDatos vmDatos = new GestionarDatos();
+        TaskCompletionSource<DocumentSnapshot> tcs =
+                vmDatos.obtenerReunionesUsuario(rList,iMap,idUsuario,false);
+
+        if(tcs != null) {
+            Task<DocumentSnapshot> getTask = tcs.getTask();
+            getTask.addOnSuccessListener(documentSnapshot -> {
+                llenarListasTab(rList,iMap);
                 llenarRecyclerView();
             });
-        });
+        }
     }
 
     /**
@@ -269,6 +310,7 @@ public class ReunionesListFragment extends Fragment {
             rvReunionesList.setAdapter(reunionesListAdapter);
             rvReunionesList.setVisibility(View.VISIBLE);
         }
+        listaCargada.setResult(null);
     }
 
     /**
@@ -299,14 +341,8 @@ public class ReunionesListFragment extends Fragment {
      */
     private void verReunion(String idReunion, String idCreador){
         UsuarioActivity activity = (UsuarioActivity)requireActivity();
-        activity.setIdReunionActual(idReunion,idCreador);
+        activity.setIdReunionActual(idReunion);
         activity.colocarFragment(new ReunionFragment());
-
-//
-//        Intent intent = new Intent(getActivity(), ReunionActivity.class);
-//        intent.putExtra("id",item.getId());
-//        intent.putExtra("meeting", item);
-//        startActivity(intent);
     }
 
     /**

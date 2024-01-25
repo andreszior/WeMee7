@@ -1,4 +1,4 @@
-package com.example.weMee7.view.usuario;
+package com.example.weMee7.view.fragments;
 
 import android.os.Bundle;
 

@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.example.weMee7.view.usuario.PerfilFragment">
+    tools:context="com.example.weMee7.view.fragments.PerfilFragment">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/glPerfilBotones"

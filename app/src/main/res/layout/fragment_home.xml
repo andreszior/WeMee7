@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context="com.example.weMee7.view.usuario.UsuarioActivity">
+    tools:context="com.example.weMee7.view.activity.UsuarioActivity">
 
     <LinearLayout
         android:id="@+id/llHomeEventos"
@@ -21,7 +21,7 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginEnd="10dp"
-            android:src="@drawable/groups_fill0_wght400_grad0_opsz24"
+            android:src="@drawable/icon_reunion"
             />
         <TextView
             android:layout_width="wrap_content"

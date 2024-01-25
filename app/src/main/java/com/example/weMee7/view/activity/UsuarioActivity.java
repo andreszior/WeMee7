@@ -1,4 +1,4 @@
-package com.example.weMee7.view.usuario;
+package com.example.weMee7.view.activity;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -7,8 +7,9 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
-import com.example.weMee7.comun.seguridad.SharedPref;
-import com.example.weMee7.view._SuperActivity;
+import com.example.weMee7.comun.SharedPref;
+import com.example.weMee7.view.fragments.HomeFragment;
+import com.example.weMee7.view.fragments.LoginFragment;
 import com.example.wemee7.R;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -40,9 +41,8 @@ public class UsuarioActivity extends _SuperActivity {
         return idReunionActual;
     }
 
-    public void setIdReunionActual(String idReunionActual, String idCreador){
+    public void setIdReunionActual(String idReunionActual){
         this.idReunionActual = idReunionActual;
-        this.userCreador = idCreador.equals(FirebaseAuth.getInstance().getCurrentUser().getUid());
     }
 
     public boolean esCreador(){

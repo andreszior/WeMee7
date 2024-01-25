@@ -1,4 +1,4 @@
-package com.example.weMee7.view.usuario;
+package com.example.weMee7.view.fragments;
 
 import android.content.res.ColorStateList;
 import android.graphics.text.LineBreaker;
@@ -19,7 +19,7 @@ import android.widget.TextView;
 
 import com.example.weMee7.model.dao.UsuarioDAO;
 import com.example.weMee7.model.entities.Usuario;
-import com.example.weMee7.view._SuperActivity;
+import com.example.weMee7.view.activity._SuperActivity;
 import com.example.weMee7.comun.Avatar;
 import com.example.weMee7.viewmodel.ValidarUsuario;
 import com.example.wemee7.R;

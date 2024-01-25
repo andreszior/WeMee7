@@ -23,6 +23,23 @@ public class ReunionDAO extends _SuperDAO {
     }
 
     /**
+     * Inserta una reunion en la base de datos
+     * y devuelve en un callback de Firebase
+     * el id generado
+     * @param reunion nueva reunion
+     * @param callback callback
+     */
+    public void insertarRegistro(_SuperEntity reunion, FirebaseCallback callback){
+        DB_COLECCION.add(reunion).addOnSuccessListener(documentReference -> {
+            (reunion).setId(documentReference.getId());
+            DB_COLECCION.document(reunion.getId()).set(reunion).
+                    addOnSuccessListener(unused -> {
+                        callback.onCallback(reunion.getId());
+                    });
+        });
+    }
+
+    /**
      * Obtiene todas las reuniones de un usuario,
      * tanto las creadas como de las que es invitado,
      * anteriores o posteriores a la fecha de hoy

@@ -1,7 +1,7 @@
 package com.example.weMee7.viewmodel;
 
-import static com.example.weMee7.view.usuario.UsuarioActivity.GOOGLE_SIGN_IN;
-import static com.example.weMee7.view.usuario.UsuarioActivity.LOGIN_KEY;
+import static com.example.weMee7.view.activity.UsuarioActivity.GOOGLE_SIGN_IN;
+import static com.example.weMee7.view.activity.UsuarioActivity.LOGIN_KEY;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -11,7 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.example.weMee7.comun.Avatar;
-import com.example.weMee7.comun.seguridad.SharedPref;
+import com.example.weMee7.comun.SharedPref;
 import com.example.weMee7.model.dao.InvitacionDAO;
 import com.example.weMee7.model.dao.ReunionDAO;
 import com.example.weMee7.model.dao.TareaDAO;
@@ -20,11 +20,11 @@ import com.example.weMee7.model.dao._SuperDAO;
 import com.example.weMee7.model.entities.Invitacion;
 import com.example.weMee7.model.entities.Tarea;
 import com.example.weMee7.model.entities.Usuario;
-import com.example.weMee7.view._SuperActivity;
-import com.example.weMee7.view.usuario.HomeFragment;
-import com.example.weMee7.view.usuario.LoginFragment;
-import com.example.weMee7.view.usuario.PhoneCodeFragment;
-import com.example.weMee7.view.usuario.PerfilFragment;
+import com.example.weMee7.view.activity._SuperActivity;
+import com.example.weMee7.view.fragments.HomeFragment;
+import com.example.weMee7.view.fragments.LoginFragment;
+import com.example.weMee7.view.fragments.PhoneCodeFragment;
+import com.example.weMee7.view.fragments.PerfilFragment;
 import com.example.wemee7.R;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
