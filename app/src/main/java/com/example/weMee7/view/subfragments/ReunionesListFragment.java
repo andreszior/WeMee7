@@ -82,10 +82,10 @@ public class ReunionesListFragment extends Fragment {
             tab = getArguments().getInt("TAB_KEY");
         else
             tab = REUNIONES_ACTIVAS;
-        listaCargada = new TaskCompletionSource<>();
-        listaCargada.getTask().addOnSuccessListener(documentSnapshot -> {
-            ((_SuperActivity)requireActivity()).ocultarCargando();
-        });
+//        listaCargada = new TaskCompletionSource<>();
+//        listaCargada.getTask().addOnSuccessListener(documentSnapshot -> {
+//            ((_SuperActivity)requireActivity()).ocultarCargando();
+//        });
     }
 
     @Override
@@ -310,7 +310,8 @@ public class ReunionesListFragment extends Fragment {
             rvReunionesList.setAdapter(reunionesListAdapter);
             rvReunionesList.setVisibility(View.VISIBLE);
         }
-        listaCargada.setResult(null);
+        ((_SuperActivity)requireActivity()).ocultarCargando();
+//        listaCargada.setResult(null);
     }
 
     /**
