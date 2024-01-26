@@ -50,6 +50,8 @@ public class ReunionFragment extends Fragment {
 
     private Reunion reunionActual;
     private boolean esCreador;
+    private boolean subfragmentCargado;
+    private boolean subfragmentVisible;
     private Tarea tareaSeleccionada;
     View llInfoReunion, llEditReunion, llMostrarInvitados, llTareasClosed, llTareasOpen, fragmentContainer;
     EditText [] etCampos;
@@ -71,6 +73,7 @@ public class ReunionFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        subfragmentCargado = false;
         super.onCreate(savedInstanceState);
     }
 
@@ -98,6 +101,10 @@ public class ReunionFragment extends Fragment {
 
     public boolean isUserCreador() {
         return esCreador;
+    }
+
+    public boolean isSubfragmentVisible() {
+        return subfragmentVisible;
     }
 
     private void cargarComponentes(View view){
@@ -327,18 +334,25 @@ public class ReunionFragment extends Fragment {
             llInfoReunion.setVisibility(View.VISIBLE);
             llTareasClosed.setVisibility(View.VISIBLE);
             fragmentContainer.setVisibility(View.INVISIBLE);
+
+            subfragmentVisible = false;
         }
     }
 
     private void cambiarSubFragment(Fragment fragment){
         FragmentManager fm = requireActivity().getSupportFragmentManager();
         Fragment fActual = fm.findFragmentById(R.id.reunionContainer);
-        boolean fragmentNuevo = (fActual == null || !fActual.getClass().equals(fragment.getClass()));
+        boolean fragmentNuevo = (!subfragmentCargado ||
+                (fActual == null || !fActual.getClass().equals(fragment.getClass())));
 
         if(fragment instanceof TareaFragment || fragmentNuevo)
             fm.beginTransaction()
                     .replace(R.id.reunionContainer,fragment)
                     .commit();
+
+        if(!subfragmentCargado)
+            subfragmentCargado = true;
+        subfragmentVisible = true;
 
         //Modificar layout
         llInfoReunion.setVisibility(View.GONE);
@@ -361,15 +375,20 @@ public class ReunionFragment extends Fragment {
             llenarRecyclerViewTareas();
         tareaSeleccionada = null;
 
-        llMostrarInvitados.setVisibility(View.VISIBLE);
-        llInfoReunion.setVisibility(View.VISIBLE);
-        llTareasClosed.setVisibility(View.VISIBLE);
-        fragmentContainer.setVisibility(View.INVISIBLE);
+        cerrarSubFragment();
         FragmentManager fm = requireActivity().getSupportFragmentManager();
         Fragment fActual = fm.findFragmentById(R.id.reunionContainer);
         fm.beginTransaction()
                 .remove(fActual)
                 .commit();
+    }
+
+    public void cerrarSubFragment(){
+        llMostrarInvitados.setVisibility(View.VISIBLE);
+        llInfoReunion.setVisibility(View.VISIBLE);
+        llTareasClosed.setVisibility(View.VISIBLE);
+        fragmentContainer.setVisibility(View.INVISIBLE);
+        subfragmentVisible = false;
     }
 
     private void showBottomDialog() {
@@ -402,3 +421,4 @@ public class ReunionFragment extends Fragment {
     }
     //endregion
 }
+

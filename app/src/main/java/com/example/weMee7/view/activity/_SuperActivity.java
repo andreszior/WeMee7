@@ -24,6 +24,7 @@ import androidx.fragment.app.FragmentManager;
 
 import com.example.weMee7.view.fragments.AboutFragment;
 import com.example.weMee7.view.fragments.AddFragment;
+import com.example.weMee7.view.fragments.ReunionFragment;
 import com.example.wemee7.R;
 import com.example.weMee7.comun.Avatar;
 import com.example.weMee7.model.dao.UsuarioDAO;
@@ -176,10 +177,9 @@ public abstract class _SuperActivity extends AppCompatActivity
             case "PhoneCodeFragment":
                 tituloToolbar = R.string.hint_codigo_verificacion;
                 break;
-            case "InvitadosFragment":
-                tituloToolbar = R.string.menu_invitados;
+            case "ReunionFragment":
+                tituloToolbar = R.string.menu_reunion;
                 break;
-            //Para los demás fragments, incluir titulo de barra a partir de aqui !!!
         }
         if(op != -1)
             navigationView.setCheckedItem(op);
@@ -230,6 +230,9 @@ public abstract class _SuperActivity extends AppCompatActivity
             Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
             if(fragment instanceof LoginFragment || fragment instanceof HomeFragment)
                 this.finishAffinity();
+            else if(fragment instanceof ReunionFragment &&
+                    ((ReunionFragment)fragment).isSubfragmentVisible())
+                ((ReunionFragment)fragment).cerrarSubFragment();
             else
                 if(getSupportFragmentManager().getBackStackEntryCount() == 0)
                     super.onBackPressed();
@@ -267,16 +270,8 @@ public abstract class _SuperActivity extends AppCompatActivity
     }
 
 
-    /* FUNCIONES DE ANIMACION DE CARGA.
-    PERMITE LLAMAR A UNA FUNCION PARA QUE SE HAGA VISIBLE
-    UN LAYOUT CON UNA PROGRESSBAR CIRCULAR,
-    Y OTRA PARA OCULTARLA.
-    PARA ELLO, ES NECESARIO QUE EN EL LAYOUT DE LA ACTIVIDAD
-    EXISTA UN CONSTRAINT LAYOUT CON UNA PROGRESSBAR
-    CON @ID capaCargando; Y UN FRAGMENT CONTAINER VIEW
-    LLAMADO fragmentContainer.
+    // FUNCIONES DE ANIMACION DE CARGA.
 
-    *** VER activity_base.xml y usages de estas funciones */
 
     /**
      * Muestra la animación de carga
@@ -284,11 +279,9 @@ public abstract class _SuperActivity extends AppCompatActivity
      * @param ocultar true / false
      */
     public void setCargando(boolean ocultar){
-        runOnUiThread(() -> {
-            findViewById(R.id.capaCargando).setVisibility(View.VISIBLE);
-            if(ocultar)
-                findViewById(R.id.fragment_container).setVisibility(View.GONE);
-        });
+        findViewById(R.id.capaCargando).setVisibility(View.VISIBLE);
+        if(ocultar)
+            findViewById(R.id.fragment_container).setVisibility(View.GONE);
     }
 
     /**
@@ -296,9 +289,7 @@ public abstract class _SuperActivity extends AppCompatActivity
      * y vuelve a mostrar el contenido del fragment
      */
     public void ocultarCargando(){
-        runOnUiThread(() -> {
-            findViewById(R.id.fragment_container).setVisibility(View.VISIBLE);
-            findViewById(R.id.capaCargando).setVisibility(View.GONE);
-        });
+        findViewById(R.id.fragment_container).setVisibility(View.VISIBLE);
+        findViewById(R.id.capaCargando).setVisibility(View.GONE);
     }
 }

@@ -29,12 +29,7 @@ public class AboutFragment extends Fragment {
 
     private void setupImageButton(View view, int buttonId, String url) {
         ImageButton button = view.findViewById(buttonId);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openUrl(url);
-            }
-        });
+        button.setOnClickListener(v -> openUrl(url));
     }
 
     private void openUrl(String url) {

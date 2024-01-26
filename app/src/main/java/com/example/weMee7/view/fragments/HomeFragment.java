@@ -69,6 +69,7 @@ public class HomeFragment extends Fragment {
 
     //Control de cambios
     private boolean hayCambios;
+    private boolean primeraCarga;
 
     //Id del usuario
     private String idUsuarioActual;
@@ -79,6 +80,7 @@ public class HomeFragment extends Fragment {
         super.onCreate(savedInstanceState);
         idUsuarioActual = FirebaseAuth.getInstance().getCurrentUser().getUid();
         hayCambios = false;
+        primeraCarga = true;
     }
 
     @Override
@@ -104,8 +106,7 @@ public class HomeFragment extends Fragment {
         //Habilitar menu hamburguesa
         ((_SuperActivity)requireActivity()).setDrawerMenu(true);
 
-        //Mostrar pantalla carga
-        ((_SuperActivity)requireActivity()).setCargando(false);
+
 
         //Reactivar usuario (si estuviera inactivo)
         vmValidar.rehabilitarUsuario(idUsuarioActual);
@@ -122,6 +123,17 @@ public class HomeFragment extends Fragment {
         ImageButton boton_add = view.findViewById(R.id.bt_compartir);
         boton_add.setOnClickListener(view1 -> showBottomDialog());
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        //Solo se muestra la pantalla de carga cuando se carga el fragment por primera vez
+        if(primeraCarga) {
+            ((_SuperActivity)requireActivity()).setCargando(false);
+//            ((_SuperActivity) requireActivity()).ocultarCargando();
+            primeraCarga = false;
+        }
     }
 
     /**
@@ -284,12 +296,8 @@ public class HomeFragment extends Fragment {
         ImageView cancelButton = dialog.findViewById(R.id.cancelButton);
 
         opcionLayout.setOnClickListener(v -> {
-            Fragment selectedFragment = new AddFragment();
-            if (getActivity() != null) {
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
-            }
+            ((_SuperActivity)requireActivity()).colocarFragment(new AddFragment());
             dialog.dismiss();
-
         });
 
         opcionLayout = dialog.findViewById(R.id.llSegundaOpcion);

@@ -58,11 +58,6 @@ public class ReunionesListFragment extends Fragment {
     public static final int REUNIONES_ACTIVAS = 1;
     public static final int REUNIONES_PASADAS = 2;
 
-    //Carga de info en segundo plano
-//    private ExecutorService exec;
-//    private Future<?> task;
-
-    private TaskCompletionSource<DocumentSnapshot> listaCargada;
     private boolean cargado;
 
     public static ReunionesListFragment newInstance(int tab){
@@ -82,10 +77,6 @@ public class ReunionesListFragment extends Fragment {
             tab = getArguments().getInt("TAB_KEY");
         else
             tab = REUNIONES_ACTIVAS;
-//        listaCargada = new TaskCompletionSource<>();
-//        listaCargada.getTask().addOnSuccessListener(documentSnapshot -> {
-//            ((_SuperActivity)requireActivity()).ocultarCargando();
-//        });
     }
 
     @Override
@@ -97,38 +88,6 @@ public class ReunionesListFragment extends Fragment {
         tvMensaje = view.findViewById(R.id.tvHomeMensaje);
 
         cargarDatos();
-
-
-
-
-
-
-        //Carga de informacion en un hilo secundario
-//        exec = Executors.newSingleThreadExecutor();
-//        task = exec.submit(() -> {
-//            if(tab != REUNIONES_PASADAS){
-//                HomeFragment hf = getFragmentPadre();
-//                if(hf != null)
-//                    llenarListasTab(hf.getReunionesList(),hf.getInvitacionesMap());
-//            }
-//            // Actualizar la UI en el hilo principal
-//            getActivity().runOnUiThread(() -> {
-//                if(tab == REUNIONES_ACTIVAS) {
-//                    llenarRecyclerView();
-//                    cargado = true;
-//                }
-//            });
-//        });
-//
-//        //Ocultar capa de carga cuando se complete
-//        new Handler(Looper.getMainLooper()).post(() -> {
-//            try{
-//                task.get();
-//                ((_SuperActivity)requireActivity()).ocultarCargando();
-//            }catch(InterruptedException | ExecutionException e){
-//                e.printStackTrace();
-//            }
-//        });
 
         return view;
     }
@@ -165,21 +124,9 @@ public class ReunionesListFragment extends Fragment {
                 hf.setHayCambios(false);
             }
         }
-    }
 
-//    /**
-//     * Cancela la carga de datos en segundo plano,
-//     * si no ha terminado.
-//     * En cualquier caso, cierra el ExecutorService.
-//     */
-//    @Override
-//    public void onDestroy() {
-//        super.onDestroy();
-//        if (task != null && !task.isDone())
-//            task.cancel(true);
-//        if (exec != null)
-//            exec.shutdownNow();
-//    }
+        ((_SuperActivity)requireActivity()).ocultarCargando();
+    }
 
     private TaskCompletionSource<DocumentSnapshot>cargarDatos(){
         TaskCompletionSource<DocumentSnapshot> tcs = new TaskCompletionSource<>();

@@ -11,7 +11,7 @@
     <string name="menu_nueva_reunion">Nueva reunión</string>
     <string name="menu_about">Acerca de la aplicación</string>
     <string name="menu_settings">Ajustes de la cuenta</string>
-    <string name="menu_invitados">Lista de invitados</string>
+    <string name="menu_reunion">Detalle de la reunión</string>
     <string name="open_nav">Open Navigation Drawer</string>
     <string name="close_nav">Close Navigation Drawer</string>
 

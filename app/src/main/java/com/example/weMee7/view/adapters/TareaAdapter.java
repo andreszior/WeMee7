@@ -97,8 +97,7 @@ public class TareaAdapter extends RecyclerView.Adapter<TareaAdapter.ViewHolder> 
                 //La tarea todavía no está asignada
                 tvNombreEncargado.setText(R.string.text_sin_asignar);
                 cbRealizada.setChecked(false);
-                if(esCreador)
-                    setListenerCheckBox(tarea);
+                setListenerCheckBox(tarea);
             }else{
                 //La tarea ya esta asignada o completada
                 new UsuarioDAO().obtenerRegistroPorId(tarea.getIdEncargado(), resultado ->{

@@ -2,6 +2,7 @@ package com.example.weMee7.view.subfragments;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -86,9 +87,6 @@ public class TareaFragment extends Fragment {
         et_tareaDescripcion = view.findViewById(R.id.etTareaDescrip);
         et_tareaGasto = view.findViewById(R.id.etTareaGasto);
 
-        if (!nuevaTarea)
-            cargarDatosTarea();
-
         //Spinner
         sp_participantes = view.findViewById(R.id.spEncargado);
         ViewTreeObserver obs = sp_participantes.getViewTreeObserver();
@@ -96,30 +94,28 @@ public class TareaFragment extends Fragment {
             sp_participantes.setDropDownWidth(sp_participantes.getWidth());
         });
 
-        //Carga spinner
-        cargarDatosSpinner((!nuevaTarea && (!editable || !esCreador)));
-
-
         //CheckBox
         check_Realizada = view.findViewById(R.id.cbTareaRealizada);
-        if (!nuevaTarea &&
-                tareaSeleccionada.getEstado() == Tarea.EstadoTarea.COMPLETADA)
-            check_Realizada.setChecked(true);
+
+        //Cargar datos de la tarea
+        if (!nuevaTarea)
+            cargarDatosTarea();
+
+        //Cargar posibles encargados
+        cargarDatosSpinner(!esCreador && editable);
+
 
         //Elementos no editables
         if (!nuevaTarea && !editable) {
             campoNoEditable(et_tareaTitulo);
             campoNoEditable(et_tareaDescripcion);
             campoNoEditable(et_tareaGasto);
-            sp_participantes.setFocusable(false);
-            sp_participantes.setClickable(false);
-            sp_participantes.setFocusableInTouchMode(false);
-            sp_participantes.setEnabled(false);
-            sp_participantes.setBackground(requireActivity().getDrawable(R.drawable.rounded_rectangle));
+            habilitarSpinner(false);
             check_Realizada.setFocusable(false);
             check_Realizada.setClickable(false);
         } else {
             listenerFormatoGasto();
+            listenerCheckBox();
         }
 
 
@@ -144,20 +140,39 @@ public class TareaFragment extends Fragment {
             btUndoTarea.setVisibility(View.GONE);
             btBorrarTarea.setVisibility(View.GONE);
         }
-
-
-
         view.findViewById(R.id.btTareaClose).setOnClickListener(v -> accionCerrarTarea(false));
+    }
+
+    private void habilitarSpinner(boolean activo){
+        sp_participantes.setFocusable(activo);
+        sp_participantes.setClickable(activo);
+        sp_participantes.setFocusableInTouchMode(activo);
+        sp_participantes.setEnabled(activo);
+        int drawableBg = activo ? R.drawable.spinner_bg : R.drawable.rounded_rectangle;
+        sp_participantes.setBackground(requireActivity().getDrawable(drawableBg));
+    }
+
+    private void listenerCheckBox() {
+        check_Realizada.setOnCheckedChangeListener(((buttonView, isChecked) -> {
+            habilitarSpinner(!isChecked);
+            if(isChecked && sp_participantes.getSelectedItemPosition() == 0)
+                cargarEncargado(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        }));
     }
 
     private void cargarDatosTarea() {
         et_tareaTitulo.setText(tareaSeleccionada.getTitulo());
         et_tareaDescripcion.setText(tareaSeleccionada.getDescripcion());
         et_tareaGasto.setText(tareaSeleccionada.obtenerGastoString());
+        if (tareaSeleccionada != null &&
+                tareaSeleccionada.getEstado() == Tarea.EstadoTarea.COMPLETADA){
+            check_Realizada.setChecked(true);
+            habilitarSpinner(false);
+        }
     }
 
-    private void cargarEncargado() {
-        Usuario encargado = new Usuario(tareaSeleccionada.getIdEncargado());
+    private void cargarEncargado(String idEncargado) {
+        Usuario encargado = new Usuario(idEncargado);
         int position = encargadosList.indexOf(encargado) + 1;
         sp_participantes.setSelection(position);
     }
@@ -187,7 +202,7 @@ public class TareaFragment extends Fragment {
                         new EncargadosAdapter(
                                 requireActivity(), encargadosList));
                 if (tareaSeleccionada != null && !tareaSeleccionada.getIdEncargado().equals("")) {
-                    cargarEncargado();
+                    cargarEncargado(tareaSeleccionada.getIdEncargado());
                 }
             });
         }
@@ -267,7 +282,6 @@ public class TareaFragment extends Fragment {
             estadoTarea = Tarea.EstadoTarea.ASIGNADA;
 
         //Actualizar base de datos
-        boolean actualizar = true;
         int mensaje;
         if(tareaSeleccionada == null){
             String idReunion = getFragmentPadre().getReunionActual().getId();
@@ -285,7 +299,6 @@ public class TareaFragment extends Fragment {
             ((_SuperActivity)requireActivity()).lanzarMensaje(mensaje);
             accionCerrarTarea(true);
         }else {
-            actualizar = false;
             accionCerrarTarea(false);
         }
     }
@@ -318,7 +331,7 @@ public class TareaFragment extends Fragment {
 
     private void accionDeshacerCambios() {
         cargarDatosTarea();
-        cargarEncargado();
+        cargarEncargado(tareaSeleccionada.getIdEncargado());
     }
 
     private void accionBorrarTarea() {
